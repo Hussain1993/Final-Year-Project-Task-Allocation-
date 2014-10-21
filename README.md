@@ -1,6 +1,11 @@
-Utilities
+Final Year Project
 =========
 
-This project contains a number of utilities that are used to connect to a database,
-it also contains a tool which can be use to load and read a Java
-properties file
+This is my final year project, which is to design and build a task allocation system.
+
+<p>There are two sides to this project:
+
+<ol>
+    <li>Database Design</li>
+    <li>Task Allocation Design</li>
+</ol>
