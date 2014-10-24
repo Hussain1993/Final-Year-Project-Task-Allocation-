@@ -17,11 +17,11 @@ public class ImportCSV {
     private static final Logger LOG = LoggerFactory.getLogger(ImportCSV.class);
 
     public static final int EMPLOYEES_TABLE = 1;
-    private static final int SKILLS_TABLE = 2;
-    private static final int PROJECTS_TABLE = 3;
-    private static final int TASKS_TABLE = 4;
-    private static final int EMPLOYEE_SKILLS_TABLE = 5;
-    private static final int TASKS_SKILLS_TABLE = 6;
+    public static final int SKILLS_TABLE = 2;
+    public static final int PROJECTS_TABLE = 3;
+    public static final int TASKS_TABLE = 4;
+    public static final int EMPLOYEE_SKILLS_TABLE = 5;
+    public static final int TASKS_SKILLS_TABLE = 6;
 
     private static final String PROPERTIES_FILENAME="TaskAllocation.properties";
     private static final String CLASSNAME_KEY = "classname";
@@ -29,6 +29,20 @@ public class ImportCSV {
     private static final String USERNAME_KEY = "username";
     private static final String URL_KEY = "url";
 
+    /**
+     * This method will take a CSV file and import it into
+     * the Task Allocation Database
+     * @param filePath The file path of the CSV file to be imported
+     * @param table Integer representing the table that should be imported into</br>
+     *              <ol>
+     *                  <li>EMPLOYEES<li/>
+     *                  <li>SKILLS<li/>
+     *                  <li>PROJECTS<li/>
+     *                  <li>TASKS<li/>
+     *                  <li>EMPLOYEE SKILLS<li/>
+     *                  <li>TASKS SKILLS<li/>
+     *              <ol/>
+     */
     public static void importCSV(String filePath, int table){
         Connection conn;
         if(!DBUtils.getInit())
