@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="false" xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <!-- This is the console appender -->
+    <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{dd MMM yyyy HH:mm:ss} %5p %c{1}]: %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- This is the console appender -->
+    <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{dd MMM yyyy HH:mm:ss} %5p %c{1}]: %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- This is the file appender -->
+    <!--<appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="append" value="true"/>
+        <param name="file" value="logs/SpamClient.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{ABSOLUTE} %-5p %c{1}]: %m%n"/>
+        </layout>
+    </appender> -->
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
+    </root>
+
+</log4j:configuration>
