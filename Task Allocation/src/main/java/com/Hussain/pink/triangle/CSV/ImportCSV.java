@@ -64,7 +64,7 @@ public class ImportCSV {
             }
         }
         catch(SQLException sqlException){
-            LOG.error("ERROR:", sqlException);
+            LOG.error("There was an error with importing the CSV file into the database", sqlException);
         }
 
     }
