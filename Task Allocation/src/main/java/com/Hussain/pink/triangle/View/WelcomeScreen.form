@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.Hussain.pink.triangle.View.WelcomeScreen">
+  <grid id="27dc6" binding="rootPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="608" height="98"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="d79d8" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="f41af" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Welcome to the Task Allocation Application, click one of the buttons below to begin"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="a708e" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="fc5a7" class="javax.swing.JButton" binding="importCSVsButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Import CSVs"/>
+            </properties>
+          </component>
+          <component id="6e55" class="javax.swing.JButton" binding="allocationButton">
+            <constraints/>
+            <properties>
+              <text value="Allocation"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
