@@ -33,9 +33,26 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib</classpathPrefix>
-                            <mainClass>com.Hussain.MainApp</mainClass>
+                            <mainClass>com.Hussain.pink.triangle.Main.MainApp</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ideauidesigner-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javac2</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <fork>true</fork>
+                    <debug>true</debug>
+                    <failOnError>true</failOnError>
                 </configuration>
             </plugin>
             <plugin>
@@ -50,6 +67,7 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
                             <descriptor>${project.basedir}/assembly.xml</descriptor>
                         </configuration>
                     </execution>
@@ -63,6 +81,11 @@
             <groupId>com.Hussain.pink.triangle</groupId>
             <artifactId>DatabaseUtilities</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>forms_rt</artifactId>
+            <version>5.0</version>
         </dependency>
     </dependencies>
 
