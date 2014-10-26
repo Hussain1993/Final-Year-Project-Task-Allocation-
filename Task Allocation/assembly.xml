@@ -21,6 +21,14 @@
                 <include>**/**</include>
             </includes>
         </fileSet>
+
+        <fileSet>
+            <directory>${basedir}/config</directory>
+            <outputDirectory>config</outputDirectory>
+            <includes>
+                <include>**/**</include>
+            </includes>
+        </fileSet>
     </fileSets>
 
     <dependencySets>
