@@ -43,7 +43,7 @@ public class ImportCSV {
      *                  <li>TASKS SKILLS<li/>
      *              <ol/>
      */
-    public static void importCSV(String filePath, int table){
+    public static int importCSV(String filePath, int table){
         Connection conn;
         if(!DBUtils.getInit())
         {
@@ -74,12 +74,12 @@ public class ImportCSV {
                         break;
                 }
                 Statement stmt = conn.createStatement();
-                stmt.executeUpdate(query);
+                return stmt.executeUpdate(query);
             }
         }
         catch(SQLException sqlException){
-            LOG.error("There was an error with importing the CSV file into the database", sqlException);
+            LOG.error("There was an error with importing the CSV file {} into the database",filePath, sqlException);
         }
-
+        return 0;
     }
 }
