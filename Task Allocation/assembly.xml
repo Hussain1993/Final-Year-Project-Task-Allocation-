@@ -13,6 +13,16 @@
         </file>
     </files>
 
+    <fileSets>
+        <fileSet>
+            <directory>${basedir}/Scripts</directory>
+            <outputDirectory>Scripts</outputDirectory>
+            <includes>
+                <include>**/**</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
     <dependencySets>
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
