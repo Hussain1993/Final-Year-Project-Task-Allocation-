@@ -36,6 +36,8 @@ public class ImportCSVView extends JFrame{
     private JTextField taskSkillsCSVText;
     private JButton browseButtonTaskSkills;
     private JButton importButton;
+    private JButton clearButton;
+    private JButton backButton;
 
     public ImportCSVView(){
         super("Import CSV");
@@ -99,6 +101,26 @@ public class ImportCSVView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 importCSVFiles();
+            }
+        });
+
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                employeeCSVText.setText("");
+                skillsCSVText.setText("");
+                projectsCSVText.setText("");
+                tasksCSVText.setText("");
+                employeeSkillsCSVText.setText("");
+                taskSkillsCSVText.setText("");
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new WelcomeScreen().setVisible(true);
+                ImportCSVView.this.dispose();
             }
         });
     }
