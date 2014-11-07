@@ -1,11 +1,11 @@
 package com.Hussain.pink.triangle.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by Hussain on 21/10/2014.
@@ -22,6 +22,22 @@ public class DBUtils {
 
     private DBUtils(){}
 
+    /**
+     * This method will initialise the Database connect class,
+     * where it will load the properties file specified and
+     * read the properties that are required to connect to the database
+     * @param propertiesFilename The name of the properties file that
+     *                           contains all the properties used to connect to the
+     *                           database
+     * @param classNameKey The Driver class name that should be used to connect to the
+     *                     database
+     * @param passwordKey Password used to connect to the database
+     * @param usernameKey Username used to connect to the database
+     * @param urlKey The URL of the database
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     */
     public static void init(String propertiesFilename, String classNameKey, String passwordKey
             ,String usernameKey, String urlKey) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
         PropsGetter properties = PropsGetter.getInstance();
@@ -37,11 +53,23 @@ public class DBUtils {
         init = true;
     }
 
+    /**
+     * Get a connection to the database using the
+     * properties specified.
+     * @return A connection to the database, otherwise
+     * throw an SQLException
+     * @throws SQLException
+     */
     public static Connection getConnection() throws SQLException{
+        Connection conn;
         if(username != null && password != null && url != null)
         {
-            LOG.info("A connection to the database has been established");
-            return DriverManager.getConnection(url, username, password);
+            conn = DriverManager.getConnection(getUrl(),getUsername(),getPassword());
+            if(conn != null && conn.isValid(0))
+            {
+                LOG.info("A connection to the database has been established");
+                return conn;
+            }
         }
         throw new SQLException("There was an error when trying to get a connection to the database");
     }

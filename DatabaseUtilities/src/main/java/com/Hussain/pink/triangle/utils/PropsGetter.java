@@ -1,13 +1,13 @@
 package com.Hussain.pink.triangle.utils;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by Hussain on 21/10/2014.
@@ -45,6 +45,10 @@ public class PropsGetter {
         try{
             is = PropsGetter.class.getClassLoader().getResourceAsStream(this.propertiesFilename);
             properties = new Properties();
+            if(is == null)
+            {
+                throw new FileNotFoundException("The properties file was not found");
+            }
             properties.load(is);
         }
         catch(FileNotFoundException fnfException){
@@ -59,17 +63,15 @@ public class PropsGetter {
     }
 
     public String getProperty(String key){
-        String property = null;
         if(properties.containsKey(key))
         {
-            property = properties.getProperty(key);
+            return properties.getProperty(key);
         }
         else
         {
             LOG.error("The properties file {} does not contain the key {}",this.propertiesFilename,key);
             return null;
         }
-        return property;
     }
 
 }
