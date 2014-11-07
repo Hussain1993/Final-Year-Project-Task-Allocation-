@@ -130,6 +130,7 @@ public class ImportCSVView extends JFrame{
         FileFilter fileFilter = new ExtensionFilter(new String []{"csv","CSV"},"CSV Files");
         fileChooser.addChoosableFileFilter(fileFilter);
         fileChooser.setFileFilter(fileFilter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
         String filePath = null;
         int returnValue = fileChooser.showOpenDialog(ImportCSVView.this);
         if(returnValue == JFileChooser.APPROVE_OPTION)
