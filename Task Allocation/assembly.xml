@@ -17,6 +17,9 @@
         <fileSet>
             <directory>${basedir}/Scripts</directory>
             <outputDirectory>Scripts</outputDirectory>
+            <excludes>
+                <exclude>StartMySQL.sh</exclude>
+            </excludes>
             <includes>
                 <include>**/**</include>
             </includes>
