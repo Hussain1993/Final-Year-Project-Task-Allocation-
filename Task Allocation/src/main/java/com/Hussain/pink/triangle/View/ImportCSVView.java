@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * Created by Hussain on 26/10/2014.
@@ -142,49 +144,84 @@ public class ImportCSVView extends JFrame{
 
     private void importCSVFiles(){
         int numberOfRowsInserted = 0;
-        if(employeesCSVPath.isEmpty() && skillsCSVPath.isEmpty() && projectsCSVPath.isEmpty() && tasksCSVPath.isEmpty()
-        && employeeSkillsCSVPath.isEmpty() && taskSkillsCSVPath.isEmpty())
-        {
-           JOptionPane.showMessageDialog(new JFrame(),"At least one path has to be specified","Warning",JOptionPane.ERROR_MESSAGE);
+        try {
+            if(employeesCSVPath.isEmpty() && skillsCSVPath.isEmpty() && projectsCSVPath.isEmpty() && tasksCSVPath.isEmpty()
+            && employeeSkillsCSVPath.isEmpty() && taskSkillsCSVPath.isEmpty())
+            {
+               JOptionPane.showMessageDialog(new JFrame(),"At least one path has to be specified","Warning",JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                if(!employeesCSVPath.isEmpty())
+                {
+                    File employeesCSVFile = new File(employeesCSVPath);
+                    if(!employeesCSVFile.exists())
+                    {
+                        throw new FileNotFoundException(String.format("The file %s was not found",employeesCSVPath));
+                    }
+                    LOG.info("Importing the CSV {} file into the EMPLOYEES table",employeesCSVPath);
+                    numberOfRowsInserted  = ImportCSV.importCSV(employeesCSVPath,ImportCSV.EMPLOYEES_TABLE);
+                    LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
+                }
+                if(!skillsCSVPath.isEmpty())
+                {
+                    File skillsFile = new File(skillsCSVPath);
+                    if(!skillsFile.exists())
+                    {
+                        throw new FileNotFoundException(String.format("The file %s was not found",skillsCSVPath));
+                    }
+                    LOG.info("Importing the CSV {} file into the SKILLS table",skillsCSVPath);
+                    numberOfRowsInserted = ImportCSV.importCSV(skillsCSVPath,ImportCSV.SKILLS_TABLE);
+                    LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
+                }
+                if(!projectsCSVPath.isEmpty())
+                {
+                    File projectsFile = new File(projectsCSVPath);
+                    if(!projectsFile.exists())
+                    {
+                        throw new FileNotFoundException(String.format("The file %s was not found",projectsCSVPath));
+                    }
+                    LOG.info("Importing the CSV {} file into the PROJECTS table",projectsCSVPath);
+                    numberOfRowsInserted = ImportCSV.importCSV(projectsCSVPath,ImportCSV.PROJECTS_TABLE);
+                    LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
+                }
+                if(!tasksCSVPath.isEmpty())
+                {
+                    File tasksFile = new File(tasksCSVPath);
+                    if(!tasksFile.exists())
+                    {
+                        throw new FileNotFoundException(String.format("The file %s was not found",tasksCSVPath));
+                    }
+                    LOG.info("Importing the CSV {} file into the TASKS table",tasksCSVPath);
+                    numberOfRowsInserted = ImportCSV.importCSV(tasksCSVPath,ImportCSV.TASKS_TABLE);
+                    LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
+                }
+                if(!employeeSkillsCSVPath.isEmpty())
+                {
+                    File employeeSkillsFile = new File(employeeSkillsCSVPath);
+                    if(!employeeSkillsFile.exists())
+                    {
+                        throw new FileNotFoundException(String.format("The file %s was not found",employeeSkillsCSVPath));
+                    }
+                    LOG.info("Importing the CSV {} file into the EMPLOYEE_SKILLS table",employeeSkillsCSVPath);
+                    numberOfRowsInserted = ImportCSV.importCSV(employeesCSVPath,ImportCSV.EMPLOYEE_SKILLS_TABLE);
+                    LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
+                }
+                if(!taskSkillsCSVPath.isEmpty())
+                {
+                    File taskSkillsFile = new File(taskSkillsCSVPath);
+                    if(!taskSkillsFile.exists())
+                    {
+                        throw new FileNotFoundException(String.format("The file %s was not found",taskSkillsCSVPath));
+                    }
+                    LOG.info("Importing the CSV {} file into the TASKS_SKILLS table",taskSkillsCSVPath);
+                    numberOfRowsInserted = ImportCSV.importCSV(taskSkillsCSVPath,ImportCSV.TASKS_SKILLS_TABLE);
+                    LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
+                }
+            }
         }
-        else
-        {
-            if(!employeesCSVPath.isEmpty())
-            {
-                LOG.info("Importing the CSV {} file into the EMPLOYEES table",employeesCSVPath);
-                numberOfRowsInserted  = ImportCSV.importCSV(employeesCSVPath,ImportCSV.EMPLOYEES_TABLE);
-                LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
-            }
-            if(!skillsCSVPath.isEmpty())
-            {
-                LOG.info("Importing the CSV {} file into the SKILLS table",skillsCSVPath);
-                numberOfRowsInserted = ImportCSV.importCSV(skillsCSVPath,ImportCSV.SKILLS_TABLE);
-                LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
-            }
-            if(!projectsCSVPath.isEmpty())
-            {
-                LOG.info("Importing the CSV {} file into the PROJECTS table",projectsCSVPath);
-                numberOfRowsInserted = ImportCSV.importCSV(projectsCSVPath,ImportCSV.PROJECTS_TABLE);
-                LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
-            }
-            if(!tasksCSVPath.isEmpty())
-            {
-                LOG.info("Importing the CSV {} file into the TASKS table",tasksCSVPath);
-                numberOfRowsInserted = ImportCSV.importCSV(tasksCSVPath,ImportCSV.TASKS_TABLE);
-                LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
-            }
-            if(!employeeSkillsCSVPath.isEmpty())
-            {
-                LOG.info("Importing the CSV {} file into the EMPLOYEE_SKILLS table",employeeSkillsCSVPath);
-                numberOfRowsInserted = ImportCSV.importCSV(employeesCSVPath,ImportCSV.EMPLOYEE_SKILLS_TABLE);
-                LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
-            }
-            if(!taskSkillsCSVPath.isEmpty())
-            {
-                LOG.info("Importing the CSV {} file into the TASKS_SKILLS table",taskSkillsCSVPath);
-                numberOfRowsInserted = ImportCSV.importCSV(taskSkillsCSVPath,ImportCSV.TASKS_SKILLS_TABLE);
-                LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
-            }
+        catch (FileNotFoundException fnfException) {
+            LOG.error("There wasn an erorr while importing a CSV file", fnfException);
         }
 
     }
