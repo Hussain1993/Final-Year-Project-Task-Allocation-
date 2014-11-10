@@ -204,7 +204,7 @@ public class ImportCSVView extends JFrame{
                         throw new FileNotFoundException(String.format("The file %s was not found",employeeSkillsCSVPath));
                     }
                     LOG.info("Importing the CSV {} file into the EMPLOYEE_SKILLS table",employeeSkillsCSVPath);
-                    numberOfRowsInserted = ImportCSV.importCSV(employeesCSVPath,ImportCSV.EMPLOYEE_SKILLS_TABLE);
+                    numberOfRowsInserted = ImportCSV.importCSV(employeeSkillsCSVPath,ImportCSV.EMPLOYEE_SKILLS_TABLE);
                     LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
                 }
                 if(!taskSkillsCSVPath.isEmpty())
