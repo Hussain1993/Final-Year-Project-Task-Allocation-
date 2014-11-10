@@ -15,6 +15,13 @@
 
     <fileSets>
         <fileSet>
+            <directory>${basedir}/bin</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>**/**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>${basedir}/Scripts</directory>
             <outputDirectory>Scripts</outputDirectory>
             <excludes>
