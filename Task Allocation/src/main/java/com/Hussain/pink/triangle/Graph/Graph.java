@@ -8,11 +8,11 @@ import java.util.*;
  */
 public class Graph<V> {
     private Map<V,List<Node<V>>> list;
-    private Set<V> verticies;
+    private Set<V> vertices;
 
     public Graph(){
         list = new HashMap<>();
-        verticies = new HashSet<>();
+        vertices = new HashSet<>();
     }
 
 
@@ -43,7 +43,7 @@ public class Graph<V> {
     }
 
     public boolean isEmpty(){
-        return verticies.isEmpty();
+        return vertices.isEmpty();
     }
 
     private void addEdge(V source, Node<V> destination){
@@ -65,8 +65,8 @@ public class Graph<V> {
 
         //The nodes and the edges have been added update the
         //set containing all the vertices
-        this.verticies.add(source);
-        this.verticies.add(destination);
+        this.vertices.add(source);
+        this.vertices.add(destination);
 
     }
 
@@ -117,7 +117,7 @@ public class Graph<V> {
     }
 
     public Set<V> getAllVertices(){
-        return Collections.unmodifiableSet(this.verticies);
+        return Collections.unmodifiableSet(this.vertices);
     }
 
     @Override
