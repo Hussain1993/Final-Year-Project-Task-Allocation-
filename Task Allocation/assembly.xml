@@ -39,6 +39,14 @@
                 <include>**/**</include>
             </includes>
         </fileSet>
+
+        <fileSet>
+            <directory>${basedir}/Example CSV Files</directory>
+            <outputDirectory>/Example CSV Files</outputDirectory>
+            <includes>
+                <include>**/**</include>
+            </includes>
+        </fileSet>
     </fileSets>
 
     <dependencySets>

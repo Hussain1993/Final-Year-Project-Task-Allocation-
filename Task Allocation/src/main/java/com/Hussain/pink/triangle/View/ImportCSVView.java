@@ -1,11 +1,11 @@
 package com.Hussain.pink.triangle.View;
 
 import com.Hussain.pink.triangle.CSV.ImportCSV;
+import com.Hussain.pink.triangle.Utils.FileIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -40,6 +40,9 @@ public class ImportCSVView extends JFrame{
     private JButton importButton;
     private JButton clearButton;
     private JButton backButton;
+    
+    private static final String[] extensions = {"csv","CSV"};
+    private static final String description = "CSV files";
 
     public ImportCSVView(){
         super("Import CSV");
@@ -53,7 +56,7 @@ public class ImportCSVView extends JFrame{
         browseButtonEmployee.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                employeesCSVPath = fileBrowser();
+                employeesCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
                 employeeCSVText.setText(employeesCSVPath);
             }
         });
@@ -61,7 +64,7 @@ public class ImportCSVView extends JFrame{
         browseButtonSkills.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                skillsCSVPath = fileBrowser();
+                skillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
                 skillsCSVText.setText(skillsCSVPath);
             }
         });
@@ -69,7 +72,7 @@ public class ImportCSVView extends JFrame{
         browseButtonProjects.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                projectsCSVPath = fileBrowser();
+                projectsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
                 projectsCSVText.setText(projectsCSVPath);
             }
         });
@@ -77,7 +80,7 @@ public class ImportCSVView extends JFrame{
         browseButtonTasks.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tasksCSVPath = fileBrowser();
+                tasksCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
                 tasksCSVText.setText(tasksCSVPath);
             }
         });
@@ -85,7 +88,7 @@ public class ImportCSVView extends JFrame{
         browseButtonEmployeeSkills.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                employeeSkillsCSVPath = fileBrowser();
+                employeeSkillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
                 employeeSkillsCSVText.setText(employeeSkillsCSVPath);
             }
         });
@@ -93,7 +96,7 @@ public class ImportCSVView extends JFrame{
         browseButtonTaskSkills.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                taskSkillsCSVPath = fileBrowser();
+                taskSkillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
                 taskSkillsCSVText.setText(taskSkillsCSVPath);
             }
         });
@@ -126,22 +129,7 @@ public class ImportCSVView extends JFrame{
             }
         });
     }
-
-    private String fileBrowser(){
-        JFileChooser fileChooser = new JFileChooser();
-        FileFilter fileFilter = new ExtensionFilter(new String []{"csv","CSV"},"CSV Files");
-        fileChooser.addChoosableFileFilter(fileFilter);
-        fileChooser.setFileFilter(fileFilter);
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        String filePath = null;
-        int returnValue = fileChooser.showOpenDialog(ImportCSVView.this);
-        if(returnValue == JFileChooser.APPROVE_OPTION)
-        {
-            filePath = fileChooser.getSelectedFile().getPath();
-        }
-        return filePath;
-    }
-
+    
     private void importCSVFiles(){
         int numberOfRowsInserted = 0;
         try {

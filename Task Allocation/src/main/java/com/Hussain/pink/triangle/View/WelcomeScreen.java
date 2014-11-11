@@ -40,6 +40,8 @@ public class WelcomeScreen extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 LOG.debug("The user has decided to see the allocation view");
+                new AllocationView().setVisible(true);
+                WelcomeScreen.this.dispose();
             }
         });
     }
