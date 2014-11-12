@@ -5,6 +5,7 @@ import com.Hussain.pink.triangle.View.ExtensionFilter;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
+import java.io.File;
 
 /**
  * Created by Hussain on 11/11/2014.
@@ -32,5 +33,15 @@ public class FileIO {
             filePath = chooser.getSelectedFile().getPath();
         }
         return filePath;
+    }
+
+    public static boolean fileExists(String filePath){
+        File f = new File(filePath);
+        if(f.exists())
+        {
+            return true;
+        }
+        return false;
+
     }
 }
