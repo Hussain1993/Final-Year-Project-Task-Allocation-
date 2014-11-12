@@ -34,10 +34,12 @@ public class TaskAllocationFile {
     private static final String ID_ATTR = "id";
     private static final String NAME_TAG = "name";
     private static final String TASK_TAG = "taskAssigned";
+    private static final String TASK_ID_TAG = "taskID";
 
     private static final int ID_COLUMN_INDEX = 0;
     private static final int NAME_COLUMN_INDEX = 1;
     private static final int TASK_COLUMN_INDEX = 2;
+    private static final int TASK_ID_COLUMN_INDEX = 3;
 
     public static ArrayList<String []> parseTaskAllocationFile(String filePath){
         ArrayList<String []> rows = new ArrayList<>();
@@ -63,9 +65,11 @@ public class TaskAllocationFile {
                     String id = employeeElement.getAttribute(ID_ATTR);
                     String name = getTextValue(employeeElement,NAME_TAG);
                     String taskAssigned = getTextValue(employeeElement,TASK_TAG);
+                    String taskID = getTextValue(employeeElement,TASK_ID_TAG);
                     data = ArrayUtils.add(data,id);
                     data = ArrayUtils.add(data,name);
                     data = ArrayUtils.add(data,taskAssigned);
+                    data = ArrayUtils.add(data,taskID);
                     rows.add(data);
                 }
             }
@@ -127,6 +131,7 @@ public class TaskAllocationFile {
         String id = null;
         String employeeName = null;
         String taskAssigned = null;
+        String taskID = null;
         for (int row = 0; row < model.getRowCount(); row++) {
             for (int column = 0; column < model.getColumnCount(); column++) {
                 switch (column)
@@ -140,6 +145,8 @@ public class TaskAllocationFile {
                     case TASK_COLUMN_INDEX:
                         taskAssigned = String.valueOf(model.getValueAt(row,column));
                         break;
+                    case TASK_ID_COLUMN_INDEX:
+                        taskID = String.valueOf(model.getValueAt(row,column));
                 }
             }
             Element employee = document.createElement(EMPLOYEE_TAG);
@@ -156,6 +163,10 @@ public class TaskAllocationFile {
             Element task = document.createElement(TASK_TAG);
             task.appendChild(document.createTextNode(taskAssigned));
             employee.appendChild(task);
+
+            Element taskIDElement = document.createElement(TASK_ID_TAG);
+            taskIDElement.appendChild(document.createTextNode(taskID));
+            employee.appendChild(taskIDElement);
         }
     }
 

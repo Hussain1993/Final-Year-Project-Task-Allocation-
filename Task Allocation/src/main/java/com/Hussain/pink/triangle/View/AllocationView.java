@@ -1,22 +1,23 @@
 package com.Hussain.pink.triangle.View;
 
 import com.Hussain.pink.triangle.Utils.FileIO;
+import com.Hussain.pink.triangle.Utils.TaskAllocationFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * Created by Hussain on 11/11/2014.
  */
 public class AllocationView extends JFrame{
     private static final Logger LOG = LoggerFactory.getLogger(AllocationView.class);
-    private static final String [] extentions = {"ta"};
+    private static final String [] extensions = {"ta"};
     private static final String description = "Task Allocation Files";
 
     private JPanel rootPanel;
@@ -26,8 +27,7 @@ public class AllocationView extends JFrame{
     private DefaultTableModel tableModel;
 
 
-    private String [] columnNames = {"ID","Employee Name","Allocated Task"};
-    private String [][] rows = {{}};
+    private String [] columnNames = {"ID","Employee Name","Allocated Task","Task ID","Assign"};
 
     public AllocationView() {
         super("Allocation");
@@ -40,8 +40,21 @@ public class AllocationView extends JFrame{
     }
 
     private void initTable(){
-        tableModel = new DefaultTableModel(rows,columnNames);
-        JTable allocationTable = new JTable(tableModel);
+        tableModel = new DefaultTableModel(null,columnNames);
+        JTable allocationTable = new JTable(tableModel){
+
+            @Override
+            public Class getColumnClass(int column){
+                switch (column)
+                {
+                    case 0: return String.class;
+                    case 1: return String.class;
+                    case 2: return String.class;
+                    case 3: return String.class;
+                    default: return Boolean.class;
+                }
+            }
+        };
         JScrollPane scrollPane = new JScrollPane(allocationTable);
         tablePanel.add(scrollPane);
     }
@@ -63,14 +76,19 @@ public class AllocationView extends JFrame{
         open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String file = FileIO.openFileDialog(AllocationView.this, extentions, description,FileIO.OPEN_MODE);
+                String file = FileIO.openFileDialog(AllocationView.this, extensions, description,FileIO.OPEN_MODE);
+                loadFileIntoTable(file);
             }
         });
 
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String file = FileIO.openFileDialog(AllocationView.this,extensions,description,FileIO.SAVE_MODE);
+                if(!TaskAllocationFile.saveTaskAllocationFile(file+".ta",tableModel))
+                {
+                    LOG.error("There was an error while saving the file {}", file);
+                }
             }
         });
     }
@@ -79,11 +97,16 @@ public class AllocationView extends JFrame{
         doneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                tableModel.insertRow(0,new Object[] {"1","Hussain","t1",false});
             }
         });
     }
 
-    public TableModel getAllocationTableModel(){
-        return this.tableModel;
+    private void loadFileIntoTable(String filePath){
+        ArrayList<String[]> dataRows = TaskAllocationFile.parseTaskAllocationFile(filePath);
+        for(String[] row: dataRows)
+        {
+            tableModel.addRow(row);
+        }
     }
 }

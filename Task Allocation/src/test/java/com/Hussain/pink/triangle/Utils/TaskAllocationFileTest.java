@@ -11,7 +11,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TaskAllocationFileTest {
-    private String[] data = {"0","Hussain","t1"};
+    private String[] data = {"0","Hussain","t1","012"};
 
     @Test
     public void testParseTaskAllocationFile() throws Exception{
@@ -26,8 +26,8 @@ public class TaskAllocationFileTest {
 
     @Test
     public void testSaveTaskAllocationFile() throws  Exception{
-        DefaultTableModel model = new DefaultTableModel(null, new String [] {"ID","Name","Task"});
-        model.insertRow(0,new String[]{"0","Hussain","t1"});
+        DefaultTableModel model = new DefaultTableModel(null, new String [] {"ID","Name","Task","TaskID","Assign"});
+        model.insertRow(0,new Object[]{"0","Hussain","t1","012",false});
 
         URL url = getClass().getClassLoader().getResource("testAllocation.ta");
         File file = new File(url.toURI());
