@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.Hussain.pink.triangle.View.AllocationView">
   <grid id="27dc6" binding="rootPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="527" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -18,7 +18,7 @@
               <text value="Choose an allocation algorithm:"/>
             </properties>
           </component>
-          <component id="94e11" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+          <component id="94e11" class="javax.swing.JComboBox" binding="algorithmBox">
             <constraints/>
             <properties>
               <model>
@@ -41,6 +41,19 @@
         <properties/>
         <border type="none"/>
         <children/>
+      </grid>
+      <grid id="b3c8c" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="2f40b" class="javax.swing.JButton" binding="assignButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Assign"/>
+            </properties>
+          </component>
+        </children>
       </grid>
     </children>
   </grid>

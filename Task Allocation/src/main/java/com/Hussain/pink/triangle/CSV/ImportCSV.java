@@ -1,6 +1,6 @@
 package com.Hussain.pink.triangle.CSV;
 
-import com.Hussain.pink.triangle.utils.DBUtils;
+import com.Hussain.pink.triangle.Utils.DatabaseConnection;
 import org.apache.commons.dbutils.DbUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,37 +47,25 @@ public class ImportCSV {
     public static int importCSV(String filePath, int table){
         Connection conn = null;
         Statement stmt = null;
-        if(!DBUtils.getInit())
-        {
-            try {
-                DBUtils.init(PROPERTIES_FILENAME,CLASSNAME_KEY,PASSWORD_KEY,USERNAME_KEY,URL_KEY);
-            }
-            catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-               LOG.error("There was an error initialising the connection to the database",e);
-            }
-        }
         try{
-            conn = DBUtils.getConnection();
-            if(conn != null && conn.isValid(0))
-            {
-                String query = "load data local infile \'%s\' into table %s fields terminated by \',\' lines terminated by \'\\n\' ignore 1 lines";
-                switch(table){
-                    case EMPLOYEES_TABLE: query = String.format(query,filePath,"EMPLOYEES");
-                        break;
-                    case SKILLS_TABLE: query = String.format(query, filePath,"SKILLS");
-                        break;
-                    case PROJECTS_TABLE: query = String.format(query,filePath,"PROJECTS");
-                        break;
-                    case TASKS_TABLE: query = String.format(query,filePath,"TASKS");
-                        break;
-                    case EMPLOYEE_SKILLS_TABLE: query = String.format(query,filePath,"EMPLOYEE_SKILLS");
-                        break;
-                    case TASKS_SKILLS_TABLE: query = String.format(query,filePath,"TASK_SKILLS");
-                        break;
-                }
-                stmt = conn.createStatement();
-                return stmt.executeUpdate(query);
+            conn = DatabaseConnection.getDatabaseConnection(PROPERTIES_FILENAME, CLASSNAME_KEY, PASSWORD_KEY, USERNAME_KEY, URL_KEY);
+            String query = "load data local infile \'%s\' into table %s fields terminated by \',\' lines terminated by \'\\n\' ignore 1 lines";
+            switch(table){
+                case EMPLOYEES_TABLE: query = String.format(query,filePath,"EMPLOYEES");
+                    break;
+                case SKILLS_TABLE: query = String.format(query, filePath,"SKILLS");
+                    break;
+                case PROJECTS_TABLE: query = String.format(query,filePath,"PROJECTS");
+                    break;
+                case TASKS_TABLE: query = String.format(query,filePath,"TASKS");
+                    break;
+                case EMPLOYEE_SKILLS_TABLE: query = String.format(query,filePath,"EMPLOYEE_SKILLS");
+                    break;
+                case TASKS_SKILLS_TABLE: query = String.format(query,filePath,"TASK_SKILLS");
+                    break;
             }
+            stmt = conn.createStatement();
+            return stmt.executeUpdate(query);
         }
         catch(SQLException sqlException){
             LOG.error("There was an error with importing the CSV file {} into the database",filePath, sqlException);

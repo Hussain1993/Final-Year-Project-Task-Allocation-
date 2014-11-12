@@ -21,9 +21,10 @@ public class AllocationView extends JFrame{
     private static final String description = "Task Allocation Files";
 
     private JPanel rootPanel;
-    private JComboBox comboBox1;
+    private JComboBox algorithmBox;
     private JButton doneButton;
     private JPanel tablePanel;
+    private JButton assignButton;
     private DefaultTableModel tableModel;
 
 
@@ -98,6 +99,13 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 tableModel.insertRow(0,new Object[] {"1","Hussain","t1",false});
+            }
+        });
+
+        assignButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
