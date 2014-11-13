@@ -77,7 +77,7 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String file = FileIO.openFileDialog(AllocationView.this,extensions,description,FileIO.SAVE_MODE);
-                if(!TaskAllocationFile.saveTaskAllocationFile(file+".ta",tableModel))
+                if(!TaskAllocationFile.saveTaskAllocationFile(file+extensions[0],tableModel))
                 {
                     LOG.error("There was an error while saving the file {}", file);
                 }
