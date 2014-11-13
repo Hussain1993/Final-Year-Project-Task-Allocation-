@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Hussain on 10/11/2014.
+ * This class will be used to store
+ * the skills for an employee and a task
  */
 public class Skill {
 

@@ -5,6 +5,10 @@ import java.util.List;
 /**
  * Created by Hussain on 10/11/2014.
  *
+ * This class will be used to store the
+ * attributes of an employee when they are being
+ * retrieved from the database
+ *
  * select employees.id,employees.first_name,employees.last_name,
  * group_concat(skills.skill),employees.cost,employee_skills.PROFICIENCY from employee_skills
  * join employees on employee_skills.employee_id = employees.id join skills on employee_skills.skill_id=skills.id

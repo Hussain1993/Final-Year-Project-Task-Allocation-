@@ -7,6 +7,9 @@ import java.util.List;
 /**
  * Created by Hussain on 10/11/2014.
  *
+ * This class stores the attributes of a task
+ * when they are being retrieved from the database
+ *
  * select tasks.id,tasks.name,tasks.project_id,tasks.date_from,tasks.date_to,tasks.completed,group_concat(skills.skill),
  * task_skills.proficiency_required
  * from task_skills

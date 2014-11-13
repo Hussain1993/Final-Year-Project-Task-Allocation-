@@ -24,12 +24,6 @@ public class ImportCSV {
     public static final int EMPLOYEE_SKILLS_TABLE = 5;
     public static final int TASKS_SKILLS_TABLE = 6;
 
-    private static final String PROPERTIES_FILENAME="TaskAllocation.properties";
-    private static final String CLASSNAME_KEY = "classname";
-    private static final String PASSWORD_KEY = "password";
-    private static final String USERNAME_KEY = "username";
-    private static final String URL_KEY = "url";
-
     /**
      * This method will take a CSV file and import it into
      * the Task Allocation Database
@@ -48,7 +42,7 @@ public class ImportCSV {
         Connection conn = null;
         Statement stmt = null;
         try{
-            conn = DatabaseConnection.getDatabaseConnection(PROPERTIES_FILENAME, CLASSNAME_KEY, PASSWORD_KEY, USERNAME_KEY, URL_KEY);
+            conn = DatabaseConnection.getDatabaseConnection();
             String query = "load data local infile \'%s\' into table %s fields terminated by \',\' lines terminated by \'\\n\' ignore 1 lines";
             switch(table){
                 case EMPLOYEES_TABLE: query = String.format(query,filePath,"EMPLOYEES");

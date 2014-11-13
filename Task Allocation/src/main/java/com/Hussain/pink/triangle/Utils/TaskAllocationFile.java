@@ -26,6 +26,12 @@ import java.util.ArrayList;
 
 /**
  * Created by Hussain on 11/11/2014.
+ * This class will be used to save a TaskAllocation from
+ * the table where a suggested allocation will be held.
+ *
+ * This class will also be used to parse a TaskAllocation file
+ * to load it within the UI and the user will be able to assign the
+ * users within the table
  */
 public class TaskAllocationFile {
     private static final Logger LOG = LoggerFactory.getLogger(TaskAllocationFile.class);
@@ -41,6 +47,15 @@ public class TaskAllocationFile {
     private static final int TASK_COLUMN_INDEX = 2;
     private static final int TASK_ID_COLUMN_INDEX = 3;
 
+    /**
+     * This method will parse a ta file and return an arraylist of all the
+     * row data that is contained within the file
+     * @param filePath The file path to the ta file the user would like
+     *                 to open
+     * @return An arraylist where each element within the list is a String array
+     * each String array will contain the information for each row
+     * of data to be added to the allocation table.
+     */
     public static ArrayList<String []> parseTaskAllocationFile(String filePath){
         ArrayList<String []> rows = new ArrayList<>();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -77,15 +92,21 @@ public class TaskAllocationFile {
         catch (ParserConfigurationException e) {
             LOG.error("There was an error while getting the document builder",e);
         }
-        catch (SAXException e) {
-            LOG.error("There was an error when trying to parse to the ta file {}",filePath,e);
-        }
-        catch (IOException e) {
-            LOG.error("There was an error when trying to parse to the ta file {}",filePath,e);
+        catch (SAXException | IOException e) {
+            LOG.error("There was an error when trying to parse the ta file {}",filePath,e);
         }
         return rows;
     }
 
+    /**
+     * Get the text element for a given
+     * XML tag element
+     * @param e The element to get the text element from
+     * @param tag The name of the tag that is used within
+     *            the XML file
+     * @return The String value that is used within the
+     * tag
+     */
     private static String getTextValue(Element e, String tag){
         NodeList list = e.getElementsByTagName(tag);
         if(list != null && list.getLength() > 0)
