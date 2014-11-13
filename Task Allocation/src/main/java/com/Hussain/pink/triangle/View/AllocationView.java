@@ -28,6 +28,7 @@ public class AllocationView extends JFrame{
     private JButton doneButton;
     private JPanel tablePanel;
     private JButton assignButton;
+    private JButton backButton;
     private AllocationTableModel tableModel;
 
 
@@ -97,6 +98,14 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 LOG.info("The number of employees that have been assigned tasks is: {}",assignRows());
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AllocationView.this.dispose();
+                new WelcomeScreen().setVisible(true);
             }
         });
     }
