@@ -3,134 +3,88 @@ package com.Hussain.pink.triangle.Graph;
 import java.util.*;
 
 /**
- * Created by Rai Skumar
- * http://geekrai.blogspot.in/2014/08/graphjava.html
+ * Created by Hussain on 14/11/2014.
  */
-public class Graph<V> {
-    private Map<V,List<Node<V>>> list;
-    private Set<V> vertices;
+public class Graph<E,T> {
+    private Map<Node<E>,Node<T>> employeeToTaskMapping;
+    private Set<Node<E>> employeeNodes;
+    private Set<Node<T>> taskNodes;
 
-    public Graph(){
-        list = new HashMap<>();
-        vertices = new HashSet<>();
+    public Graph() {
+        employeeToTaskMapping = new HashMap<>();
+        employeeNodes = new HashSet<>();
+        taskNodes = new HashSet<>();
     }
 
-
-    private static class Node<V>{
-        private V name; //The name of the vertex
-
-        public Node(V name){
-            this.name = name;
-        }
-
-        public V getName(){
-            return this.name;
-        }
-
-        @Override
-        public int hashCode(){
-            return this.getName().hashCode();
-        }
-
-        @Override
-        public String toString(){
-            return this.name + "";
-        }
-    }
-
-    public Map<V,List<Node<V>>> getMap(){
-        return this.list;
+    public Map<Node<E>,Node<T>> getEmployeeToTaskMapping(){
+        return this.employeeToTaskMapping;
     }
 
     public boolean isEmpty(){
-        return vertices.isEmpty();
+        return this.employeeNodes.isEmpty() && this.taskNodes.isEmpty();
     }
 
-    private void addEdge(V source, Node<V> destination){
-        List<Node<V>> adjacentVertices = list.get(source);
-        if(adjacentVertices == null || adjacentVertices.isEmpty())
+    public void addEmployeeNode(E employee){
+        employeeNodes.add(new Node<>(employee));
+    }
+
+    public void addTaskNode(T task){
+        taskNodes.add(new Node<>(task));
+    }
+
+    public Set<Node<E>> getEmployeeNodes(){
+        return this.employeeNodes;
+    }
+
+    public Set<Node<T>> getTaskNodes(){
+        return this.taskNodes;
+    }
+
+    public void addEdge(Node<E> source, Node<T> destination){
+        //Check if the mapping already exists
+        Node<T> taskMapped = employeeToTaskMapping.get(source);
+        if(taskMapped == null)
         {
-            adjacentVertices = new ArrayList<Node<V>>();
-            adjacentVertices.add(destination);
+            //There is no mapping, now make sure that the
+            //employee and task nodes exists in the sets
+            if(employeeNodes.contains(source) && taskNodes.contains(destination))
+            {
+                employeeToTaskMapping.put(source,destination);
+            }
+            else
+            {
+                employeeNodes.add(source);
+                taskNodes.add(destination);
+                employeeToTaskMapping.put(source, destination);
+            }
         }
-        else
-        {
-            adjacentVertices.add(destination);
-        }
-        list.put(source,adjacentVertices);
     }
 
-    public void addEdge(V source, V destination){
-        this.addEdge(source, new Node<V>(destination));
-
-        //The nodes and the edges have been added update the
-        //set containing all the vertices
-        this.vertices.add(source);
-        this.vertices.add(destination);
-
-    }
-
-    public boolean hasRelationship(V source, V destination){
+    public boolean hasRelationship(Node<E> source, Node<T> destination){
         if(source == null && destination == null)
         {
             return true;
         }
         if(source != null && destination == null)
         {
-            return true;
+            return false;
         }
         if(source == null && destination != null)
         {
             return false;
         }
-        List<Node<V>> nodes;
-
-        if(list.containsKey(source))
+        if(employeeToTaskMapping.containsKey(source))
         {
-            nodes = list.get(source);
-            if(nodes != null && !nodes.isEmpty())
+            Node<T> mappedTask = employeeToTaskMapping.get(source);
+            if(mappedTask.equals(destination))
             {
-                for(Node<V> neighbors : nodes)
-                {
-                    if(neighbors.getName().equals(destination))
-                    {
-                        return true;
-                    }
-                }
+                return false;
             }
         }
         return false;
     }
 
-    public List<V> getAdjacentVertices(V vertex){
-        List<Node<V>> adjacentNodes = this.list.get(vertex);
-        List<V> neighborVertex = new ArrayList<>();
-
-        if(adjacentNodes != null && !adjacentNodes.isEmpty())
-        {
-            for(Node<V> v : adjacentNodes)
-            {
-                neighborVertex.add(v.getName());
-            }
-        }
-        return neighborVertex;
-    }
-
-    public Set<V> getAllVertices(){
-        return Collections.unmodifiableSet(this.vertices);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Set of Edges :\n");
-        for (V v : this.list.keySet()) {
-            List<Node<V>> neighbour = this.list.get(v);
-            for (Node<V> vertex : neighbour) {
-                sb.append(v + " ----->" + vertex.getName() + "\n");
-            }
-        }
-        sb.append("& Set of vertices :" + this.getAllVertices());
-        return sb.toString();
+    public Node<T> getMappedTask(Node<E> employee){
+        return employeeToTaskMapping.get(employee);
     }
 }

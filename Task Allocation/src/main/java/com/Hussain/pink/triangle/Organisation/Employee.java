@@ -1,6 +1,6 @@
 package com.Hussain.pink.triangle.Organisation;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Hussain on 10/11/2014.
@@ -18,10 +18,10 @@ public class Employee {
 
     private final int id;
     private final String name;
-    private final List<Skill> skills;
+    private final Set<Skill> skills;
     private final double cost;
 
-    public Employee(int id, String firstName, String lastName, List<Skill> skills, double cost){
+    public Employee(int id, String firstName, String lastName, Set<Skill> skills, double cost){
 
         this.id = id;
         this.name = firstName + " " + lastName;
@@ -37,11 +37,38 @@ public class Employee {
         return name;
     }
 
-    public List<Skill> getSkills() {
+    public Set<Skill> getSkills() {
         return skills;
     }
 
     public double getCost() {
         return cost;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null)
+        {
+            return false;
+        }
+        if(other == this)
+        {
+            return true;
+        }
+        if(!(other instanceof Employee))
+        {
+            return false;
+        }
+        Employee otherEmployee = (Employee) other;
+        if(this.getId() == otherEmployee.getId())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee: "+getName();
     }
 }

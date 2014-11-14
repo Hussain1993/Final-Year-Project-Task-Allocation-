@@ -2,7 +2,7 @@ package com.Hussain.pink.triangle.Organisation;
 
 import org.joda.time.LocalDate;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Hussain on 10/11/2014.
@@ -23,10 +23,10 @@ public class Task{
     private final LocalDate dateFrom;
     private final LocalDate dateTo;
     private final boolean completed;
-    private final List<Skill> skills;
+    private final Set<Skill> skills;
 
     public Task(int id, String taskName,int projectId,long dateFrom,long dateTo, boolean completed
-    ,List<Skill> skills){
+    ,Set<Skill> skills){
         this.id = id;
         this.taskName = taskName;
         this.projectId = projectId;
@@ -60,7 +60,34 @@ public class Task{
         return completed;
     }
 
-    public List<Skill> getSkills() {
+    public Set<Skill> getSkills() {
         return skills;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null)
+        {
+            return false;
+        }
+        if(other == this)
+        {
+            return true;
+        }
+        if(!(other instanceof Task))
+        {
+            return false;
+        }
+        Task otherTask = (Task) other;
+        if(this.getId() == otherTask.getId())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return this.getTaskName();
     }
 }

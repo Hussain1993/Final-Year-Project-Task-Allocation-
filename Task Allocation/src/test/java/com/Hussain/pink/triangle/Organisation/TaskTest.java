@@ -5,12 +5,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class TaskTest {
     private static Task task;
@@ -18,16 +16,17 @@ public class TaskTest {
     private static Skill java = new Skill("Java",1);
     private static Skill uml = new Skill("UML",2);
 
+    private static Set<Skill> skillSet = new HashSet<>();
+
     @BeforeClass
     public static void setUp() throws Exception {
-        List<Skill> skillsList = new ArrayList<>();
-        skillsList.add(java);
-        skillsList.add(uml);
+        skillSet.add(java);
+        skillSet.add(uml);
 
         Date dateFrom = new Date(1402012800000L);
         Date dateTo = new Date(1404691200000L);
 
-        task = new Task(1,"TaskOne",123,dateFrom.getTime(),dateTo.getTime(),false,skillsList);
+        task = new Task(1,"TaskOne",123,dateFrom.getTime(),dateTo.getTime(),false,skillSet);
     }
 
     @Test
@@ -48,7 +47,6 @@ public class TaskTest {
     @Test
     public void testGetDateFrom() {
         LocalDate dateFrom = new LocalDate(1402012800000L);
-        System.out.println(dateFrom);
         assertEquals(task.getDateFrom(),dateFrom);
     }
 
@@ -65,7 +63,33 @@ public class TaskTest {
 
     @Test
     public void testGetSkills() {
-        Skill [] skills = task.getSkills().toArray(new Skill [] {});
-        assertArrayEquals(skills,new Skill [] {java,uml});
+        assertEquals(task.getSkills(),skillSet);
+    }
+
+    @Test
+    public void testEqualsNullObject() {
+        assertFalse(task.equals(null));
+    }
+
+    @Test
+    public void testEqualsSameObject() {
+        assertTrue(task.equals(task));
+    }
+
+    @Test
+    public void testEqualsNotSameObject() {
+        assertFalse(task.equals("Test"));
+    }
+
+    @Test
+    public void testEqualsValid() {
+        assertTrue(task.equals(new Task(1,"TaskOne",1,System.currentTimeMillis(),System.currentTimeMillis(),false,new HashSet<Skill>())));
+
+    }
+
+    @Test
+    public void testEqualsNotValid() {
+        assertFalse(task.equals(new Task(2,"Test",2,System.currentTimeMillis(),System.currentTimeMillis(),false,new HashSet<Skill>())));
+
     }
 }
