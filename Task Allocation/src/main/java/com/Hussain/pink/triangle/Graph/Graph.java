@@ -6,9 +6,9 @@ import java.util.*;
  * Created by Hussain on 14/11/2014.
  */
 public class Graph<E,T> {
-    private Map<Node<E>,Node<T>> employeeToTaskMapping;
-    private Set<Node<E>> employeeNodes;
-    private Set<Node<T>> taskNodes;
+    private Map<E,T> employeeToTaskMapping;
+    private Set<E> employeeNodes;
+    private Set<T> taskNodes;
 
     public Graph() {
         employeeToTaskMapping = new HashMap<>();
@@ -16,7 +16,7 @@ public class Graph<E,T> {
         taskNodes = new HashSet<>();
     }
 
-    public Map<Node<E>,Node<T>> getEmployeeToTaskMapping(){
+    public Map<E,T> getEmployeeToTaskMapping(){
         return this.employeeToTaskMapping;
     }
 
@@ -25,24 +25,24 @@ public class Graph<E,T> {
     }
 
     public void addEmployeeNode(E employee){
-        employeeNodes.add(new Node<>(employee));
+        employeeNodes.add(employee);
     }
 
     public void addTaskNode(T task){
-        taskNodes.add(new Node<>(task));
+        taskNodes.add(task);
     }
 
-    public Set<Node<E>> getEmployeeNodes(){
+    public Set<E> getEmployeeNodes(){
         return this.employeeNodes;
     }
 
-    public Set<Node<T>> getTaskNodes(){
+    public Set<T> getTaskNodes(){
         return this.taskNodes;
     }
 
-    public void addEdge(Node<E> source, Node<T> destination){
+    public void addEdge(E source, T destination){
         //Check if the mapping already exists
-        Node<T> taskMapped = employeeToTaskMapping.get(source);
+        T taskMapped = employeeToTaskMapping.get(source);
         if(taskMapped == null)
         {
             //There is no mapping, now make sure that the
@@ -60,7 +60,7 @@ public class Graph<E,T> {
         }
     }
 
-    public boolean hasRelationship(Node<E> source, Node<T> destination){
+    public boolean hasRelationship(E source, T destination){
         if(source == null && destination == null)
         {
             return true;
@@ -75,16 +75,16 @@ public class Graph<E,T> {
         }
         if(employeeToTaskMapping.containsKey(source))
         {
-            Node<T> mappedTask = employeeToTaskMapping.get(source);
+            T mappedTask = employeeToTaskMapping.get(source);
             if(mappedTask.equals(destination))
             {
-                return false;
+                return true;
             }
         }
         return false;
     }
 
-    public Node<T> getMappedTask(Node<E> employee){
+    public T getMappedTask(E employee){
         return employeeToTaskMapping.get(employee);
     }
 }
