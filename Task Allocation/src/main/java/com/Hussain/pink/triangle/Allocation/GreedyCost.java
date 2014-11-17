@@ -14,8 +14,4 @@ public class GreedyCost extends TaskAllocationMethod {
 
     }
 
-    @Override
-    public void setOrder(int order) {
-
-    }
 }

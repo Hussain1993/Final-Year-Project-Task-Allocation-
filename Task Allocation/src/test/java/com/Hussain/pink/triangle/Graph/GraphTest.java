@@ -22,7 +22,7 @@ public class GraphTest {
     @Test
     public void testGetEmployeeNodes() {
         Set<Employee> set = new HashSet<>();
-        Employee e = new Employee(1,"Hussain","Miah",null,0);
+        Employee e = new Employee(1,"Hussain",null,0);
         set.add(e);
         Graph<Employee, Task> graph = new Graph<>();
         graph.addEmployeeNode(e);
@@ -41,7 +41,7 @@ public class GraphTest {
 
     @Test
     public void testAddEdge() {
-        Employee e = new Employee(1,null,null,null,0);
+        Employee e = new Employee(1,null,null,0);
         Task t = new Task(1,null,1,1,1,false,null);
 
         Graph<Employee, Task> graph = new Graph<>();

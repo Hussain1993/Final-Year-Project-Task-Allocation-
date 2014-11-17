@@ -21,7 +21,7 @@ public class EmployeeTest {
     public static void setUp(){
         skillSet.add(java);
         skillSet.add(uml);
-        employee = new Employee(1, "Test", "One", skillSet, 10);
+        employee = new Employee(1, "Test One", skillSet, 10);
     }
 
     @Test
@@ -61,13 +61,13 @@ public class EmployeeTest {
 
     @Test
     public void testEqualsValid() {
-        assertTrue(employee.equals(new Employee(1,"Test","One",skillSet,10)));
+        assertTrue(employee.equals(new Employee(1,"Test",skillSet,10)));
 
     }
 
     @Test
     public void testEqualsNotSameID() {
-        assertFalse(employee.equals(new Employee(120,"Hussain","One",skillSet,10)));
+        assertFalse(employee.equals(new Employee(120,"Hussain",skillSet,10)));
 
     }
 }

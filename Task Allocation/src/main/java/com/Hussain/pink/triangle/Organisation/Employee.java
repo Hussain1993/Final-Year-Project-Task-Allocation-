@@ -9,10 +9,10 @@ import java.util.Set;
  * attributes of an employee when they are being
  * retrieved from the database
  *
- * select employees.id,employees.first_name,employees.last_name,
- * group_concat(skills.skill),employees.cost,employee_skills.PROFICIENCY from employee_skills
- * join employees on employee_skills.employee_id = employees.id join skills on employee_skills.skill_id=skills.id
- * group by employees.id;
+ * select employees.id,concat_ws(' ',employees.first_name,employees.last_name),group_concat(skills.skill),
+ * employees.cost, group_concat(employee_skills.PROFICIENCY)
+ * from employee_skills join employees on employee_skills.employee_id = employees.id
+ * join skills on employee_skills.skill_id = skills.id group by employees.id;
  */
 public class Employee {
 
@@ -21,10 +21,10 @@ public class Employee {
     private final Set<Skill> skills;
     private final double cost;
 
-    public Employee(int id, String firstName, String lastName, Set<Skill> skills, double cost){
+    public Employee(int id, String name, Set<Skill> skills, double cost){
 
         this.id = id;
-        this.name = firstName + " " + lastName;
+        this.name = name;
         this.skills = skills;
         this.cost = cost;
     }

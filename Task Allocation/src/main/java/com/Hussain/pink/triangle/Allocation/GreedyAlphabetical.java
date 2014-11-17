@@ -14,8 +14,4 @@ public class GreedyAlphabetical extends TaskAllocationMethod {
 
     }
 
-    @Override
-    public void setOrder(int order) {
-
-    }
 }
