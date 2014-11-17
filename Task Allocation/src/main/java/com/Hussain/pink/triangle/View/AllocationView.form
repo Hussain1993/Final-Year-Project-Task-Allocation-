@@ -50,7 +50,7 @@
           <component id="b6936" class="javax.swing.JButton" binding="backButton">
             <constraints/>
             <properties>
-              <text value="Button"/>
+              <text value="Back"/>
             </properties>
           </component>
           <component id="2f40b" class="javax.swing.JButton" binding="assignButton" default-binding="true">
