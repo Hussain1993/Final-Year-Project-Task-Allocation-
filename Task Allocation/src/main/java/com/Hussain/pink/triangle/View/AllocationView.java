@@ -78,7 +78,7 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String file = FileIO.openFileDialog(AllocationView.this,extensions,description,FileIO.SAVE_MODE);
-                if(!TaskAllocationFile.saveTaskAllocationFile(file+extensions[0],tableModel))
+                if(!TaskAllocationFile.saveTaskAllocationFile(file+"."+extensions[0],tableModel))
                 {
                     LOG.error("There was an error while saving the file {}", file);
                 }
@@ -111,8 +111,8 @@ public class AllocationView extends JFrame{
     }
 
     private void loadFileIntoTable(String filePath){
-        ArrayList<String[]> dataRows = TaskAllocationFile.parseTaskAllocationFile(filePath);
-        for(String[] row: dataRows)
+        ArrayList<Object[]> dataRows = TaskAllocationFile.parseTaskAllocationFile(filePath);
+        for(Object[] row: dataRows)
         {
             tableModel.addRow(row);
         }

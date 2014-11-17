@@ -4,5 +4,6 @@
         <name>Hussain</name>
         <taskAssigned>t1</taskAssigned>
         <taskID>012</taskID>
+        <assigned>false</assigned>
     </employee>
 </taskAllocation>

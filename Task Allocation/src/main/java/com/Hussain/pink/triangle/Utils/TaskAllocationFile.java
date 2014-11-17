@@ -38,11 +38,13 @@ public class TaskAllocationFile {
     private static final String NAME_TAG = "name";
     private static final String TASK_TAG = "taskAssigned";
     private static final String TASK_ID_TAG = "taskID";
+    private static final String ASSIGN_TAG  = "assigned";
 
     private static final int ID_COLUMN_INDEX = 0;
     private static final int NAME_COLUMN_INDEX = 1;
     private static final int TASK_COLUMN_INDEX = 2;
     private static final int TASK_ID_COLUMN_INDEX = 3;
+    private static final int ASSIGNED_COLUMN_INDEX = 4;
 
     /**
      * This method will parse a ta file and return an arraylist of all the
@@ -53,8 +55,8 @@ public class TaskAllocationFile {
      * each String array will contain the information for each row
      * of data to be added to the allocation table.
      */
-    public static ArrayList<String []> parseTaskAllocationFile(String filePath){
-        ArrayList<String []> rows = new ArrayList<>();
+    public static ArrayList<Object []> parseTaskAllocationFile(String filePath){
+        ArrayList<Object []> rows = new ArrayList<>();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
         try {
@@ -72,16 +74,18 @@ public class TaskAllocationFile {
             if (list != null && list.getLength() > 0)
             {
                 for (int i = 0; i < list.getLength(); i++) {
-                    String [] data =  {};
+                    Object [] data =  {};
                     Element employeeElement = (Element) list.item(i);
                     String id = employeeElement.getAttribute(ID_ATTR);
                     String name = getTextValue(employeeElement,NAME_TAG);
                     String taskAssigned = getTextValue(employeeElement,TASK_TAG);
                     String taskID = getTextValue(employeeElement,TASK_ID_TAG);
+                    boolean isTaskAssigned = Boolean.valueOf(getTextValue(employeeElement,ASSIGN_TAG));
                     data = ArrayUtils.add(data,id);
                     data = ArrayUtils.add(data,name);
                     data = ArrayUtils.add(data,taskAssigned);
                     data = ArrayUtils.add(data,taskID);
+                    data = ArrayUtils.add(data,isTaskAssigned);
                     rows.add(data);
                 }
             }
@@ -152,6 +156,7 @@ public class TaskAllocationFile {
         String employeeName = null;
         String taskAssigned = null;
         String taskID = null;
+        String assigned = null;
         for (int row = 0; row < model.getRowCount(); row++) {
             for (int column = 0; column < model.getColumnCount(); column++) {
                 switch (column)
@@ -167,6 +172,10 @@ public class TaskAllocationFile {
                         break;
                     case TASK_ID_COLUMN_INDEX:
                         taskID = String.valueOf(model.getValueAt(row,column));
+                        break;
+                    case ASSIGNED_COLUMN_INDEX:
+                        assigned = String.valueOf(model.getValueAt(row,column));
+                        break;
                 }
             }
             Element employee = document.createElement(EMPLOYEE_TAG);
@@ -187,6 +196,10 @@ public class TaskAllocationFile {
             Element taskIDElement = document.createElement(TASK_ID_TAG);
             taskIDElement.appendChild(document.createTextNode(taskID));
             employee.appendChild(taskIDElement);
+
+            Element assignedElement = document.createElement(ASSIGN_TAG);
+            assignedElement.appendChild(document.createTextNode(assigned));
+            employee.appendChild(assignedElement);
         }
     }
 
