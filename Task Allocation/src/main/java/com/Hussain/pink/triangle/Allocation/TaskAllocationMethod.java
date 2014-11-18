@@ -4,6 +4,7 @@ import com.Hussain.pink.triangle.Graph.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.dbutils.DbUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,8 +78,10 @@ public abstract class TaskAllocationMethod {
         return null;
     }
 
-    private boolean checkSkillsMatch(Employee employee, Task task){
-        return false;
+    public boolean checkSkillsMatch(Employee employee, Task task){
+        Set<Skill> employeeSkills = employee.getSkills();
+        Set<Skill> taskSkills = task.getSkills();
+        return CollectionUtils.isEqualCollection(employeeSkills,taskSkills);
     }
 
     public boolean checkEmployeeAvailableForTask(Employee employee, Task task){
