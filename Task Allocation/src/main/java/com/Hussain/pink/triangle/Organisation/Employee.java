@@ -1,6 +1,6 @@
 package com.Hussain.pink.triangle.Organisation;
 
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * Created by Hussain on 10/11/2014.
@@ -18,10 +18,10 @@ public class Employee {
 
     private final int id;
     private final String name;
-    private final Set<Skill> skills;
+    private final LinkedHashSet<Skill> skills;
     private final double cost;
 
-    public Employee(int id, String name, Set<Skill> skills, double cost){
+    public Employee(int id, String name, LinkedHashSet<Skill> skills, double cost){
 
         this.id = id;
         this.name = name;
@@ -37,7 +37,7 @@ public class Employee {
         return name;
     }
 
-    public Set<Skill> getSkills() {
+    public LinkedHashSet<Skill> getSkills() {
         return skills;
     }
 

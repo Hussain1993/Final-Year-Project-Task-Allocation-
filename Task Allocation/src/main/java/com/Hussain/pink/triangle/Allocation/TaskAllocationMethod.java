@@ -4,30 +4,38 @@ import com.Hussain.pink.triangle.Graph.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
-import org.apache.commons.collections4.CollectionUtils;
+import com.Hussain.pink.triangle.Utils.DatabaseConnection;
 import org.apache.commons.dbutils.DbUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.*;
+import java.util.LinkedHashSet;
 
 /**
  * Created by Hussain on 14/11/2014.
  */
 public abstract class TaskAllocationMethod {
-    private StringBuilder employeeQuery = new StringBuilder("");
-    private StringBuilder taskQuery = new StringBuilder("");
+    private StringBuilder employeeQuery = new StringBuilder("select employees.id,concat_ws(' ',employees.first_name,employees.last_name) as name,group_concat(skills.skill),\n" +
+            " employees.cost, group_concat(employee_skills.PROFICIENCY)\n" +
+            " from employee_skills join employees on employee_skills.employee_id = employees.id\n" +
+            " join skills on employee_skills.skill_id = skills.id group by employees.id");
+    private StringBuilder taskQuery = new StringBuilder("select tasks.id, tasks.name,tasks.project_id,tasks.date_from,tasks.date_to,tasks.completed,\n" +
+            " group_concat(skills.skill), group_concat(task_skills.proficiency_required)\n" +
+            " from task_skills join tasks on task_skills.task_id = tasks.id\n" +
+            " join skills on task_skills.skill_id=skills.id\n" +
+            " join TaskAllocation.projects on tasks.project_id=projects.id group by tasks.id");
+
+    private Connection conn;
+    private Statement stmt;
 
     protected static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
     protected Graph<Employee,Task> allocationGraph;
 
-    public static final int ORDER_NAME_ALPHABETICAL = 1;
-    public static final int ORDER_COST_LOW_TO_HIGH = 2;
-    public static final int ORDER_COST_HIGH_TO_LOW = 3;
+    public static final String ORDER_NAME_ALPHABETICAL = " order by name asc";
+    public static final String ORDER_COST_LOW_TO_HIGH = " order by cost asc";
+    public static final String ORDER_COST_HIGH_TO_LOW = " order by cost desc";
+
 
     public static final int EMPLOYEE_QUERY = 4;
     public static final int TASK_QUERY = 5;
@@ -45,7 +53,7 @@ public abstract class TaskAllocationMethod {
                 int cost = employeeResults.getInt(4);
                 String proficiency = employeeResults.getString(5);
 
-                Set<Skill> skillSet = buildSkillSet(skills,proficiency);
+                LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiency);
 
                 LOG.debug("Adding the employee with the name {} to the graph",name);
                 allocationGraph.addEmployeeNode(new Employee(id,name,skillSet,cost));
@@ -62,7 +70,7 @@ public abstract class TaskAllocationMethod {
                 String skills = taskResults.getString(7);
                 String proficiencyRequired = taskResults.getString(8);
 
-                Set<Skill> skillSet = buildSkillSet(skills,proficiencyRequired);
+                LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiencyRequired);
 
                 LOG.debug("Adding the task with the name {} to the graph",taskName);
                 allocationGraph.addTaskNode(new Task(id,taskName,projectID,dateFrom.getTime(),dateTo.getTime(),completed,skillSet));
@@ -72,16 +80,46 @@ public abstract class TaskAllocationMethod {
             LOG.error("There was an error with the SQL Result Set",e);
         }
         finally {
-            DbUtils.closeQuietly(employeeResults);
+            DbUtils.closeQuietly(conn,stmt,employeeResults);
             DbUtils.closeQuietly(taskResults);
         }
-        return null;
+        return allocationGraph;
     }
 
     public boolean checkSkillsMatch(Employee employee, Task task){
-        Set<Skill> employeeSkills = employee.getSkills();
-        Set<Skill> taskSkills = task.getSkills();
-        return CollectionUtils.isEqualCollection(employeeSkills,taskSkills);
+        Skill [] employeeSkills = employee.getSkills().toArray(new Skill [] {});
+        Skill [] taskSkills = task.getSkills().toArray(new Skill[] {});
+        if(employeeSkills.length != taskSkills.length)
+        {
+            return false;
+        }
+        for (int i = 0; i < employeeSkills.length; i++) {
+            Skill employeeSkill = employeeSkills[i];
+            if(checkSkillsMatch(employeeSkill,task))
+            {
+                continue;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkSkillsMatch(Skill employeeSkill, Task task){
+        Skill [] taskSkills = task.getSkills().toArray(new Skill[] {});
+        for (int i = 0; i < taskSkills.length; i++) {
+            if(employeeSkill.equals(taskSkills[i]))
+            {
+                return true;
+            }
+            else
+            {
+                continue;
+            }
+        }
+        return false;
     }
 
     public boolean checkEmployeeAvailableForTask(Employee employee, Task task){
@@ -105,12 +143,32 @@ public abstract class TaskAllocationMethod {
         return taskQuery;
     }
 
-    public ResultSet executeQuery(String query){
+    public ResultSet executeQuery(int query){
+        switch (query)
+        {
+            case EMPLOYEE_QUERY: return executeQuery(getEmployeeQuery().toString());
+            case TASK_QUERY: return executeQuery(getTaskQuery().toString());
+        }
         return null;
     }
 
-    private Set<Skill> buildSkillSet(String skillResult, String proficiencyResult){
-        Set<Skill> skillSet = new HashSet<>();
+    private ResultSet executeQuery(String query){
+        Connection conn;
+        Statement stmt;
+
+        conn = DatabaseConnection.getDatabaseConnection();
+        try{
+            stmt = conn.createStatement();
+            return stmt.executeQuery(query);
+        }
+        catch (SQLException e) {
+            LOG.error("There was an error with the SQL Statement {}",query,e);
+        }
+        return null;
+    }
+
+    private LinkedHashSet<Skill> buildSkillSet(String skillResult, String proficiencyResult){
+        LinkedHashSet<Skill> skillSet = new LinkedHashSet<>();
         String [] skillArray = skillResult.split(",");
         String [] proficiencyArray = proficiencyResult.split(",");
         for (int i = 0; i < skillArray.length; i++) {

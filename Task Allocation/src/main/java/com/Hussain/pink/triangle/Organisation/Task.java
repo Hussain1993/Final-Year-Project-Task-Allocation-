@@ -2,7 +2,7 @@ package com.Hussain.pink.triangle.Organisation;
 
 import org.joda.time.LocalDate;
 
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * Created by Hussain on 10/11/2014.
@@ -24,10 +24,10 @@ public class Task{
     private final LocalDate dateFrom;
     private final LocalDate dateTo;
     private final boolean completed;
-    private final Set<Skill> skills;
+    private final LinkedHashSet<Skill> skills;
 
     public Task(int id, String taskName,int projectId,long dateFrom,long dateTo, boolean completed
-    ,Set<Skill> skills){
+    ,LinkedHashSet<Skill> skills){
         this.id = id;
         this.taskName = taskName;
         this.projectId = projectId;
@@ -61,7 +61,7 @@ public class Task{
         return completed;
     }
 
-    public Set<Skill> getSkills() {
+    public LinkedHashSet<Skill> getSkills() {
         return skills;
     }
 

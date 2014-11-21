@@ -5,8 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +15,7 @@ public class TaskTest {
     private static Skill java = new Skill("Java",1);
     private static Skill uml = new Skill("UML",2);
 
-    private static Set<Skill> skillSet = new HashSet<>();
+    private static LinkedHashSet<Skill> skillSet = new LinkedHashSet<>();
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -83,13 +82,13 @@ public class TaskTest {
 
     @Test
     public void testEqualsValid() {
-        assertTrue(task.equals(new Task(1,"TaskOne",1,System.currentTimeMillis(),System.currentTimeMillis(),false,new HashSet<Skill>())));
+        assertTrue(task.equals(new Task(1,"TaskOne",1,System.currentTimeMillis(),System.currentTimeMillis(),false,new LinkedHashSet<Skill>())));
 
     }
 
     @Test
     public void testEqualsNotValid() {
-        assertFalse(task.equals(new Task(2,"Test",2,System.currentTimeMillis(),System.currentTimeMillis(),false,new HashSet<Skill>())));
+        assertFalse(task.equals(new Task(2,"Test",2,System.currentTimeMillis(),System.currentTimeMillis(),false,new LinkedHashSet<Skill>())));
 
     }
 }

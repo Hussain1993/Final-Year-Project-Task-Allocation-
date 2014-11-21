@@ -1,19 +1,21 @@
 package com.Hussain.pink.triangle.Graph;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 
 /**
  * Created by Hussain on 14/11/2014.
  */
 public class Graph<E,T> {
     private Map<E,T> employeeToTaskMapping;
-    private Set<E> employeeNodes;
-    private Set<T> taskNodes;
+    private LinkedHashSet<E> employeeNodes;
+    private LinkedHashSet<T> taskNodes;
 
     public Graph() {
         employeeToTaskMapping = new HashMap<>();
-        employeeNodes = new HashSet<>();
-        taskNodes = new HashSet<>();
+        employeeNodes = new LinkedHashSet<>();
+        taskNodes = new LinkedHashSet<>();
     }
 
     public Map<E,T> getEmployeeToTaskMapping(){
@@ -21,7 +23,7 @@ public class Graph<E,T> {
     }
 
     public boolean isEmpty(){
-        return this.employeeNodes.isEmpty() && this.taskNodes.isEmpty();
+        return this.employeeNodes.isEmpty() && this.taskNodes.isEmpty() && employeeToTaskMapping.isEmpty();
     }
 
     public void addEmployeeNode(E employee){
@@ -32,11 +34,11 @@ public class Graph<E,T> {
         taskNodes.add(task);
     }
 
-    public Set<E> getEmployeeNodes(){
+    public LinkedHashSet<E> getEmployeeNodes(){
         return this.employeeNodes;
     }
 
-    public Set<T> getTaskNodes(){
+    public LinkedHashSet<T> getTaskNodes(){
         return this.taskNodes;
     }
 

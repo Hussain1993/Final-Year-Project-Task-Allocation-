@@ -3,19 +3,16 @@ package com.Hussain.pink.triangle.Organisation;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class EmployeeTest {
 
     private static Employee employee;
     private static Skill java = new Skill("Java",1);
     private static Skill uml = new Skill("UML",2);
-    private static Set<Skill> skillSet = new HashSet<>();
+    private static LinkedHashSet<Skill> skillSet = new LinkedHashSet<>();
 
     @BeforeClass
     public static void setUp(){
