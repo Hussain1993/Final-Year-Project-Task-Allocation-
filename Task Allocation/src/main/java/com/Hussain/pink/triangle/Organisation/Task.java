@@ -2,7 +2,7 @@ package com.Hussain.pink.triangle.Organisation;
 
 import org.joda.time.LocalDate;
 
-import java.util.List;
+import java.util.LinkedHashSet;
 
 /**
  * Created by Hussain on 10/11/2014.
@@ -10,10 +10,11 @@ import java.util.List;
  * This class stores the attributes of a task
  * when they are being retrieved from the database
  *
- * select tasks.id,tasks.name,tasks.project_id,tasks.date_from,tasks.date_to,tasks.completed,group_concat(skills.skill),
- * task_skills.proficiency_required
- * from task_skills
- * join tasks on task_skills.task_id=tasks.id join skills on task_skills.skill_id=skills.id group by tasks.id;
+ * select tasks.id, tasks.name,tasks.project_id,tasks.date_from,tasks.date_to,tasks.completed,
+ * group_concat(skills.skill), group_concat(task_skills.proficiency_required)
+ * from task_skills join tasks on task_skills.task_id = tasks.id
+ * join skills on task_skills.skill_id=skills.id
+ * join TaskAllocation.projects on tasks.project_id=projects.id group by tasks.id;
  */
 public class Task{
 
@@ -23,10 +24,10 @@ public class Task{
     private final LocalDate dateFrom;
     private final LocalDate dateTo;
     private final boolean completed;
-    private final List<Skill> skills;
+    private final LinkedHashSet<Skill> skills;
 
     public Task(int id, String taskName,int projectId,long dateFrom,long dateTo, boolean completed
-    ,List<Skill> skills){
+    ,LinkedHashSet<Skill> skills){
         this.id = id;
         this.taskName = taskName;
         this.projectId = projectId;
@@ -60,7 +61,34 @@ public class Task{
         return completed;
     }
 
-    public List<Skill> getSkills() {
+    public LinkedHashSet<Skill> getSkills() {
         return skills;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null)
+        {
+            return false;
+        }
+        if(other == this)
+        {
+            return true;
+        }
+        if(!(other instanceof Task))
+        {
+            return false;
+        }
+        Task otherTask = (Task) other;
+        if(this.getId() == otherTask.getId())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return this.getTaskName();
     }
 }

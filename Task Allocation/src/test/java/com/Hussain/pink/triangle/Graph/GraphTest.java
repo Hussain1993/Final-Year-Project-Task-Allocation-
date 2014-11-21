@@ -1,47 +1,56 @@
 package com.Hussain.pink.triangle.Graph;
 
-import org.junit.Before;
+import com.Hussain.pink.triangle.Organisation.Employee;
+import com.Hussain.pink.triangle.Organisation.Task;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Hussain on 03/11/2014.
- */
 public class GraphTest {
-    private  Graph<String> graph;
 
-    @Before
-    public void setUp(){
-        graph = new Graph<String>();
+    @Test
+    public void testIsEmpty() {
+        Graph<Employee,Task> t = new Graph<>();
+        assertTrue(t.isEmpty());
+
     }
 
     @Test
-    public void addEdgeTest(){
-        graph.addEdge("LHR","JFK");//Added the edge now make sure that the relationship is there
-        assertTrue(graph.hasRelationship("LHR","JFK"));
+    public void testGetEmployeeNodes() {
+        Set<Employee> set = new HashSet<>();
+        Employee e = new Employee(1,"Hussain",null,0);
+        set.add(e);
+        Graph<Employee, Task> graph = new Graph<>();
+        graph.addEmployeeNode(e);
+        assertEquals(set,graph.getEmployeeNodes());
     }
 
     @Test
-    public void getAdjacentVerticesTest(){
-        graph.addEdge("A","B");
-        graph.addEdge("A","C");
-        List<String> adjacentVertices = graph.getAdjacentVertices("A");
-        String [] vertices = adjacentVertices.toArray(new String [] {});
-        assertArrayEquals(vertices,new String [] {"B","C"});
+    public void testGetTaskNodes() {
+        Set<Task> t = new HashSet<>();
+        Task task = new Task(1,null,1,1,1,false,null);
+        t.add(task);
+        Graph<Employee, Task> graph = new Graph<>();
+        graph.addTaskNode(task);
+        assertEquals(t,graph.getTaskNodes());
     }
 
     @Test
-    public void getAllVerticesTest(){
-        graph.addEdge("A","B");
-        graph.addEdge("A","C");
+    public void testAddEdge() {
+        Employee e = new Employee(1,null,null,0);
+        Task t = new Task(1,null,1,1,1,false,null);
 
-        Set<String> verticesSet = graph.getAllVertices();
-        String [] vertices = verticesSet.toArray(new String [] {});
-        assertArrayEquals(vertices,new String [] {"A","B","C"});
+        Graph<Employee, Task> graph = new Graph<>();
+        graph.addEmployeeNode(e);
+        graph.addTaskNode(t);
+
+        graph.addEdge(e,t);
+
+        assertTrue(graph.hasRelationship(e,t));
+
     }
 }
