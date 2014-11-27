@@ -41,6 +41,7 @@ public class AllocationView extends JFrame{
     private JPanel tablePanel;
     private JButton assignButton;
     private JButton backButton;
+    private JLabel statusLabel;
     private AllocationTableModel tableModel;
 
 
@@ -194,6 +195,7 @@ public class AllocationView extends JFrame{
                 Object [] rowData = {e.getId(),e.getName(),t.getTaskName(),t.getId(),false};
                 tableModel.addRow(rowData);
             }
+            statusLabel.setText("A suggested allocation can be found below");
         }
     }
 }
