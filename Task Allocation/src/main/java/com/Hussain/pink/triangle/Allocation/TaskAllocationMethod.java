@@ -143,9 +143,6 @@ public abstract class TaskAllocationMethod {
     }
 
     private ResultSet executeQuery(String query){
-        Connection conn;
-        Statement stmt;
-
         conn = DatabaseConnection.getDatabaseConnection();
         try{
             stmt = conn.createStatement();
