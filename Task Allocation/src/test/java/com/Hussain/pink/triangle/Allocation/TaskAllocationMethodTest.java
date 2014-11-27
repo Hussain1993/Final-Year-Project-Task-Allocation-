@@ -129,9 +129,10 @@ public class TaskAllocationMethodTest {
         skillSet.add(java);
         skillSet.add(uml);
 
-        Skill[] skillArray = skillSet.toArray(new Skill[]{});
+        Skill[] skillArray = skillSet.toArray(new Skill[skillSet.size()]);
 
-        assertArrayEquals(skillArray,taskAllocation.buildSkillSet(skills,proficiency).toArray(new Skill[]{}));
+        LinkedHashSet<Skill> skillLinkedHashSet = taskAllocation.buildSkillSet(skills, proficiency);
+        assertArrayEquals(skillArray, skillLinkedHashSet.toArray(new Skill[skillLinkedHashSet.size()]));
 
     }
 }
