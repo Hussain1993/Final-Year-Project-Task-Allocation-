@@ -63,4 +63,55 @@ public class TaskAllocationMethodTest {
         assertTrue(taskAllocation.checkSkillsMatch(e,t));
 
     }
+
+    @Test
+    public void testCheckSkillsMatchEmployeeHasMoreSkills() {
+        GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
+
+        Skill java = new Skill("Java",1);
+        Skill uml = new Skill("UML",1);
+        Skill windowsPhone = new Skill("Windows Phone",1);
+
+        LinkedHashSet<Skill> employeeSkills = new LinkedHashSet<>();
+        LinkedHashSet<Skill> taskSkills = new LinkedHashSet<>();
+
+        employeeSkills.add(java);
+        employeeSkills.add(uml);
+        employeeSkills.add(windowsPhone);
+
+        taskSkills.add(java);
+        taskSkills.add(uml);
+
+        Employee e = new Employee(1,null,employeeSkills,0);
+        Task t = new Task(1, null, 1, 1, 1, false, taskSkills);
+
+        assertTrue(taskAllocation.checkSkillsMatch(e,t));
+    }
+
+    @Test
+    public void testCheckSkillsMatchEmployeeIsMoreSkilled() {
+        GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
+
+        Skill eSkill1 = new Skill("Java",2);
+        Skill uml = new Skill("UML", 1);
+        Skill windowsPhone = new Skill("Windows Phone",1);
+
+        Skill taskJavaSkill = new Skill("Java",1);
+
+        LinkedHashSet<Skill> employeeSkills = new LinkedHashSet<>();
+        LinkedHashSet<Skill> taskSkills = new LinkedHashSet<>();
+
+        employeeSkills.add(eSkill1);
+        employeeSkills.add(uml);
+        employeeSkills.add(windowsPhone);
+
+        taskSkills.add(taskJavaSkill);
+        taskSkills.add(uml);
+
+        Employee e = new Employee(1, null, employeeSkills, 0);
+        Task t = new Task(1, null, 1, 1, 1, false, taskSkills);
+
+        assertTrue(taskAllocation.checkSkillsMatch(e,t));
+
+    }
 }

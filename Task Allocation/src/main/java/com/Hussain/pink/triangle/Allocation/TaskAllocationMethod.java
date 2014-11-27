@@ -87,19 +87,9 @@ public abstract class TaskAllocationMethod {
     }
 
     public boolean checkSkillsMatch(Employee employee, Task task){
-        Skill [] employeeSkills = employee.getSkills().toArray(new Skill [] {});
-        Skill [] taskSkills = task.getSkills().toArray(new Skill[] {});
-        if(employeeSkills.length != taskSkills.length)
-        {
-            return false;
-        }
-        for (int i = 0; i < employeeSkills.length; i++) {
-            Skill employeeSkill = employeeSkills[i];
-            if(checkSkillsMatch(employeeSkill,task))
-            {
-                continue;
-            }
-            else
+        LinkedHashSet<Skill> taskSkills = task.getSkills();
+        for (Skill taskSkill : taskSkills) {
+            if(!checkSkillsMatch(taskSkill,employee))
             {
                 return false;
             }
@@ -107,16 +97,16 @@ public abstract class TaskAllocationMethod {
         return true;
     }
 
-    private boolean checkSkillsMatch(Skill employeeSkill, Task task){
-        Skill [] taskSkills = task.getSkills().toArray(new Skill[] {});
-        for (int i = 0; i < taskSkills.length; i++) {
-            if(employeeSkill.equals(taskSkills[i]))
+    private boolean checkSkillsMatch(Skill taskSkill, Employee employee){
+        LinkedHashSet<Skill> employeeSkills = employee.getSkills();
+        for (Skill employeeSkill : employeeSkills) {
+            if(taskSkill.equals(employeeSkill))
             {
                 return true;
             }
-            else
+            else if(taskSkill.getSkill().equals(employeeSkill.getSkill()) && employeeSkill.getProficiency() >= taskSkill.getProficiency())
             {
-                continue;
+                return true;
             }
         }
         return false;
