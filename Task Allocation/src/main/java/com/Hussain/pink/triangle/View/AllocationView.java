@@ -185,6 +185,8 @@ public class AllocationView extends JFrame{
         }
         else
         {
+            LOG.info("An allocation for the tasks has been found, populating the allocation table");
+            tableModel.setRowCount(0);//Clear the table every time there is a new allocation
             Set<Map.Entry<Employee,Task>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entrySet();
             for (Map.Entry<Employee, Task> employeeTaskEntry : entrySet) {
                 Employee e = employeeTaskEntry.getKey();
