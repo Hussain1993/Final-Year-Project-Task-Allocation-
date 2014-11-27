@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.LinkedHashSet;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -112,6 +113,25 @@ public class TaskAllocationMethodTest {
         Task t = new Task(1, null, 1, 1, 1, false, taskSkills);
 
         assertTrue(taskAllocation.checkSkillsMatch(e,t));
+
+    }
+
+    @Test
+    public void testBuildSkillSet() {
+        GreedyTaskAllocation taskAllocation  = new GreedyTaskAllocation();
+        String skills = "Java,UML";
+        String proficiency = "1,2";
+
+        Skill java = new Skill("Java",1);
+        Skill uml = new Skill("UML",2);
+
+        LinkedHashSet<Skill> skillSet = new LinkedHashSet<>();
+        skillSet.add(java);
+        skillSet.add(uml);
+
+        Skill[] skillArray = skillSet.toArray(new Skill[]{});
+
+        assertArrayEquals(skillArray,taskAllocation.buildSkillSet(skills,proficiency).toArray(new Skill[]{}));
 
     }
 }

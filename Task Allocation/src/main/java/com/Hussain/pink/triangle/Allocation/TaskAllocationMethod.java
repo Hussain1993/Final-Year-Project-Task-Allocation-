@@ -154,7 +154,7 @@ public abstract class TaskAllocationMethod {
         return null;
     }
 
-    private LinkedHashSet<Skill> buildSkillSet(String skillResult, String proficiencyResult){
+    public LinkedHashSet<Skill> buildSkillSet(String skillResult, String proficiencyResult){
         LinkedHashSet<Skill> skillSet = new LinkedHashSet<>();
         String [] skillArray = skillResult.split(",");
         String [] proficiencyArray = proficiencyResult.split(",");
