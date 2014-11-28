@@ -135,4 +135,25 @@ public class TaskAllocationMethodTest {
         assertArrayEquals(skillArray, skillLinkedHashSet.toArray(new Skill[skillLinkedHashSet.size()]));
 
     }
+
+    @Test
+    public void testCheckEmployeeAvailableForTask_TimeRangeDoesOverlap() {
+        GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
+        Employee e = new Employee(1,null,null,0,1073779200000L,1100131200000L,0);
+
+        Task t = new Task(1,null,1,1089500400000L,1089500400000L,false,null);
+
+        assertFalse(taskAllocation.checkEmployeeAvailableForTask(e, t));
+    }
+
+    @Test
+    public void testCheckEmployeeAvailableForTask_TimeRangeDoesNotOverlap() {
+        GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
+        Employee e = new Employee(1,null,null,0,1073779200000L,1100131200000L,0);
+
+        Task t = new Task(1,null,1,1105401600000L,1108080000000L,false,null);
+
+        assertTrue(taskAllocation.checkEmployeeAvailableForTask(e,t));
+
+    }
 }
