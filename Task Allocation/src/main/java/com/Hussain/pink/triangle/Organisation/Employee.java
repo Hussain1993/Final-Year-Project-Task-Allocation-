@@ -1,5 +1,7 @@
 package com.Hussain.pink.triangle.Organisation;
 
+import org.joda.time.LocalDate;
+
 import java.util.LinkedHashSet;
 
 /**
@@ -16,10 +18,13 @@ import java.util.LinkedHashSet;
  */
 public class Employee {
 
-    private final int id;
-    private final String name;
-    private final LinkedHashSet<Skill> skills;
-    private final double cost;
+    private int id;
+    private String name;
+    private LinkedHashSet<Skill> skills;
+    private double cost;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
+    private int taskAssignedID;
 
     public Employee(int id, String name, LinkedHashSet<Skill> skills, double cost){
 
@@ -27,6 +32,14 @@ public class Employee {
         this.name = name;
         this.skills = skills;
         this.cost = cost;
+    }
+
+    public Employee(int id, String name, LinkedHashSet<Skill> skills, double cost, long dateFrom, long dateTo, int taskAssignedID){
+        this(id,name,skills,cost);
+
+        this.dateFrom = new LocalDate(dateFrom);
+        this.dateTo = new LocalDate(dateTo);
+        this.taskAssignedID = taskAssignedID;
     }
 
     public int getId() {
@@ -43,6 +56,26 @@ public class Employee {
 
     public double getCost() {
         return cost;
+    }
+
+    public LocalDate getDateFrom() {
+        return dateFrom;
+    }
+
+    public LocalDate getDateTo() {
+        return dateTo;
+    }
+
+    public int getTaskAssignedID(){
+        return taskAssignedID;
+    }
+
+    public EmployeeType getEmployeeType(){
+        if(dateFrom == null && dateTo == null)
+        {
+            return EmployeeType.NOT_ASSIGNED_TASK;
+        }
+        return EmployeeType.ASSIGNED_TASK;
     }
 
     @Override
