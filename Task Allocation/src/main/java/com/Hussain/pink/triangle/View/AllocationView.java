@@ -41,6 +41,7 @@ public class AllocationView extends JFrame{
     private JPanel tablePanel;
     private JButton assignButton;
     private JButton backButton;
+    private JButton advancedOptionsButton;
     private AllocationTableModel tableModel;
 
 
@@ -103,12 +104,13 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int selectedMethod = algorithmBox.getSelectedIndex();
+                LOG.info(String.valueOf(AdvancedOptions.isEmployeeAssignedTasks()));
+                /*int selectedMethod = algorithmBox.getSelectedIndex();
                 switch (selectedMethod)
                 {
                     case GREEDY_ALPHABETICAL: greedyAllocation(GREEDY_ALPHABETICAL); break;
                     case GREEDY_COST: greedyAllocation(GREEDY_COST);break;
-                }
+                }*/
             }
         });
 
@@ -124,6 +126,13 @@ public class AllocationView extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 AllocationView.this.dispose();
                 new WelcomeScreen().setVisible(true);
+            }
+        });
+
+        advancedOptionsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new advancedOptionDialog().setVisible(true);
             }
         });
     }

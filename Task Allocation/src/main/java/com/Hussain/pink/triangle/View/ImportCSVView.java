@@ -51,6 +51,7 @@ public class ImportCSVView extends JFrame{
         super("Import CSV");
         setContentPane(rootPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getRootPane().setDefaultButton(importButton);
         addActionListeners();
         pack();
     }
