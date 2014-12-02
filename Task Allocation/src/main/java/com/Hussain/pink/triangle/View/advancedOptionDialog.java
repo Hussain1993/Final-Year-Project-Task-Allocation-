@@ -1,22 +1,19 @@
 package com.Hussain.pink.triangle.View;
 
-import com.Hussain.pink.triangle.Model.AdvancedOptions;
-import org.apache.commons.lang3.BooleanUtils;
-
 import javax.swing.*;
 import java.awt.event.*;
 
 public class advancedOptionDialog extends JDialog {
-    private JPanel contentPane;
+    private JPanel rootPanel;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JComboBox tasksOrderComboBox;
     private JComboBox employeeAssignedTaskComboBox;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
+    private JComboBox orderOfEmployeesComboBox;
+    private JComboBox groupTasksComboBox;
 
     public advancedOptionDialog() {
-        setContentPane(contentPane);
+        setContentPane(rootPanel);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
@@ -41,7 +38,7 @@ public class advancedOptionDialog extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
+        rootPanel.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
@@ -50,7 +47,7 @@ public class advancedOptionDialog extends JDialog {
     }
 
     private void onOK() {
-        AdvancedOptions.setEmployeeAssignedTasks(BooleanUtils.toBoolean(employeeAssignedTaskComboBox.getSelectedItem().toString()));
+        //AdvancedOptions.setEmployeeAssignedTasks(BooleanUtils.toBoolean(employeeAssignedTaskComboBox.getSelectedItem().toString()));
         dispose();
     }
 
