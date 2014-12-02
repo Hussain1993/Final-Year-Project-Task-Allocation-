@@ -1,7 +1,5 @@
 package com.Hussain.pink.triangle.Utils;
 
-import com.Hussain.pink.triangle.View.ExtensionFilter;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;

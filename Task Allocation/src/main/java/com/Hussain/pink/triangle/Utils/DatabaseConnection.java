@@ -1,6 +1,6 @@
 package com.Hussain.pink.triangle.Utils;
 
-import com.Hussain.pink.triangle.TaskAllocationConstants;
+import com.Hussain.pink.triangle.Model.TaskAllocationConstants;
 import com.Hussain.pink.triangle.utils.DBUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
