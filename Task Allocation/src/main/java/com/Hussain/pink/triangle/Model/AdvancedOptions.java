@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.View;
+package com.Hussain.pink.triangle.Model;
 
 /**
  * Created by Hussain on 30/11/2014.

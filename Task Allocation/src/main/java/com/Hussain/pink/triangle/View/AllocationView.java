@@ -3,13 +3,13 @@ package com.Hussain.pink.triangle.View;
 import com.Hussain.pink.triangle.Allocation.GreedyTaskAllocation;
 import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
 import com.Hussain.pink.triangle.Graph.Graph;
+import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.AllocationTableModel;
 import com.Hussain.pink.triangle.Organisation.DatabaseQueries;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import com.Hussain.pink.triangle.Utils.FileIO;
 import com.Hussain.pink.triangle.Utils.TaskAllocationFile;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,13 +44,11 @@ public class AllocationView extends JFrame{
     private JButton advancedOptionsButton;
     private AllocationTableModel tableModel;
 
-
-    private String [] columnNames = {"ID","Employee Name","Allocated Task","Task ID","Assign"};
-
     public AllocationView() {
         super("Allocation");
         setContentPane(rootPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getRootPane().setDefaultButton(doneButton);
         addActionListeners();
         initTable();
         initMenu();
@@ -58,7 +56,7 @@ public class AllocationView extends JFrame{
     }
 
     private void initTable(){
-        tableModel = new AllocationTableModel(null,columnNames);
+        tableModel = new AllocationTableModel();
         JTable allocationTable = new JTable(tableModel);
         allocationTable.getTableHeader().setReorderingAllowed(false);
         JScrollPane scrollPane = new JScrollPane(allocationTable);
@@ -83,7 +81,10 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String file = FileIO.openFileDialog(AllocationView.this, extensions, description,FileIO.OPEN_MODE);
-                loadFileIntoTable(file);
+                if (file != null)
+                {
+                    loadFileIntoTable(file);
+                }
             }
         });
 
@@ -91,7 +92,7 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String file = FileIO.openFileDialog(AllocationView.this,extensions,description,FileIO.SAVE_MODE);
-                if(!TaskAllocationFile.saveTaskAllocationFile(file+"."+extensions[0],tableModel))
+                if(file != null && !TaskAllocationFile.saveTaskAllocationFile(file+"."+extensions[0],tableModel))
                 {
                     LOG.error("There was an error while saving the file {}", file);
                 }
@@ -147,19 +148,17 @@ public class AllocationView extends JFrame{
 
     public int assignRows(){
         ArrayList<int []> employeeTaskRows = new ArrayList<>();
-        int [] rowData = {};
         int employeeIDColumnIndex = 0;
         int taskIDColumnIndex = 3;
 
         for (int row = 0; row < tableModel.getRowCount(); row++) {
             if((Boolean) tableModel.getValueAt(row,ASSIGN_TASK_COLUMN_INDEX))
             {
-               //We have a employee that the user would like to assign to a task
+                //We have a employee that the user would like to assign to a task
                 //Get the employee ID and the task ID
                 int employeeID = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, employeeIDColumnIndex)));
                 int taskID = Integer.parseInt(String.valueOf(tableModel.getValueAt(row,taskIDColumnIndex)));
-                rowData = ArrayUtils.add(rowData,employeeID);
-                rowData = ArrayUtils.add(rowData,taskID);
+                int [] rowData = {employeeID,taskID};
                 employeeTaskRows.add(rowData);
             }
         }

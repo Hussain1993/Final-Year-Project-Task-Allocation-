@@ -1,5 +1,6 @@
 package com.Hussain.pink.triangle.View;
 
+import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import org.apache.commons.lang3.BooleanUtils;
 
 import javax.swing.*;
@@ -11,6 +12,8 @@ public class advancedOptionDialog extends JDialog {
     private JButton buttonCancel;
     private JComboBox tasksOrderComboBox;
     private JComboBox employeeAssignedTaskComboBox;
+    private JComboBox comboBox1;
+    private JComboBox comboBox2;
 
     public advancedOptionDialog() {
         setContentPane(contentPane);
