@@ -3,6 +3,7 @@ package com.Hussain.pink.triangle.View;
 import com.Hussain.pink.triangle.Allocation.GreedyTaskAllocation;
 import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
 import com.Hussain.pink.triangle.Graph.Graph;
+import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.AllocationTableModel;
 import com.Hussain.pink.triangle.Organisation.DatabaseQueries;
 import com.Hussain.pink.triangle.Organisation.Employee;
@@ -104,7 +105,10 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //LOG.info(String.valueOf(AdvancedOptions.isEmployeeAssignedTasks()));
+                LOG.info("Check if Employees are assigned to Tasks: "+AdvancedOptions.checkIfEmployeesAreAssignedToTasks());
+                LOG.info("Employee Order: "+AdvancedOptions.getEmployeeOrder());
+                LOG.info("Tasks Order: "+AdvancedOptions.getTasksOrder());
+                LOG.info("Group Tasks by Project: "+AdvancedOptions.groupTasksByProject());
                 /*int selectedMethod = algorithmBox.getSelectedIndex();
                 switch (selectedMethod)
                 {

@@ -47,6 +47,44 @@ public class advancedOptionDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        boolean checkIfEmployeesAreAssignedToTasks = AdvancedOptions.checkIfEmployeesAreAssignedToTasks();
+        if(checkIfEmployeesAreAssignedToTasks)
+        {
+            employeeAssignedTaskComboBox.setSelectedIndex(1);
+        }
+        else
+        {
+            employeeAssignedTaskComboBox.setSelectedIndex(0);
+        }
+        OrderType employeeOrderType = AdvancedOptions.getEmployeeOrder();
+        switch (employeeOrderType)
+        {
+            case NAME_ALPHABETICAL: orderOfEmployeesComboBox.setSelectedIndex(0);break;
+            case NAME_REVERSE_ALPHABETICAL: orderOfEmployeesComboBox.setSelectedIndex(1); break;
+            case COST_ASCENDING: orderOfEmployeesComboBox.setSelectedIndex(2); break;
+            case COST_DESCENDING: orderOfEmployeesComboBox.setSelectedIndex(3); break;
+            default: orderOfEmployeesComboBox.setSelectedIndex(0);break;
+        }
+
+        OrderType tasksOrderType = AdvancedOptions.getTasksOrder();
+        switch (tasksOrderType)
+        {
+            case NONE: tasksOrderComboBox.setSelectedIndex(0);break;
+            case NAME_ALPHABETICAL: tasksOrderComboBox.setSelectedIndex(1); break;
+            case NAME_REVERSE_ALPHABETICAL: tasksOrderComboBox.setSelectedIndex(2); break;
+            default: tasksOrderComboBox.setSelectedIndex(0); break;
+        }
+
+        boolean groupTasksByProject = AdvancedOptions.groupTasksByProject();
+        if(groupTasksByProject)
+        {
+            groupTasksComboBox.setSelectedIndex(1);
+        }
+        else
+        {
+            groupTasksComboBox.setSelectedIndex(0);
+        }
         pack();
     }
 
