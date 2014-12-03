@@ -18,15 +18,17 @@ import java.util.LinkedHashSet;
  * Created by Hussain on 14/11/2014.
  */
 public abstract class TaskAllocationMethod {
-    private StringBuilder employeeQuery = new StringBuilder("select employees.id,concat_ws(' ',employees.first_name,employees.last_name) as name,group_concat(skills.skill),\n" +
+    private StringBuilder genericEmployeeQuery = new StringBuilder("select employees.id,concat_ws(' ',employees.first_name,employees.last_name) as name,group_concat(skills.skill),\n" +
             " employees.cost, group_concat(employee_skills.PROFICIENCY)\n" +
             " from employee_skills join employees on employee_skills.employee_id = employees.id\n" +
             " join skills on employee_skills.skill_id = skills.id group by employees.id");
-    private StringBuilder taskQuery = new StringBuilder("select tasks.id, tasks.name,tasks.project_id,tasks.date_from,tasks.date_to,tasks.completed,\n" +
-            " group_concat(skills.skill), group_concat(task_skills.proficiency_required)\n" +
-            " from task_skills join tasks on task_skills.task_id = tasks.id\n" +
-            " join skills on task_skills.skill_id=skills.id\n" +
-            " join TaskAllocation.projects on tasks.project_id=projects.id group by tasks.id");
+    private StringBuilder employeeAssignedToTasksQuery = new StringBuilder("");
+    private StringBuilder employeeQuery;
+
+    private StringBuilder taskQuery = new StringBuilder("SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, " +
+            "TASKS.DATE_FROM, TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
+            "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) FROM TASKS, SKILLS, TASK_SKILLS, PROJECTS  " +
+            "WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID AND TASKS.PROJECT_ID = PROJECTS.ID");
 
     private Connection conn;
     private Statement stmt;
@@ -35,8 +37,11 @@ public abstract class TaskAllocationMethod {
     protected Graph<Employee,Task> allocationGraph;
 
     public static final String ORDER_NAME_ALPHABETICAL = " order by name asc";
+    public static final String ORDER_NAME_REVERSE_ALPHABETICAL = " order by name desc";
     public static final String ORDER_COST_LOW_TO_HIGH = " order by cost asc";
     public static final String ORDER_COST_HIGH_TO_LOW = " order by cost desc";
+
+    private static final String GROUP_BY_PROJECTS = " group by projects.id";
 
 
     public static final int EMPLOYEE_QUERY = 4;
@@ -47,7 +52,7 @@ public abstract class TaskAllocationMethod {
     public Graph<Employee,Task> buildGraph(ResultSet employeeResults, ResultSet taskResults){
         allocationGraph = new Graph<>();
         try{
-            while(employeeResults.next())
+            while(employeeResults != null &&employeeResults.next())
             {
                 int id = employeeResults.getInt(1);
                 String name = employeeResults.getString(2);
@@ -60,7 +65,7 @@ public abstract class TaskAllocationMethod {
                 LOG.debug("Adding the employee with the name {} to the graph",name);
                 allocationGraph.addEmployeeNode(new Employee(id,name,skillSet,cost));
             }
-            while(taskResults.next())
+            while(taskResults != null &&taskResults.next())
             {
                 int id = taskResults.getInt(1);
                 String taskName = taskResults.getString(2);
@@ -127,6 +132,17 @@ public abstract class TaskAllocationMethod {
         return !employeeRange.overlaps(taskRange);
     }
 
+    public void setTaskGroupOrder(boolean groupTasksByProjects){
+        if(groupTasksByProjects)
+        {
+            taskQuery.append(GROUP_BY_PROJECTS + ", tasks.id");
+        }
+        else
+        {
+            taskQuery.append(" group by tasks.id");
+        }
+    }
+
     public void setQueryOrder(String order, int query){
         switch (query)
         {
@@ -138,6 +154,17 @@ public abstract class TaskAllocationMethod {
 
     public StringBuilder getEmployeeQuery() {
         return employeeQuery;
+    }
+
+    public void setEmployeeQuery(boolean checkIfEmployeesAreAssignedToTasks){
+        if(checkIfEmployeesAreAssignedToTasks)
+        {
+            employeeQuery = employeeAssignedToTasksQuery;
+        }
+        else
+        {
+            employeeQuery = genericEmployeeQuery;
+        }
     }
 
     public StringBuilder getTaskQuery() {
@@ -169,6 +196,11 @@ public abstract class TaskAllocationMethod {
         LinkedHashSet<Skill> skillSet = new LinkedHashSet<>();
         String [] skillArray = skillResult.split(",");
         String [] proficiencyArray = proficiencyResult.split(",");
+        if(skillArray.length != proficiencyArray.length)
+        {
+            LOG.error("There was an error with building the skills for the employee");
+            return null;
+        }
         for (int i = 0; i < skillArray.length; i++) {
             String skill = skillArray[i];
             int proficiency = Integer.parseInt(proficiencyArray[i]);

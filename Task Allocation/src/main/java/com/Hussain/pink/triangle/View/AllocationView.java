@@ -1,13 +1,8 @@
 package com.Hussain.pink.triangle.View;
 
-import com.Hussain.pink.triangle.Allocation.GreedyTaskAllocation;
-import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
-import com.Hussain.pink.triangle.Graph.Graph;
-import com.Hussain.pink.triangle.Model.AdvancedOptions;
+import com.Hussain.pink.triangle.Model.Allocation;
 import com.Hussain.pink.triangle.Model.AllocationTableModel;
 import com.Hussain.pink.triangle.Organisation.DatabaseQueries;
-import com.Hussain.pink.triangle.Organisation.Employee;
-import com.Hussain.pink.triangle.Organisation.Task;
 import com.Hussain.pink.triangle.Utils.FileIO;
 import com.Hussain.pink.triangle.Utils.TaskAllocationFile;
 import org.slf4j.Logger;
@@ -17,10 +12,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Hussain on 11/11/2014.
@@ -31,9 +23,8 @@ public class AllocationView extends JFrame{
     private static final String description = "Task Allocation Files";
     private static final int ASSIGN_TASK_COLUMN_INDEX = 4;
 
-    private static final int GREEDY_ALPHABETICAL = 0;
-    private static final int GREEDY_COST = 1;
-    private static final int MAXIMUM_ALGORITHM = 2;
+    private static final int GREEDY = 0;
+    private static final int MAXIMUM = 1;
 
     private JPanel rootPanel;
     private JComboBox algorithmBox;
@@ -105,16 +96,12 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                LOG.info("Check if Employees are assigned to Tasks: "+AdvancedOptions.checkIfEmployeesAreAssignedToTasks());
-                LOG.info("Employee Order: "+AdvancedOptions.getEmployeeOrder());
-                LOG.info("Tasks Order: "+AdvancedOptions.getTasksOrder());
-                LOG.info("Group Tasks by Project: "+AdvancedOptions.groupTasksByProject());
-                /*int selectedMethod = algorithmBox.getSelectedIndex();
-                switch (selectedMethod)
+                switch (algorithmBox.getSelectedIndex())
                 {
-                    case GREEDY_ALPHABETICAL: greedyAllocation(GREEDY_ALPHABETICAL); break;
-                    case GREEDY_COST: greedyAllocation(GREEDY_COST);break;
-                }*/
+                    case GREEDY: greedy();break;
+                    case MAXIMUM: break;
+                    default: greedy(); break;
+                }
             }
         });
 
@@ -177,32 +164,21 @@ public class AllocationView extends JFrame{
 
     }
 
-    private void greedyAllocation(int greedyOrder){
-        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
-        switch (greedyOrder)
-        {
-            case GREEDY_ALPHABETICAL: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,TaskAllocationMethod.EMPLOYEE_QUERY); break;
-            case GREEDY_COST: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_COST_LOW_TO_HIGH,TaskAllocationMethod.EMPLOYEE_QUERY); break;
-        }
-        ResultSet employeeResultSet = taskAllocationMethod.executeQuery(TaskAllocationMethod.EMPLOYEE_QUERY);
-        ResultSet tasksResultSet = taskAllocationMethod.executeQuery(TaskAllocationMethod.TASK_QUERY);
+    private void greedy(){
+        Allocation greedyAllocation = new Allocation(GREEDY);
+        populateTable(greedyAllocation.allocateEmployeesAndTasks());
+    }
 
-        Graph<Employee,Task> taskAllocationGraph = taskAllocationMethod.buildGraph(employeeResultSet,tasksResultSet);
-        taskAllocationMethod.allocateTasks(taskAllocationGraph);
-
-        if(taskAllocationGraph.isEmpty())
+    private void populateTable(ArrayList<Object[]> dataRows){
+        if(dataRows.size() == 0)
         {
             LOG.info("No suitable employees could be found for the tasks");
+            return;
         }
-        else
-        {
-            Set<Map.Entry<Employee,Task>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entrySet();
-            for (Map.Entry<Employee, Task> employeeTaskEntry : entrySet) {
-                Employee e = employeeTaskEntry.getKey();
-                Task t = employeeTaskEntry.getValue();
-                Object [] rowData = {e.getId(),e.getName(),t.getTaskName(),t.getId(),false};
-                tableModel.addRow(rowData);
-            }
+        //Clear the table every time there is a new allocation
+        tableModel.setRowCount(0);
+        for (Object[] dataRow : dataRows) {
+            tableModel.addRow(dataRow);
         }
     }
 }
