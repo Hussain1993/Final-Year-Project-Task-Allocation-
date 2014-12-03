@@ -58,6 +58,10 @@ public class FileIO {
      * @return true if the file exists, false otherwise
      */
     public static boolean fileExists(String filePath){
+        if(filePath == null)
+        {
+            return false;
+        }
         File f = new File(filePath);
         if(f.exists())
         {
