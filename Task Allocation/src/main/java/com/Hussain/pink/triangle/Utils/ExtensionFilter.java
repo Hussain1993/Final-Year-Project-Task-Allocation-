@@ -17,6 +17,10 @@ public class ExtensionFilter extends FileFilter {
         this.description = description;
     }
 
+    public ExtensionFilter(String extension, String description){
+        this(new String [] {extension}, description);
+    }
+
 
     @Override
     public boolean accept(File f) {

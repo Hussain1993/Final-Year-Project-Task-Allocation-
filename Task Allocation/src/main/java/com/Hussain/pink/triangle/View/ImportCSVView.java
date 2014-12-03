@@ -44,7 +44,7 @@ public class ImportCSVView extends JFrame{
     private JTextField assignedToCSVText;
     private JButton browseButtonAssignedTo;
 
-    private static final String[] extensions = {"csv","CSV"};
+    private static final String extension = "csv";
     private static final String description = "CSV files";
 
     public ImportCSVView(){
@@ -60,7 +60,7 @@ public class ImportCSVView extends JFrame{
         browseButtonEmployee.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                employeesCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
+                employeesCSVPath = FileIO.openFileDialog(ImportCSVView.this, extension, description,FileIO.OPEN_MODE);
                 employeeCSVText.setText(employeesCSVPath);
             }
         });
@@ -68,7 +68,7 @@ public class ImportCSVView extends JFrame{
         browseButtonSkills.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                skillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
+                skillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extension, description,FileIO.OPEN_MODE);
                 skillsCSVText.setText(skillsCSVPath);
             }
         });
@@ -76,7 +76,7 @@ public class ImportCSVView extends JFrame{
         browseButtonProjects.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                projectsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
+                projectsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extension, description,FileIO.OPEN_MODE);
                 projectsCSVText.setText(projectsCSVPath);
             }
         });
@@ -84,7 +84,7 @@ public class ImportCSVView extends JFrame{
         browseButtonTasks.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tasksCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
+                tasksCSVPath = FileIO.openFileDialog(ImportCSVView.this, extension, description,FileIO.OPEN_MODE);
                 tasksCSVText.setText(tasksCSVPath);
             }
         });
@@ -92,7 +92,7 @@ public class ImportCSVView extends JFrame{
         browseButtonEmployeeSkills.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                employeeSkillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
+                employeeSkillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extension, description,FileIO.OPEN_MODE);
                 employeeSkillsCSVText.setText(employeeSkillsCSVPath);
             }
         });
@@ -100,7 +100,7 @@ public class ImportCSVView extends JFrame{
         browseButtonTaskSkills.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                taskSkillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extensions, description,FileIO.OPEN_MODE);
+                taskSkillsCSVPath = FileIO.openFileDialog(ImportCSVView.this, extension, description,FileIO.OPEN_MODE);
                 taskSkillsCSVText.setText(taskSkillsCSVPath);
             }
         });
@@ -108,7 +108,7 @@ public class ImportCSVView extends JFrame{
         browseButtonAssignedTo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                assignedToCSVPath = FileIO.openFileDialog(ImportCSVView.this,extensions,description,FileIO.OPEN_MODE);
+                assignedToCSVPath = FileIO.openFileDialog(ImportCSVView.this, extension,description,FileIO.OPEN_MODE);
                 assignedToCSVText.setText(assignedToCSVPath);
             }
         });
