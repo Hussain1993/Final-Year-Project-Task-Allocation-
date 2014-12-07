@@ -136,7 +136,7 @@ public class TaskAllocationMethodTest {
 
     }
 
-    @Test
+    /*@Test
     public void testCheckEmployeeAvailableForTask_TimeRangeDoesOverlap() {
         GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
         Employee e = new Employee(1,null,null,0,1073779200000L,1100131200000L,0);
@@ -155,5 +155,5 @@ public class TaskAllocationMethodTest {
 
         assertTrue(taskAllocation.checkEmployeeAvailableForTask(e,t));
 
-    }
+    }*/
 }

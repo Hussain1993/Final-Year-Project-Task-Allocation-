@@ -67,4 +67,16 @@ public class EmployeeTest {
         assertFalse(employee.equals(new Employee(120,"Hussain",skillSet,10)));
 
     }
+
+    @Test
+    public void testGetEmployeeType() {
+        Employee employeeNotAssigned = new Employee(1,null,null,1);
+        assertEquals(EmployeeType.NOT_ASSIGNED_TASK, employeeNotAssigned.getEmployeeType());
+
+        Task t = new Task(1,null,1,1,1,false,null);
+
+        Employee employeeAssignedATask = new Employee(1,null,null,1,t);
+
+        assertEquals(EmployeeType.ASSIGNED_TASK, employeeAssignedATask.getEmployeeType());
+    }
 }

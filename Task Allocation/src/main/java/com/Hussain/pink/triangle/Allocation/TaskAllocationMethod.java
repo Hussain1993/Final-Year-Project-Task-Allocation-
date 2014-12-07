@@ -6,8 +6,6 @@ import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
 import com.Hussain.pink.triangle.Utils.DatabaseConnection;
 import org.apache.commons.dbutils.DbUtils;
-import org.joda.time.Interval;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,7 +117,7 @@ public abstract class TaskAllocationMethod {
         return false;
     }
 
-    public boolean checkEmployeeAvailableForTask(Employee employee, Task task){
+    /*public boolean checkEmployeeAvailableForTask(Employee employee, Task task){
         LocalDate employeeStartDate = employee.getDateFrom();
         LocalDate employeeEndDate = employee.getDateTo();
 
@@ -130,7 +128,7 @@ public abstract class TaskAllocationMethod {
         Interval taskRange = new Interval(taskStartDate.toDate().getTime(),taskEndDate.toDate().getTime());
 
         return !employeeRange.overlaps(taskRange);
-    }
+    }*/
 
     public void setTaskGroupOrder(boolean groupTasksByProjects){
         if(groupTasksByProjects)
