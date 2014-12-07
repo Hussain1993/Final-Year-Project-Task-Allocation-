@@ -136,10 +136,11 @@ public class TaskAllocationMethodTest {
 
     }
 
-    /*@Test
+    @Test
     public void testCheckEmployeeAvailableForTask_TimeRangeDoesOverlap() {
+        Task task = new Task(1,null,100,1073779200000L,1100131200000L,false,null);
         GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
-        Employee e = new Employee(1,null,null,0,1073779200000L,1100131200000L,0);
+        Employee e = new Employee(1,null,null,0,task);
 
         Task t = new Task(1,null,1,1089500400000L,1089500400000L,false,null);
 
@@ -148,12 +149,13 @@ public class TaskAllocationMethodTest {
 
     @Test
     public void testCheckEmployeeAvailableForTask_TimeRangeDoesNotOverlap() {
+        Task task = new Task(1,null,100,1073779200000L,1100131200000L,false,null);
         GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
-        Employee e = new Employee(1,null,null,0,1073779200000L,1100131200000L,0);
+        Employee e = new Employee(1,null,null,0,task);
 
         Task t = new Task(1,null,1,1105401600000L,1108080000000L,false,null);
 
         assertTrue(taskAllocation.checkEmployeeAvailableForTask(e,t));
 
-    }*/
+    }
 }

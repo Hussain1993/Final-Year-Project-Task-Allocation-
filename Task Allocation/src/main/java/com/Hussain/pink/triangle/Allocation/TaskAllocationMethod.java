@@ -6,6 +6,8 @@ import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
 import com.Hussain.pink.triangle.Utils.DatabaseConnection;
 import org.apache.commons.dbutils.DbUtils;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,18 +119,24 @@ public abstract class TaskAllocationMethod {
         return false;
     }
 
-    /*public boolean checkEmployeeAvailableForTask(Employee employee, Task task){
-        LocalDate employeeStartDate = employee.getDateFrom();
-        LocalDate employeeEndDate = employee.getDateTo();
+    public boolean checkEmployeeAvailableForTask(Employee employee, Task task){
+        Task taskAssignedToEmployee = employee.getTaskAssigned();
 
-        LocalDate taskStartDate = task.getDateFrom();
-        LocalDate taskEndDate = task.getDateTo();
+        LocalDate employeeTaskStartDate = taskAssignedToEmployee.getDateFrom();
+        LocalDate employeeTaskEndDate = taskAssignedToEmployee.getDateTo();
 
-        Interval employeeRange = new Interval(employeeStartDate.toDate().getTime(),employeeEndDate.toDate().getTime());
+        LocalDate startDate = task.getDateFrom();
+        LocalDate endDate = task.getDateTo();
+
+        Interval employeeRange = new Interval(employeeTaskStartDate.toDate().getTime(),
+                employeeTaskEndDate.toDate().getTime());
+        Interval taskRange = new Interval(startDate.toDate().getTime(), endDate.toDate().getTime());
+
+        /*Interval employeeRange = new Interval(employeeStartDate.toDate().getTime(),employeeEndDate.toDate().getTime());
         Interval taskRange = new Interval(taskStartDate.toDate().getTime(),taskEndDate.toDate().getTime());
-
-        return !employeeRange.overlaps(taskRange);
-    }*/
+        */
+        return !taskRange.overlaps(employeeRange);
+    }
 
     public void setTaskGroupOrder(boolean groupTasksByProjects){
         if(groupTasksByProjects)
