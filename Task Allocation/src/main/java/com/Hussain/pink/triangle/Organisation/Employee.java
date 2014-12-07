@@ -16,10 +16,13 @@ import java.util.LinkedHashSet;
  */
 public class Employee {
 
-    private final int id;
-    private final String name;
-    private final LinkedHashSet<Skill> skills;
-    private final double cost;
+    private int id;
+    private String name;
+    private LinkedHashSet<Skill> skills;
+    private double cost;
+
+
+    private Task taskAssigned;
 
     public Employee(int id, String name, LinkedHashSet<Skill> skills, double cost){
 
@@ -27,6 +30,12 @@ public class Employee {
         this.name = name;
         this.skills = skills;
         this.cost = cost;
+    }
+
+    public Employee(int id, String name, LinkedHashSet<Skill> skills, double cost, Task taskAssigned){
+        this(id, name, skills, cost);
+
+        this.taskAssigned = taskAssigned;
     }
 
     public int getId() {
@@ -43,6 +52,18 @@ public class Employee {
 
     public double getCost() {
         return cost;
+    }
+
+    public EmployeeType getEmployeeType(){
+        if(this.taskAssigned == null)
+        {
+            return EmployeeType.NOT_ASSIGNED_TASK;
+        }
+        return EmployeeType.ASSIGNED_TASK;
+    }
+
+    public Task getTaskAssigned(){
+        return this.taskAssigned;
     }
 
     @Override

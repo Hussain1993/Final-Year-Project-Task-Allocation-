@@ -1,7 +1,5 @@
 package com.Hussain.pink.triangle.Utils;
 
-import com.Hussain.pink.triangle.View.ExtensionFilter;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
@@ -31,7 +29,7 @@ public class FileIO {
      * save to or the file path to the file that the user would like
      * to open
      */
-    public static String openFileDialog(Component component, String[] extensions, String description,int mode){
+    public static String openFileDialog(Component component, String extensions, String description,int mode){
         String filePath = null;
         int returnValue = 0;
         JFileChooser chooser = new JFileChooser();
@@ -60,6 +58,10 @@ public class FileIO {
      * @return true if the file exists, false otherwise
      */
     public static boolean fileExists(String filePath){
+        if(filePath == null)
+        {
+            return false;
+        }
         File f = new File(filePath);
         if(f.exists())
         {

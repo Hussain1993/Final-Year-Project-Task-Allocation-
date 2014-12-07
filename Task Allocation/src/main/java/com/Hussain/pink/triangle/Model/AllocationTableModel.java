@@ -8,8 +8,8 @@ import javax.swing.table.DefaultTableModel;
 public class AllocationTableModel extends DefaultTableModel {
     private static final int ASSIGN_TASK_COLUMN_INDEX = 4;
 
-    public AllocationTableModel(Object[][] data, Object[] columnNames) {
-        super(data, columnNames);
+    public AllocationTableModel(){
+        super(null,new Object [] {"ID","Employee Name","Allocated Task","Task ID","Assign"});
     }
 
     @Override
@@ -30,10 +30,6 @@ public class AllocationTableModel extends DefaultTableModel {
 
     @Override
     public boolean isCellEditable(int row, int column) {
-        if(column == ASSIGN_TASK_COLUMN_INDEX)
-        {
-            return true;
-        }
-        return false;
+        return column == ASSIGN_TASK_COLUMN_INDEX;
     }
 }

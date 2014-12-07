@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.View;
+package com.Hussain.pink.triangle.Utils;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -15,6 +15,10 @@ public class ExtensionFilter extends FileFilter {
     public ExtensionFilter(String [] extensions, String description){
         this.extensions = extensions;
         this.description = description;
+    }
+
+    public ExtensionFilter(String extension, String description){
+        this(new String [] {extension}, description);
     }
 
 
