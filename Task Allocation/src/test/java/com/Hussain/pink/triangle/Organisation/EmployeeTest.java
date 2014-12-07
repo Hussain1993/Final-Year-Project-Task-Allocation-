@@ -1,6 +1,5 @@
 package com.Hussain.pink.triangle.Organisation;
 
-import org.joda.time.LocalDate;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -67,29 +66,5 @@ public class EmployeeTest {
     public void testEqualsNotSameID() {
         assertFalse(employee.equals(new Employee(120,"Hussain",skillSet,10)));
 
-    }
-
-    @Test
-    public void testGetDateFrom() {
-        LocalDate d = new LocalDate(1);
-        Employee e = new Employee(1,null,null,0,1,1,1);
-        assertEquals(d,e.getDateFrom());
-    }
-
-    @Test
-    public void testGetDateTo() {
-        LocalDate d = new LocalDate(1);
-        Employee e = new Employee(1,null,null,0,1,1,1);
-
-        assertEquals(d,e.getDateTo());
-    }
-
-    @Test
-    public void testGetEmployeeType() {
-        Employee unassignedEmployee = new Employee(1,null,null,1);
-        Employee assignedEmployee = new Employee(1,null,null,0,1,1,1);
-
-        assertEquals(EmployeeType.NOT_ASSIGNED_TASK,unassignedEmployee.getEmployeeType());
-        assertEquals(EmployeeType.ASSIGNED_TASK, assignedEmployee.getEmployeeType());
     }
 }
