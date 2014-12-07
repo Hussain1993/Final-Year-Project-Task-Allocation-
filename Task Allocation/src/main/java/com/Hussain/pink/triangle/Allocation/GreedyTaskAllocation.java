@@ -3,14 +3,15 @@ package com.Hussain.pink.triangle.Allocation;
 import com.Hussain.pink.triangle.Graph.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
+import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**
  * Created by Hussain on 21/11/2014.
  */
 public class GreedyTaskAllocation  extends TaskAllocationMethod{
+    private Task[] matchedTasks;
 
 
     @Override
@@ -19,27 +20,21 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
         Set<Task> taskNodes = allocationGraph.getTaskNodes();
         for (Employee employeeNode : employeeNodes) {
             for (Task taskNode : taskNodes) {
-                if(hasTaskBeenAssigned(allocationGraph,taskNode))
+                //Check if this task has been matched up with someone else already
+                if(ArrayUtils.contains(matchedTasks,taskNode))
                 {
                     continue;
                 }
+                boolean employeeAvailableForTask = checkEmployeeAvailableForTask(employeeNode,taskNode);
                 boolean skillsMatch = checkSkillsMatch(employeeNode,taskNode);
-                if(skillsMatch)
+                if(skillsMatch && employeeAvailableForTask)
                 {
                     allocationGraph.addEdge(employeeNode,taskNode);
+                    matchedTasks = ArrayUtils.add(matchedTasks,taskNode);
+                    //Once a employee has been matched up with a task move to the next employee on the list
+                    break;
                 }
             }
         }
-    }
-
-    public boolean hasTaskBeenAssigned(Graph<Employee,Task> allocationGraph, Task t){
-        Collection<Task> assignedTasks = allocationGraph.getEmployeeToTaskMapping().values();
-        for (Task assignedTask : assignedTasks) {
-            if(assignedTask.equals(t))
-            {
-                return  true;
-            }
-        }
-        return false;
     }
 }

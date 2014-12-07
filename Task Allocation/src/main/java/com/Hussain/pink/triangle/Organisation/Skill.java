@@ -49,6 +49,6 @@ public class Skill {
 
     @Override
     public String toString() {
-        return getSkill();
+        return getSkill() + " " + getProficiency();
     }
 }

@@ -21,7 +21,7 @@ public class Allocation {
         switch(algorithm)
         {
             case 0: taskAllocationMethod = new GreedyTaskAllocation();break;
-            //There will be the option for the maximum here
+            //There will be the option for the maximum algorithm here
             default: taskAllocationMethod = new GreedyTaskAllocation(); break;
         }
     }
@@ -78,6 +78,8 @@ public class Allocation {
         for (Map.Entry<Employee, Task> employeeTaskEntry : entrySet) {
             Employee e = employeeTaskEntry.getKey();
             Task t = employeeTaskEntry.getValue();
+            //The last column will always be initially false, as the user has not
+            //assigned any of the tasks within the table
             Object [] rowData = {e.getId(),e.getName(),t.getTaskName(),t.getId(),false};
             tableRows.add(rowData);
         }

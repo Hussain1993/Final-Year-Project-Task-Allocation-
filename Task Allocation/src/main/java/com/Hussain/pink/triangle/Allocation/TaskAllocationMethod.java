@@ -2,6 +2,7 @@ package com.Hussain.pink.triangle.Allocation;
 
 import com.Hussain.pink.triangle.Graph.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
+import com.Hussain.pink.triangle.Organisation.EmployeeType;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
 import com.Hussain.pink.triangle.Utils.DatabaseConnection;
@@ -22,13 +23,21 @@ public abstract class TaskAllocationMethod {
             " employees.cost, group_concat(employee_skills.PROFICIENCY)\n" +
             " from employee_skills join employees on employee_skills.employee_id = employees.id\n" +
             " join skills on employee_skills.skill_id = skills.id group by employees.id");
-    private StringBuilder employeeAssignedToTasksQuery = new StringBuilder("");
+    private StringBuilder employeeAssignedToTasksQuery = new StringBuilder("SELECT EMPLOYEES.ID, " +
+            "CONCAT_WS(' ',EMPLOYEES.FIRST_NAME,EMPLOYEES.LAST_NAME) AS NAME, GROUP_CONCAT(SKILLS.SKILL), " +
+            "EMPLOYEES.COST, GROUP_CONCAT(EMPLOYEE_SKILLS.PROFICIENCY), ASSIGNED_TO.TASK_ID, TASKS.DATE_FROM, " +
+            "TASKS.DATE_TO, TASKS.COMPLETED  FROM EMPLOYEE_SKILLS JOIN EMPLOYEES ON EMPLOYEE_SKILLS.EMPLOYEE_ID = EMPLOYEES.ID " +
+            "JOIN SKILLS ON EMPLOYEE_SKILLS.SKILL_ID = SKILLS.ID " +
+            "LEFT JOIN ASSIGNED_TO ON EMPLOYEES.ID = ASSIGNED_TO.EMPLOYEE_ID " +
+            "LEFT JOIN TASKS ON ASSIGNED_TO.TASK_ID = TASKS.ID GROUP BY EMPLOYEES.ID");
+
     private StringBuilder employeeQuery;
 
     private StringBuilder taskQuery = new StringBuilder("SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, " +
             "TASKS.DATE_FROM, TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
             "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) FROM TASKS, SKILLS, TASK_SKILLS, PROJECTS  " +
-            "WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID AND TASKS.PROJECT_ID = PROJECTS.ID");
+            "WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID " +
+            "AND TASKS.PROJECT_ID = PROJECTS.ID");
 
     private Connection conn;
     private Statement stmt;
@@ -54,6 +63,7 @@ public abstract class TaskAllocationMethod {
         try{
             while(employeeResults != null &&employeeResults.next())
             {
+                Employee e;
                 int id = employeeResults.getInt(1);
                 String name = employeeResults.getString(2);
                 String skills = employeeResults.getString(3);
@@ -62,8 +72,37 @@ public abstract class TaskAllocationMethod {
 
                 LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiency);
 
+                if(skillSet == null)
+                {
+                    LOG.error("There was an error when building the skill set for the" +
+                            "employee {}", name);
+                }
+
+                ResultSetMetaData resultSetMetaData = employeeResults.getMetaData();
+                //This is the number of columns that there will be when there is a
+                //employee query checking if they have been assigned to a task we are also checking
+                //if there is a TASK ID for this row
+                if(resultSetMetaData.getColumnCount() == 9 && !checkIfColumnIsNull(employeeResults,"TASK_ID"))
+                {
+                    //This is an employee that has a task assigned to them
+                    int taskID = employeeResults.getInt(6);
+                    Date dateFrom = employeeResults.getDate(7);
+                    Date dateTo = employeeResults.getDate(8);
+                    boolean taskStatus = employeeResults.getBoolean(9);
+
+                    Task assignedTask = new Task(taskID,"Task Assigned To Employee",-1,dateFrom.getTime(),dateTo.getTime(),taskStatus,null);
+
+                    e = new Employee(id,name,skillSet,cost,assignedTask);
+
+                }
+                else
+                {
+                    //This is an employee that has not been assigned a task
+                    e = new Employee(id,name,skillSet,cost);
+                }
+
                 LOG.debug("Adding the employee with the name {} to the graph",name);
-                allocationGraph.addEmployeeNode(new Employee(id,name,skillSet,cost));
+                allocationGraph.addEmployeeNode(e);
             }
             while(taskResults != null &&taskResults.next())
             {
@@ -93,8 +132,18 @@ public abstract class TaskAllocationMethod {
         return allocationGraph;
     }
 
+    private boolean checkIfColumnIsNull(ResultSet resultSet, String columnName) throws SQLException{
+        resultSet.getInt(columnName);
+        return resultSet.wasNull();
+    }
+
     public boolean checkSkillsMatch(Employee employee, Task task){
         LinkedHashSet<Skill> taskSkills = task.getSkills();
+        if(taskSkills.size() > employee.getSkills().size())
+        {
+            //The task requires more skills than the employee knows
+            return false;
+        }
         for (Skill taskSkill : taskSkills) {
             if(!checkSkillsMatch(taskSkill,employee))
             {
@@ -120,8 +169,18 @@ public abstract class TaskAllocationMethod {
     }
 
     public boolean checkEmployeeAvailableForTask(Employee employee, Task task){
+        //Return true if the employee has not been assigned a task
+        if(employee.getEmployeeType().equals(EmployeeType.NOT_ASSIGNED_TASK))
+        {
+            return true;
+        }
         Task taskAssignedToEmployee = employee.getTaskAssigned();
 
+        //Return true if the employee has completed the task
+        if(taskAssignedToEmployee.isCompleted())
+        {
+            return true;
+        }
         LocalDate employeeTaskStartDate = taskAssignedToEmployee.getDateFrom();
         LocalDate employeeTaskEndDate = taskAssignedToEmployee.getDateTo();
 
@@ -201,7 +260,6 @@ public abstract class TaskAllocationMethod {
         String [] proficiencyArray = proficiencyResult.split(",");
         if(skillArray.length != proficiencyArray.length)
         {
-            LOG.error("There was an error with building the skills for the employee");
             return null;
         }
         for (int i = 0; i < skillArray.length; i++) {
