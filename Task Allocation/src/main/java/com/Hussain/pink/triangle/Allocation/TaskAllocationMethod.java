@@ -132,9 +132,6 @@ public abstract class TaskAllocationMethod {
                 employeeTaskEndDate.toDate().getTime());
         Interval taskRange = new Interval(startDate.toDate().getTime(), endDate.toDate().getTime());
 
-        /*Interval employeeRange = new Interval(employeeStartDate.toDate().getTime(),employeeEndDate.toDate().getTime());
-        Interval taskRange = new Interval(taskStartDate.toDate().getTime(),taskEndDate.toDate().getTime());
-        */
         return !taskRange.overlaps(employeeRange);
     }
 
