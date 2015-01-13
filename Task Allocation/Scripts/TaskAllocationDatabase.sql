@@ -76,6 +76,13 @@ CREATE TABLE IF NOT EXISTS ASSIGNED_TO(
     FOREIGN KEY (TASK_ID) REFERENCES TASKS(ID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS USERS(
+    ID INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    USERNAME VARCHAR(255) NOT NULL UNIQUE,
+    PASSWORD VARCHAR(4000) NOT NULL,
+    DATE_CREATED DATETIME NOT NULL
+);
+
 #Now that all the tables have been created, make the user which will be allowed to access these
 #tables, grant the user privileges in order for them to query and update the database.
 

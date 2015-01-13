@@ -5,3 +5,4 @@ delete from PROJECTS;
 delete from SKILLS;
 delete from TASKS;
 delete from TASK_SKILLS;
+delete from USERS;
