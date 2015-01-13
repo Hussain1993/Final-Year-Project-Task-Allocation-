@@ -11,8 +11,6 @@ set /p MYSQL_PATH=Enter the path to the MySQL executable, followed by [ENTER]:
 
 set /p MYSQL_USERNAME=Enter the username used to login to MySQL, followed by [ENTER]:
 
-set /p MYSQL_PASSWORD=Enter the password used to login to MySQL, followed by [ENTER]:
-
-%MYSQL_PATH% -u%MYSQL_USERNAME% -p%MYSQL_PASSWORD% -e "source %CREATE_DATABASE%"
+%MYSQL_PATH% -u%MYSQL_USERNAME% -p -e "source %CREATE_DATABASE%"
 
 echo Finished
