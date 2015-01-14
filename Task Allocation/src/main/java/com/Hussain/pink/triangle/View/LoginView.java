@@ -46,7 +46,7 @@ public class LoginView extends JFrame{
                     String hashedPassword = HashFunctions.hashPassword(password);
                     if(DatabaseQueries.logUserIntoSystem(username,hashedPassword))
                     {
-                        LOG.info("The user {] has logged into the system", username);
+                        LOG.info("The user {} has logged into the system", username);
                         LoginView.this.dispose();
                         new WelcomeScreen().setVisible(true);
                     }
