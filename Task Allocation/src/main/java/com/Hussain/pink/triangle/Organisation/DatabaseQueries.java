@@ -71,6 +71,7 @@ public class DatabaseQueries {
     private static boolean checkIfUsernameExists(String username){
         String query = "select id from users where username = ?";
         conn = DatabaseConnection.getDatabaseConnection();
+        ResultSet usernameReturned = null;
         if(conn != null)
         {
             try{
@@ -78,14 +79,14 @@ public class DatabaseQueries {
 
                 stmt.setString(1,username);
 
-                ResultSet usernameReturned = stmt.executeQuery();
+                usernameReturned = stmt.executeQuery();
 
                 return !isResultSetEmpty(usernameReturned);
             }
             catch (SQLException e) {
                 LOG.error("There was an error with the SQL statement", e);
             } finally {
-                DbUtils.closeQuietly(conn, stmt, null);
+                DbUtils.closeQuietly(conn, stmt, usernameReturned);
             }
         }
         return true;
@@ -93,5 +94,31 @@ public class DatabaseQueries {
 
     private static boolean isResultSetEmpty(ResultSet resultSet) throws SQLException{
         return !resultSet.first();
+    }
+
+    public static boolean logUserIntoSystem(String username, String hashedPassword){
+        String query = "select id from users where username = ? and password = ?";
+        conn = DatabaseConnection.getDatabaseConnection();
+        ResultSet loginDetails = null;
+        if(conn != null)
+        {
+            try{
+                stmt = conn.prepareStatement(query);
+
+                stmt.setString(1,username);
+                stmt.setString(2,hashedPassword);
+
+                loginDetails = stmt.executeQuery();
+
+                return !isResultSetEmpty(loginDetails);
+
+            }
+            catch (SQLException e) {
+                LOG.error("There was an error with the SQL statement", e);
+            } finally {
+                DbUtils.closeQuietly(conn,stmt,loginDetails);
+            }
+        }
+        return false;
     }
 }
