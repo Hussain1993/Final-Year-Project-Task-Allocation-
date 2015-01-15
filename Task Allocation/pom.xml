@@ -14,14 +14,6 @@
     </properties>
 
     <build>
-        <resources>
-            <resource>
-                <directory>./config</directory>
-                <includes>
-                    <include>**/**</include>
-                </includes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -88,7 +80,7 @@
         <dependency>
             <groupId>com.Hussain.pink.triangle</groupId>
             <artifactId>DatabaseUtilities</artifactId>
-            <version>1.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.intellij</groupId>

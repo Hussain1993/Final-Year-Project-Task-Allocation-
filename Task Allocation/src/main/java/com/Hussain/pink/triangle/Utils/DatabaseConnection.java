@@ -22,7 +22,7 @@ public class DatabaseConnection {
         if(!DBUtils.getInit())
         {
             try {
-                DBUtils.init(TaskAllocationConstants.PROPERTIES_FILENAME,TaskAllocationConstants.CLASSNAME_KEY, TaskAllocationConstants.PASSWORD_KEY, TaskAllocationConstants.USERNAME_KEY,TaskAllocationConstants.URL_KEY);
+                DBUtils.init(TaskAllocationConstants.CLASSNAME_KEY, TaskAllocationConstants.PASSWORD_KEY, TaskAllocationConstants.USERNAME_KEY,TaskAllocationConstants.URL_KEY);
             }
             catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
                 LOG.error("There was an error with the database connection",e);

@@ -26,9 +26,6 @@ public class DBUtils {
      * This method will initialise the Database connect class,
      * where it will load the properties file specified and
      * read the properties that are required to connect to the database
-     * @param propertiesFilename The name of the properties file that
-     *                           contains all the properties used to connect to the
-     *                           database
      * @param classNameKey The Driver class name that should be used to connect to the
      *                     database
      * @param passwordKey Password used to connect to the database
@@ -38,10 +35,12 @@ public class DBUtils {
      * @throws IllegalAccessException
      * @throws ClassNotFoundException
      */
-    public static void init(String propertiesFilename, String classNameKey, String passwordKey
+    public static void init(String classNameKey, String passwordKey
             ,String usernameKey, String urlKey) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
         PropsGetter properties = PropsGetter.getInstance();
-        properties.init(propertiesFilename);
+
+        //Load the properties file using the property that has been defined on the classpath
+        properties.init();
 
         className = properties.getProperty(classNameKey);
         password = properties.getProperty(passwordKey);
