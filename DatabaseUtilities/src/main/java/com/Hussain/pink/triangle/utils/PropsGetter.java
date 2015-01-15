@@ -4,9 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -14,9 +12,10 @@ import java.util.Properties;
  */
 public class PropsGetter {
     private static final Logger LOG = LoggerFactory.getLogger(PropsGetter.class);
+    private static final String CONFIG_FILE_PATH_PROPERTY_KEY="task.allocation.properties.file";
 
     private static PropsGetter instance;
-    private static Object instanceLock = new Object();
+    private static final Object instanceLock = new Object();
 
     private String propertiesFilename;
     private Properties properties;
@@ -37,6 +36,25 @@ public class PropsGetter {
             }
         }
         return instance;
+    }
+
+    public void init(){
+        File propertiesFile = new File(System.getProperty(CONFIG_FILE_PATH_PROPERTY_KEY));
+        InputStream is = null;
+        try {
+            is = new FileInputStream(propertiesFile);
+            properties = new Properties();
+            properties.load(is);
+        }
+        catch (FileNotFoundException e) {
+            LOG.error("The properties file was not found",e);
+        }
+        catch (IOException e){
+            LOG.error("There was an error while loading the properties file into memory",e);
+        }
+        finally {
+            IOUtils.closeQuietly(is);
+        }
     }
 
     public void init(String propertiesFilename){
