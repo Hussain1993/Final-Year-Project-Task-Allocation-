@@ -28,6 +28,7 @@ public class LoginView extends JFrame{
         super("Login");
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getRootPane().setDefaultButton(loginButton);
         setContentPane(root);
         addActionListeners();
         pack();
