@@ -21,7 +21,7 @@
     <!--This is the Swing Appender -->
     <appender name="swingAppender" class="com.Hussain.pink.triangle.SwingAppender.Log4jSwingAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[[%d{dd MMM yyyy HH:mm:ss} %5p %c{1}]: %m%n"/>
+            <param name="ConversionPattern" value="[%d{dd MMM yyyy HH:mm:ss} %5p %c{1}]: %m%n"/>
         </layout>
     </appender>
 
