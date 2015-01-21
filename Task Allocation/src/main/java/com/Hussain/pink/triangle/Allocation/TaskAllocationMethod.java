@@ -61,7 +61,7 @@ public abstract class TaskAllocationMethod {
     public Graph<Employee,Task> buildGraph(ResultSet employeeResults, ResultSet taskResults){
         allocationGraph = new Graph<>();
         try{
-            while(employeeResults != null &&employeeResults.next())
+            while(employeeResults != null && employeeResults.next())
             {
                 Employee e;
                 int id = employeeResults.getInt(1);

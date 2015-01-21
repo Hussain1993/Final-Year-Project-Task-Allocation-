@@ -79,7 +79,7 @@ public class Allocation {
             Employee e = employeeTaskEntry.getKey();
             Task t = employeeTaskEntry.getValue();
             //The last column will always be initially false, as the user has not
-            //assigned any of the tasks within the table
+            //been assigned any of the tasks within the table
             Object [] rowData = {e.getId(),e.getName(),t.getTaskName(),t.getId(),false};
             tableRows.add(rowData);
         }
