@@ -5,6 +5,7 @@ import com.Hussain.pink.triangle.Organisation.Task;
 import org.junit.Test;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +17,6 @@ public class GraphTest {
     public void testIsEmpty() {
         Graph<Employee,Task> t = new Graph<>();
         assertTrue(t.isEmpty());
-
     }
 
     @Test
@@ -52,5 +52,42 @@ public class GraphTest {
 
         assertTrue(graph.hasRelationship(e,t));
 
+    }
+
+    @Test
+    public void testGetMappedTask(){
+        Employee e = new Employee(1,"Test Employee",null,0);
+        Task t = new Task(1,"Test Task",1,1L,1L,false,null);
+
+        Graph<Employee, Task> testGraph = new Graph<>();
+
+        testGraph.addEmployeeNode(e);
+        testGraph.addTaskNode(t);
+
+        testGraph.addEdge(e,t);
+
+        Set<Task> mappedTasks = new LinkedHashSet<>();
+        mappedTasks.add(t);
+
+        assertTrue(mappedTasks.containsAll(testGraph.getMappedTask(e)));
+    }
+
+    @Test
+    public void testMultiMapGraph() {
+        Employee e = new Employee(1,"Test Employee",null,0);
+
+        Task t1 = new Task(1,"Task 1",1,1L,1L,false,null);
+        Task t2 = new Task(2,"Task 2",2,1L,1L,false,null);
+
+        Graph<Employee,Task> testGraph = new Graph<>();
+
+        testGraph.addEmployeeNode(e);
+        testGraph.addTaskNode(t1);
+        testGraph.addTaskNode(t2);
+
+        testGraph.addEdge(e,t1);
+        testGraph.addEdge(e,t2);
+
+        assertTrue(testGraph.hasRelationship(e,t1) && testGraph.hasRelationship(e,t2));
     }
 }

@@ -74,13 +74,14 @@ public class Allocation {
 
     private ArrayList<Object[]> buildRows(Graph<Employee,Task> taskAllocationGraph){
         ArrayList<Object[]> tableRows = new ArrayList<>();
-        Set<Map.Entry<Employee,Task>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entrySet();
-        for (Map.Entry<Employee, Task> employeeTaskEntry : entrySet) {
+        Set<Map.Entry<Employee, Task>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
+        for(Map.Entry<Employee, Task> employeeTaskEntry : entrySet)
+        {
             Employee e = employeeTaskEntry.getKey();
             Task t = employeeTaskEntry.getValue();
             //The last column will always be initially false, as the user has not
             //been assigned any of the tasks within the table
-            Object [] rowData = {e.getId(),e.getName(),t.getTaskName(),t.getId(),false};
+            Object [] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};
             tableRows.add(rowData);
         }
         return tableRows;

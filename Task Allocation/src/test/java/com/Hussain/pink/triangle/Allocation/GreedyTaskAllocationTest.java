@@ -4,12 +4,9 @@ import com.Hussain.pink.triangle.Graph.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
-import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
@@ -17,47 +14,25 @@ public class GreedyTaskAllocationTest {
 
     @Test
     public void testAllocateTasks() {
-        Map<Employee,Task> actualAllocation = new HashMap<>();
-
         Skill java = new Skill("Java",1);
-        Skill uml = new Skill("UML",2);
+        Skill uml = new Skill("UML",1);
+        LinkedHashSet<Skill> skills = new LinkedHashSet<>();
+        skills.add(java);
+        skills.add(uml);
+        Employee e = new Employee(1,"Test Employee",skills,0);
 
-        LinkedHashSet<Skill> employeeSkillSet1 = new LinkedHashSet<>();
-        LinkedHashSet<Skill> employeeSkillSet2 = new LinkedHashSet<>();
+        Task t = new Task(1,"Test Task", 1,1L,1L,false,skills);
 
-        LinkedHashSet<Skill> taskSkillSet = new LinkedHashSet<>();
-        taskSkillSet.add(java);
-        taskSkillSet.add(uml);
-
-        employeeSkillSet1.add(java);
-
-        employeeSkillSet2.add(java);
-        employeeSkillSet2.add(uml);
-
-        Employee e1 = new Employee(1,"Test",employeeSkillSet2,0);
-        Employee e2 = new Employee(2,"Test",employeeSkillSet1,0);
-        Employee e3 = new Employee(3,"Test",employeeSkillSet1,0);
-        Employee e4 = new Employee(4,"Test",employeeSkillSet1,0);
-
-        Task t = new Task(1,"T1",1,1,1,false,taskSkillSet);
-
-        actualAllocation.put(e1,t);
-
-        Graph<Employee, Task> testGraph = new Graph<>();
-
-        testGraph.addEmployeeNode(e1);
-        testGraph.addEmployeeNode(e2);
-        testGraph.addEmployeeNode(e3);
-        testGraph.addEmployeeNode(e4);
-
+        Graph<Employee,Task> testGraph = new Graph<>();
+        testGraph.addEmployeeNode(e);
         testGraph.addTaskNode(t);
 
-        testGraph.addEdge(e1,t);
+        TaskAllocationMethod greedyMethod = new GreedyTaskAllocation();
+        greedyMethod.allocateTasks(testGraph);//Allocate the employees and tasks within the graph
 
-        GreedyTaskAllocation allocationMethod = new GreedyTaskAllocation();
-
-        allocationMethod.allocateTasks(testGraph);
-
-        assertTrue(CollectionUtils.isEqualCollection(actualAllocation.entrySet(),testGraph.getEmployeeToTaskMapping().entrySet()));
+        assertTrue(testGraph.getEmployeeNodes().size() == 1);//Assert there is only one employee in the graph
+        assertTrue(testGraph.getTaskNodes().size() == 1);//Assert there is only one task in the graph
+        assertTrue(testGraph.getMappedTask(e).size() == 1);//Assert there is only one mapped task for the employee
+        assertTrue(testGraph.hasRelationship(e,t));//Assert there is a mapping between the employee and task
     }
 }
