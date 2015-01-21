@@ -1,6 +1,6 @@
 package com.Hussain.pink.triangle.Allocation;
 
-import com.Hussain.pink.triangle.Graph.Graph;
+import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;

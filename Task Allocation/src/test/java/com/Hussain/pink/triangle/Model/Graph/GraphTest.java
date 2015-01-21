@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Graph;
+package com.Hussain.pink.triangle.Model.Graph;
 
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;

@@ -2,7 +2,7 @@ package com.Hussain.pink.triangle.Model;
 
 import com.Hussain.pink.triangle.Allocation.GreedyTaskAllocation;
 import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
-import com.Hussain.pink.triangle.Graph.Graph;
+import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
