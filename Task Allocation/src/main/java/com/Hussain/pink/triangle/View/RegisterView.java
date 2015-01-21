@@ -29,7 +29,7 @@ public class RegisterView extends JFrame{
         setContentPane(root);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         addActionListeners();
-
+        getRootPane().setDefaultButton(registerButton);
         pack();
     }
 
