@@ -98,8 +98,8 @@ public class AllocationView extends JFrame{
 
                 switch (algorithmBox.getSelectedIndex())
                 {
-                    case GREEDY: greedy();break;
-                    case MAXIMUM: break;
+                    case GREEDY: greedy(); break;
+                    case MAXIMUM: maximum(); break;
                     default: greedy(); break;
                 }
             }
@@ -167,6 +167,11 @@ public class AllocationView extends JFrame{
     private void greedy(){
         Allocation greedyAllocation = new Allocation(GREEDY);
         populateTable(greedyAllocation.allocateEmployeesAndTasks());
+    }
+
+    private void maximum(){
+        Allocation bipartiteMatching = new Allocation(MAXIMUM);
+        bipartiteMatching.allocateEmployeesAndTasks();
     }
 
     private void populateTable(ArrayList<Object[]> dataRows){

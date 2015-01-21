@@ -1,5 +1,6 @@
 package com.Hussain.pink.triangle.Model;
 
+import com.Hussain.pink.triangle.Allocation.BiPartiteMatching;
 import com.Hussain.pink.triangle.Allocation.GreedyTaskAllocation;
 import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
@@ -21,7 +22,7 @@ public class Allocation {
         switch(algorithm)
         {
             case 0: taskAllocationMethod = new GreedyTaskAllocation();break;
-            //There will be the option for the maximum algorithm here
+            case 1: taskAllocationMethod = new BiPartiteMatching();break;
             default: taskAllocationMethod = new GreedyTaskAllocation(); break;
         }
     }
