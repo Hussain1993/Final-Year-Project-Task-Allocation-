@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
+ * View for the import CSV part of the application
  * Created by Hussain on 26/10/2014.
  */
 public class ImportCSVView extends JFrame{

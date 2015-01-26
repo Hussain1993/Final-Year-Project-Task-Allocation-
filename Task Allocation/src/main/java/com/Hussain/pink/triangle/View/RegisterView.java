@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * The view that should be used by the user when they would like to register a new
+ * person onto the system
  * Created by Hussain on 24/12/2014.
  */
 public class RegisterView extends JFrame{
@@ -93,6 +95,11 @@ public class RegisterView extends JFrame{
         });
     }
 
+    /**
+     * Util method to check if the two passwords match
+     * @return True if the passwords entered by the user match,
+     * false otherwise
+     */
     private boolean passwordsMatch(){
         String password1 = new String(passwordText.getPassword());
         String password2 = new String(passwordText2.getPassword());

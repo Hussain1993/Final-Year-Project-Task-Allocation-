@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * The welcome screen for the application, after the user has logged into the
+ * system
  * Created by Hussain on 26/10/2014.
  */
 public class WelcomeScreen extends JFrame{

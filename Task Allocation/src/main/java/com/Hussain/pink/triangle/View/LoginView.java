@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * The view that should be used when the user would like to login
+ * to the system
  * Created by Hussain on 24/12/2014.
  */
 public class LoginView extends JFrame{

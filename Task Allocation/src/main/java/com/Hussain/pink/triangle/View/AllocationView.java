@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
+ * View to the show the allocation table to the user and for the user
+ * to start a new allocation
  * Created by Hussain on 11/11/2014.
  */
 public class AllocationView extends JFrame{
@@ -46,6 +48,9 @@ public class AllocationView extends JFrame{
         pack();
     }
 
+    /**
+     * Make a new empty table using a custom model
+     */
     private void initTable(){
         tableModel = new AllocationTableModel();
         JTable allocationTable = new JTable(tableModel);
@@ -128,6 +133,10 @@ public class AllocationView extends JFrame{
         });
     }
 
+    /**
+     * Load a new task allocation file into the table
+     * @param filePath To the task allocation file
+     */
     private void loadFileIntoTable(String filePath){
         ArrayList<Object[]> dataRows = TaskAllocationFile.parseTaskAllocationFile(filePath);
         for(Object[] row: dataRows)
@@ -136,6 +145,12 @@ public class AllocationView extends JFrame{
         }
     }
 
+    /**
+     * This method will check which rows have been marked by the user
+     * to assign the task to the employee and this information to be reflected back into the
+     * database
+     * @return The number of rows the user has decided to assign tasks to
+     */
     public int assignRows(){
         ArrayList<int []> employeeTaskRows = new ArrayList<>();
         int employeeIDColumnIndex = 0;
@@ -164,24 +179,35 @@ public class AllocationView extends JFrame{
 
     }
 
+    /**
+     * This is an allocation of the tasks using a greedy method
+     */
     private void greedy(){
         Allocation greedyAllocation = new Allocation(GREEDY);
         populateTable(greedyAllocation.allocateEmployeesAndTasks());
     }
 
+    /**
+     * This is an allocation of the tasks using a maximum method
+     */
     private void maximum(){
         Allocation bipartiteMatching = new Allocation(MAXIMUM);
         bipartiteMatching.allocateEmployeesAndTasks();
     }
 
+    /**
+     * Takes the rows that have been returned from the task allocation method
+     * and displays it to the user
+     * @param dataRows Row to be displayed
+     */
     private void populateTable(ArrayList<Object[]> dataRows){
+        //Clear the table every time there is a new allocation
+        tableModel.setRowCount(0);
         if(dataRows.size() == 0)
         {
             LOG.info("No suitable employees could be found for the tasks");
             return;
         }
-        //Clear the table every time there is a new allocation
-        tableModel.setRowCount(0);
         for (Object[] dataRow : dataRows) {
             tableModel.addRow(dataRow);
         }

@@ -6,6 +6,8 @@ import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -13,11 +15,21 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * This class takes the options that the user
+ * has specified and computes the allocation of the tasks
+ * taking into account the advanced options etc...
+ *
  * Created by Hussain on 03/12/2014.
  */
 public class Allocation {
+    private static final Logger LOG = LoggerFactory.getLogger(Allocation.class);
+
     private TaskAllocationMethod taskAllocationMethod;
 
+    /**
+     * Make a new allocation depending on which algorithm that should be used
+     * @param algorithm Either greedy or maximum
+     */
     public Allocation(int algorithm){
         switch(algorithm)
         {
@@ -27,9 +39,19 @@ public class Allocation {
         }
     }
 
+    /**
+     * Allocate the tasks to the employees checking the options that the user
+     * has chosen
+     * @return An ArrayList of rows for the table
+     */
     public ArrayList<Object[]> allocateEmployeesAndTasks(){
+        //Should the query check if employees have been assigned to tasks?
         taskAllocationMethod.setEmployeeQuery(AdvancedOptions.checkIfEmployeesAreAssignedToTasks());
+
+        //How should we group the tasks by?
         taskAllocationMethod.setTaskGroupOrder(AdvancedOptions.groupTasksByProject());
+
+        //Set these properties within the specified task allocation method
         setEmployeeQueryOrder();
         setTaskQueryOrder();
 
@@ -40,9 +62,12 @@ public class Allocation {
 
         taskAllocationMethod.allocateTasks(taskAllocationGraph);
 
-        return buildRows(taskAllocationGraph);
+        return buildRows(taskAllocationGraph);//Build a return the rows
     }
 
+    /**
+     * Sets the property of employee order for the query
+     */
     private void setEmployeeQueryOrder(){
         OrderType employeeOrder = AdvancedOptions.getEmployeeOrder();
         switch (employeeOrder)
@@ -60,6 +85,9 @@ public class Allocation {
         }
     }
 
+    /**
+     * Sets the property of the task query order
+     */
     private void setTaskQueryOrder(){
         OrderType tasksOrder = AdvancedOptions.getTasksOrder();
         switch (tasksOrder)
@@ -73,17 +101,31 @@ public class Allocation {
         }
     }
 
+    /**
+     * Takes the allocation graph with the edges added and creates
+     * a arraylist of rows that can be used for the TaskAllocation table model
+     * to be displayed to the user
+     * @param taskAllocationGraph The task allocation graph
+     * @return A list of rows to be displayed
+     */
     private ArrayList<Object[]> buildRows(Graph<Employee,Task> taskAllocationGraph){
         ArrayList<Object[]> tableRows = new ArrayList<>();
-        Set<Map.Entry<Employee, Task>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
-        for(Map.Entry<Employee, Task> employeeTaskEntry : entrySet)
+        if(taskAllocationGraph.hasEdges())
         {
-            Employee e = employeeTaskEntry.getKey();
-            Task t = employeeTaskEntry.getValue();
-            //The last column will always be initially false, as the user has not
-            //been assigned any of the tasks within the table
-            Object [] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};
-            tableRows.add(rowData);
+            Set<Map.Entry<Employee, Task>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
+            for(Map.Entry<Employee, Task> employeeTaskEntry : entrySet)
+            {
+                Employee e = employeeTaskEntry.getKey();
+                Task t = employeeTaskEntry.getValue();
+                //The last column will always be initially false, as the user has not
+                //been assigned any of the tasks within the table
+                Object [] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};
+                tableRows.add(rowData);
+            }
+        }
+        else
+        {
+            LOG.info("There were no allocations within the graph, returning an empty table");
         }
         return tableRows;
     }

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * This is the fist view that the user will see
  * Created by Hussain on 13/01/2015.
  */
 public class FirstView  extends JFrame{

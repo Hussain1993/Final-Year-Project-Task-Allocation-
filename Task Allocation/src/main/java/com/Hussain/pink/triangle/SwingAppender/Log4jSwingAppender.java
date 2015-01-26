@@ -46,7 +46,7 @@ public class Log4jSwingAppender extends AppenderSkeleton {
     /**
      * Performs checks to make sure the appender ui is still alive.
      *
-     * @return
+     * @return If the UI is still alive
      */
     private boolean performChecks() {
         return !closed && layout != null;

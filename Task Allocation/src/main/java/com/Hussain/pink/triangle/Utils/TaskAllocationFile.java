@@ -151,6 +151,12 @@ public class TaskAllocationFile {
         return false;
     }
 
+    /**
+     * Adds all the employees from the table model to the document to be saved
+     * @param document The task allocation file
+     * @param root The root element of the document
+     * @param model The allocation table model
+     */
     private static void addEmployees(Document document, Element root, DefaultTableModel model){
         String id = null;
         String employeeName = null;

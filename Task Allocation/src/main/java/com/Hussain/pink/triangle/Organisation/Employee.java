@@ -9,10 +9,6 @@ import java.util.LinkedHashSet;
  * attributes of an employee when they are being
  * retrieved from the database
  *
- * select employees.id,concat_ws(' ',employees.first_name,employees.last_name),group_concat(skills.skill),
- * employees.cost, group_concat(employee_skills.PROFICIENCY)
- * from employee_skills join employees on employee_skills.employee_id = employees.id
- * join skills on employee_skills.skill_id = skills.id group by employees.id;
  */
 public class Employee {
 
@@ -24,6 +20,14 @@ public class Employee {
 
     private Task taskAssigned;
 
+    /**
+     * This constructor should be used when the employee has not
+     * been assigned to a task previously
+     * @param id Of the employee
+     * @param name Of Employee
+     * @param skills Of the Employee
+     * @param cost Of the Employee
+     */
     public Employee(int id, String name, LinkedHashSet<Skill> skills, double cost){
 
         this.id = id;
@@ -32,6 +36,14 @@ public class Employee {
         this.cost = cost;
     }
 
+    /**
+     * This is the constructor that should be used when the employee has been assigned to a task
+     * @param id Of the employee
+     * @param name Of the employee
+     * @param skills Of the employee
+     * @param cost Of the employee
+     * @param taskAssigned ID of the task that has been assigned
+     */
     public Employee(int id, String name, LinkedHashSet<Skill> skills, double cost, Task taskAssigned){
         this(id, name, skills, cost);
 
@@ -81,11 +93,7 @@ public class Employee {
             return false;
         }
         Employee otherEmployee = (Employee) other;
-        if(this.getId() == otherEmployee.getId())
-        {
-            return true;
-        }
-        return false;
+        return this.getId() == otherEmployee.getId();
     }
 
     @Override

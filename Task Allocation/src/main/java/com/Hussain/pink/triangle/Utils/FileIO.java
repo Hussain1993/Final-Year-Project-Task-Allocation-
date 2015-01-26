@@ -63,11 +63,7 @@ public class FileIO {
             return false;
         }
         File f = new File(filePath);
-        if(f.exists())
-        {
-            return true;
-        }
-        return false;
+        return f.exists();
 
     }
 }

@@ -8,10 +8,15 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.Set;
 
 /**
+ * A specific task allocation scheme, in this
+ * instance it is a greedy way of allocating the tasks the employees,
+ * where this will assign the employee to the first task that they have
+ * the right skills for and this task cannot be further assigned to anyone else
+ *
  * Created by Hussain on 21/11/2014.
  */
 public class GreedyTaskAllocation  extends TaskAllocationMethod{
-    private Task[] matchedTasks;
+    private Task[] matchedTasks; //A list of matched tasks
 
 
     @Override

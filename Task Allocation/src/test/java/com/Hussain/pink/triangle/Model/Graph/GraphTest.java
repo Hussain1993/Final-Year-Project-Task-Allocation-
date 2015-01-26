@@ -101,7 +101,7 @@ public class GraphTest {
 
         testGraph.addEdge("Test","Test");
 
-        assertTrue(testGraph.areThereEdges());
+        assertTrue(testGraph.hasEdges());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class GraphTest {
 
         Graph<String,String> testGraph = new Graph<>(set1,set2);
 
-        assertFalse(testGraph.areThereEdges());
+        assertFalse(testGraph.hasEdges());
 
     }
 }

@@ -146,7 +146,7 @@ public class Graph<E,T> {
      * @return True if there is one or more edges within the graph,
      * false otherwise
      */
-    public boolean areThereEdges(){
+    public boolean hasEdges(){
         return numberOfEdges > 0;
     }
 }

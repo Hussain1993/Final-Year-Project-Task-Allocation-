@@ -7,6 +7,8 @@ import com.Hussain.pink.triangle.Organisation.Task;
 import java.util.Set;
 
 /**
+ * Maximum BiPartite matching of the tasks and employees
+ *
  * Created by Hussain on 21/01/2015.
  */
 public class BiPartiteMatching extends TaskAllocationMethod {

@@ -12,7 +12,7 @@ import java.sql.Statement;
 /**
  * Created by Hussain on 24/10/2014.
  * This class will be use to import
- * the CSV file that the user has entered into the database
+ * the CSV file that the user wants entered into the database
  */
 public class ImportCSV {
     private static final Logger LOG = LoggerFactory.getLogger(ImportCSV.class);

@@ -40,11 +40,8 @@ public class Skill {
             return false;
         }
         Skill skillToCheck = (Skill)other;
-        if(StringUtils.equals(this.getSkill(),skillToCheck.getSkill()) && this.getProficiency() == skillToCheck.getProficiency())
-        {
-            return true;
-        }
-        return false;
+        return StringUtils.equals(this.getSkill(), skillToCheck.getSkill()) &&
+                this.getProficiency() == skillToCheck.getProficiency();
     }
 
     @Override

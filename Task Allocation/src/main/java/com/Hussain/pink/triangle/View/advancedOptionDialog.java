@@ -7,6 +7,10 @@ import org.apache.commons.lang3.BooleanUtils;
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * This is the view where the user will be able to specify the
+ * advanced options they can use when querying for the employees and tasks
+ */
 public class advancedOptionDialog extends JDialog {
     private JPanel rootPanel;
     private JButton buttonOK;

@@ -10,11 +10,6 @@ import java.util.LinkedHashSet;
  * This class stores the attributes of a task
  * when they are being retrieved from the database
  *
- * select tasks.id, tasks.name,tasks.project_id,tasks.date_from,tasks.date_to,tasks.completed,
- * group_concat(skills.skill), group_concat(task_skills.proficiency_required)
- * from task_skills join tasks on task_skills.task_id = tasks.id
- * join skills on task_skills.skill_id=skills.id
- * join TaskAllocation.projects on tasks.project_id=projects.id group by tasks.id;
  */
 public class Task{
 
@@ -80,15 +75,11 @@ public class Task{
             return false;
         }
         Task otherTask = (Task) other;
-        if(this.getId() == otherTask.getId())
-        {
-            return true;
-        }
-        return false;
+        return this.getId() == otherTask.getId();
     }
 
     @Override
     public String toString() {
-        return this.getTaskName();
+        return "Task: " + this.getTaskName();
     }
 }
