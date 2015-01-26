@@ -9,6 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class GraphTest {
@@ -89,5 +90,28 @@ public class GraphTest {
         testGraph.addEdge(e,t2);
 
         assertTrue(testGraph.hasRelationship(e,t1) && testGraph.hasRelationship(e,t2));
+    }
+
+    @Test
+    public void testAreThereEdgesTrue() {
+        LinkedHashSet<String> set1 = new LinkedHashSet<String>(){{add("Test");}};
+        LinkedHashSet<String> set2 = new LinkedHashSet<String>(){{add("Test");}};
+
+        Graph<String,String> testGraph = new Graph<>(set1,set2);
+
+        testGraph.addEdge("Test","Test");
+
+        assertTrue(testGraph.areThereEdges());
+    }
+
+    @Test
+    public void testAreThereEdgesFalse() {
+        LinkedHashSet<String> set1 = new LinkedHashSet<String>(){{add("Test");}};
+        LinkedHashSet<String> set2 = new LinkedHashSet<String>(){{add("Test");}};
+
+        Graph<String,String> testGraph = new Graph<>(set1,set2);
+
+        assertFalse(testGraph.areThereEdges());
+
     }
 }
