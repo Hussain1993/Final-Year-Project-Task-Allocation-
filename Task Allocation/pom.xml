@@ -122,6 +122,11 @@
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.mockrunner</groupId>
+            <artifactId>mockrunner-jdbc</artifactId>
+            <version>1.0.5</version>
+        </dependency>
     </dependencies>
 
     

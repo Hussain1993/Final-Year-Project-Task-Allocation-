@@ -135,9 +135,8 @@ public abstract class TaskAllocationMethod {
                     //employees have been assigned to a task
                     e = new Employee(id,name,skillSet,cost);
                 }
-                Node<Employee> employeeNode = new Node<>(e, NodeType.EMPLOYEE);
                 LOG.debug("Adding the employee with the name {} to the graph",name);
-                allocationGraph.addEmployeeNode(employeeNode);
+                allocationGraph.addEmployeeNode(new Node<>(e,NodeType.EMPLOYEE));
             }
             while(taskResults != null &&taskResults.next())
             {
@@ -154,7 +153,7 @@ public abstract class TaskAllocationMethod {
                 LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiencyRequired);//Build the skill set for the task
 
                 LOG.debug("Adding the task with the name {} to the graph",taskName);
-                allocationGraph.addTaskNode(new Node<Task>(new Task(id,taskName,projectID,dateFrom.getTime(),
+                allocationGraph.addTaskNode(new Node<>(new Task(id,taskName,projectID,dateFrom.getTime(),
                         dateTo.getTime(),completed,skillSet),NodeType.TASK));
             }
         }
@@ -174,7 +173,7 @@ public abstract class TaskAllocationMethod {
      * @param resultSet The result set to check
      * @param columnName The name of the column to check
      * @return True if the column is null, false otherwise
-     * @throws SQLException When there is an erorr with the result set
+     * @throws SQLException When there is an error with the result set
      * for example when it has been closed
      */
     private boolean checkIfColumnIsNull(ResultSet resultSet, String columnName) throws SQLException{
@@ -230,13 +229,13 @@ public abstract class TaskAllocationMethod {
     }
 
     /**
-     * This method checks to see if an employee is avaiable
-     * for a task given that they already have a task assiged to them,
+     * This method checks to see if an employee is available
+     * for a task given that they already have a task assigned to them,
      * this method will check will check if the start date and end date of the
      * new task and assigned task clash.
      * @param employee The purposed employee for the task
      * @param task The task to check
-     * @return True if the employee is avaiable for the task, false otherwise
+     * @return True if the employee is available for the task, false otherwise
      */
     public boolean checkEmployeeAvailableForTask(Employee employee, Task task){
         //Return true if the employee has not been assigned a task
@@ -269,7 +268,7 @@ public abstract class TaskAllocationMethod {
      * tasks by project
      * @param groupTasksByProjects true if you would like
      *                             group the tasks by the projects or
-     *                             false if you dont.
+     *                             false if you don't.
      */
     public void setTaskGroupOrder(boolean groupTasksByProjects){
         if(groupTasksByProjects)
@@ -303,7 +302,7 @@ public abstract class TaskAllocationMethod {
     }
 
     /**
-     * This method sets the employee query depening on
+     * This method sets the employee query depending on
      * what options the user has chosen
      * @param checkIfEmployeesAreAssignedToTasks True if you would
      *                                           like to check if
@@ -326,7 +325,7 @@ public abstract class TaskAllocationMethod {
     }
 
     /**
-     * This method execute the relevent SQL query
+     * This method execute the relevant SQL query
      * @param query an integer representing which
      *              query should be executed:
      *              4 for the employee query

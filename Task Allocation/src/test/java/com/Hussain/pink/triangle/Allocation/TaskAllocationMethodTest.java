@@ -1,20 +1,81 @@
 package com.Hussain.pink.triangle.Allocation;
 
+import com.Hussain.pink.triangle.Model.Graph.Graph;
+import com.Hussain.pink.triangle.Model.Graph.Node;
+import com.Hussain.pink.triangle.Model.Graph.NodeType;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
+import com.mockrunner.mock.jdbc.MockResultSet;
+import com.mockrunner.mock.jdbc.MockResultSetMetaData;
 import org.junit.Test;
 
+import java.sql.Date;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by Hussain on 18/11/2014.
  */
 public class TaskAllocationMethodTest {
+
+    @Test
+    public void testBuildGraph() {
+        Set<Node<Employee>> employeeNodes = buildEmployeeNodes();
+        Set<Node<Task>> taskNodes = buildTaskNodes();
+
+        MockResultSet mockEmployeeResultSet = new MockResultSet("EmployeeResultSet");
+        MockResultSetMetaData mockEmployeeResultSetMetaData = new MockResultSetMetaData();
+        mockEmployeeResultSetMetaData.setColumnCount(8);
+        MockResultSet mockTaskResultSet = new MockResultSet("TaskResultSet");
+
+        mockEmployeeResultSet.setResultSetMetaData(mockEmployeeResultSetMetaData);
+        mockEmployeeResultSet.addColumn("ID", new Integer[]{1,2});
+        mockEmployeeResultSet.addColumn("Name", new String[]{"Beyonce","Alex"});
+        mockEmployeeResultSet.addColumn("Skills", new String[]{"1,2","1,2"});
+        mockEmployeeResultSet.addColumn("Cost", new Integer[]{300,200});
+        mockEmployeeResultSet.addColumn("Proficiency",new String[]{"1,1","1,1"});
+
+        mockTaskResultSet.addColumn("ID", new Integer[]{3,4});
+        mockTaskResultSet.addColumn("NAME", new String[]{"T1","T2"});
+        mockTaskResultSet.addColumn("PROJECT ID", new Integer[]{100,102});
+        mockTaskResultSet.addColumn("Date From", new Date[]{new Date(1L),
+                new Date(1L)});
+        mockTaskResultSet.addColumn("Date To", new Date[]{new Date(1L),
+                new Date(1L)});
+        mockTaskResultSet.addColumn("Completed", new Boolean[]{false,false});
+        mockTaskResultSet.addColumn("Skills", new String[]{"1,2","1,2"});
+        mockTaskResultSet.addColumn("Proficiency Required", new String[]{"1,1","1,1"});
+
+        TaskAllocationMethod greedyTaskAllocationMethod = new GreedyTaskAllocation();
+        Graph<Node<Employee>,Node<Task>> testGraph =
+                greedyTaskAllocationMethod.buildGraph(mockEmployeeResultSet, mockTaskResultSet);
+
+        assertTrue("All the employees have not been added",testGraph.getEmployeeNodes().containsAll(employeeNodes));
+        assertTrue("All the tasks have not been added", testGraph.getTaskNodes().containsAll(taskNodes));
+    }
+
+    private Set<Node<Employee>> buildEmployeeNodes(){
+        LinkedHashSet<Skill> skills = new LinkedHashSet<>();
+        skills.add(new Skill("1",1));
+        skills.add(new Skill("2",1));
+        LinkedHashSet<Node<Employee>> employeeNodes = new LinkedHashSet<>();
+        employeeNodes.add(new Node<>(new Employee(1,"Beyonce",skills,300), NodeType.EMPLOYEE));
+        employeeNodes.add(new Node<>(new Employee(2,"Alex",skills,200),NodeType.EMPLOYEE));
+        return employeeNodes;
+    }
+
+    private Set<Node<Task>> buildTaskNodes(){
+        LinkedHashSet<Skill> skills = new LinkedHashSet<>();
+        skills.add(new Skill("1",1));
+        skills.add(new Skill("2",1));
+        LinkedHashSet<Node<Task>> taskNodes = new LinkedHashSet<>();
+        taskNodes.add(new Node<>(new Task(3,"T1",100,1L,1L,false,skills),NodeType.TASK));
+        taskNodes.add(new Node<>(new Task(4,"T2",102,1L,1L,false,skills),NodeType.TASK));
+        return taskNodes;
+    }
 
     @Test
     public void testCheckSkillsMatchValid(){
