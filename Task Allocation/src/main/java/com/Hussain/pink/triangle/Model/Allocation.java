@@ -4,6 +4,7 @@ import com.Hussain.pink.triangle.Allocation.BiPartiteMatching;
 import com.Hussain.pink.triangle.Allocation.GreedyTaskAllocation;
 import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
+import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import org.slf4j.Logger;
@@ -58,7 +59,7 @@ public class Allocation {
         ResultSet employeesResultSet = taskAllocationMethod.executeQuery(TaskAllocationMethod.EMPLOYEE_QUERY);
         ResultSet taskResultSet = taskAllocationMethod.executeQuery(TaskAllocationMethod.TASK_QUERY);
 
-        Graph<Employee,Task> taskAllocationGraph = taskAllocationMethod.buildGraph(employeesResultSet,taskResultSet);
+        Graph<Node<Employee>,Node<Task>> taskAllocationGraph = taskAllocationMethod.buildGraph(employeesResultSet,taskResultSet);
 
         taskAllocationMethod.allocateTasks(taskAllocationGraph);
 
@@ -108,15 +109,17 @@ public class Allocation {
      * @param taskAllocationGraph The task allocation graph
      * @return A list of rows to be displayed
      */
-    private ArrayList<Object[]> buildRows(Graph<Employee,Task> taskAllocationGraph){
+    private ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph){
         ArrayList<Object[]> tableRows = new ArrayList<>();
-        if(taskAllocationGraph.hasEdges())
+        if(taskAllocationGraph.hasEdges())//Check that there are edges within the graph
         {
-            Set<Map.Entry<Employee, Task>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
-            for(Map.Entry<Employee, Task> employeeTaskEntry : entrySet)
+            Set<Map.Entry<Node<Employee>, Node<Task>>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
+            for(Map.Entry<Node<Employee>, Node<Task>> employeeTaskEntry : entrySet)
             {
-                Employee e = employeeTaskEntry.getKey();
-                Task t = employeeTaskEntry.getValue();
+                Node<Employee> employeeNode = employeeTaskEntry.getKey();
+                Node<Task> taskNode = employeeTaskEntry.getValue();
+                Employee e = employeeNode.getObject();
+                Task t = taskNode.getObject();
                 //The last column will always be initially false, as the user has not
                 //been assigned any of the tasks within the table
                 Object [] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};

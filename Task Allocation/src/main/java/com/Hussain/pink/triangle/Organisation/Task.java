@@ -82,4 +82,13 @@ public class Task{
     public String toString() {
         return "Task: " + this.getTaskName();
     }
+
+    @Override
+    public int hashCode(){
+        int hash = 1;
+        hash = hash * 17 + getId();
+        hash = hash * 31 + getTaskName().hashCode();
+        hash = hash * 13 + getProjectId();
+        return hash;
+    }
 }

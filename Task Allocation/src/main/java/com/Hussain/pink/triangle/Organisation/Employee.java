@@ -100,4 +100,13 @@ public class Employee {
     public String toString() {
         return "Employee: "+getName();
     }
+
+    @Override
+    public int hashCode(){
+        int hash = 1;
+        hash = hash * 17 + id;
+        hash = hash * 31 + getName().hashCode();
+        hash = hash * 5 + getEmployeeType().hashCode();
+        return hash;
+    }
 }

@@ -1,6 +1,7 @@
 package com.Hussain.pink.triangle.Allocation;
 
 import com.Hussain.pink.triangle.Model.Graph.Graph;
+import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import org.apache.commons.lang3.ArrayUtils;
@@ -20,22 +21,24 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
 
 
     @Override
-    public void allocateTasks(Graph<Employee, Task> allocationGraph) {
-        Set<Employee> employeeNodes = allocationGraph.getEmployeeNodes();
-        Set<Task> taskNodes = allocationGraph.getTaskNodes();
-        for (Employee employeeNode : employeeNodes) {
-            for (Task taskNode : taskNodes) {
+    public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
+        Set<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
+        Set<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
+        for (Node<Employee> employeeNode : employeeNodes) {
+            Employee employee = employeeNode.getObject();
+            for (Node<Task> taskNode : taskNodes) {
+                Task task = taskNode.getObject();
                 //Check if this task has been matched up with someone else already
-                if(ArrayUtils.contains(matchedTasks,taskNode))
+                if(ArrayUtils.contains(matchedTasks,task))
                 {
                     continue;
                 }
-                boolean employeeAvailableForTask = checkEmployeeAvailableForTask(employeeNode,taskNode);
-                boolean skillsMatch = checkSkillsMatch(employeeNode,taskNode);
+                boolean employeeAvailableForTask = checkEmployeeAvailableForTask(employee,task);
+                boolean skillsMatch = checkSkillsMatch(employee,task);
                 if(skillsMatch && employeeAvailableForTask)
                 {
                     allocationGraph.addEdge(employeeNode,taskNode);
-                    matchedTasks = ArrayUtils.add(matchedTasks,taskNode);
+                    matchedTasks = ArrayUtils.add(matchedTasks,task);
                     //Once a employee has been matched up with a task move to the next employee on the list
                     break;
                 }

@@ -1,6 +1,8 @@
 package com.Hussain.pink.triangle.Allocation;
 
 import com.Hussain.pink.triangle.Model.Graph.Graph;
+import com.Hussain.pink.triangle.Model.Graph.Node;
+import com.Hussain.pink.triangle.Model.Graph.NodeType;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.EmployeeType;
 import com.Hussain.pink.triangle.Organisation.Skill;
@@ -58,7 +60,7 @@ public abstract class TaskAllocationMethod {
 
     protected static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
 
-    protected Graph<Employee,Task> allocationGraph;
+    protected Graph<Node<Employee>,Node<Task>> allocationGraph;
 
     public static final String ORDER_NAME_ALPHABETICAL = " order by name asc";
     public static final String ORDER_NAME_REVERSE_ALPHABETICAL = " order by name desc";
@@ -72,14 +74,14 @@ public abstract class TaskAllocationMethod {
     public static final int TASK_QUERY = 5;
 
     /**
-     * Metod that should be implemented by subclasses to provide a
+     * Method that should be implemented by subclasses to provide a
      * method of allocation of the employees to tasks.
      * @param allocationGraph This is the basic allocation graph that has been created,
      *                        there will be no matching within this graph but there will be
      *                        two sets for the employees and tasks and it is the job of the subclass
-     *                        to take this graph and allocate the emplotees to the task.
+     *                        to take this graph and allocate the employees to the task.
      */
-    public abstract void allocateTasks(Graph<Employee,Task> allocationGraph);
+    public abstract void allocateTasks(Graph<Node<Employee>,Node<Task>> allocationGraph);
 
     /**
      * This method takes the result of the employee query and the
@@ -90,7 +92,7 @@ public abstract class TaskAllocationMethod {
      * employees that have been returned and a set containing the tasks that have been
      * returned
      */
-    public Graph<Employee,Task> buildGraph(ResultSet employeeResults, ResultSet taskResults){
+    public Graph<Node<Employee>,Node<Task>> buildGraph(ResultSet employeeResults, ResultSet taskResults){
         allocationGraph = new Graph<>();
         try{
             while(employeeResults != null && employeeResults.next())
@@ -133,9 +135,9 @@ public abstract class TaskAllocationMethod {
                     //employees have been assigned to a task
                     e = new Employee(id,name,skillSet,cost);
                 }
-
+                Node<Employee> employeeNode = new Node<>(e, NodeType.EMPLOYEE);
                 LOG.debug("Adding the employee with the name {} to the graph",name);
-                allocationGraph.addEmployeeNode(e);
+                allocationGraph.addEmployeeNode(employeeNode);
             }
             while(taskResults != null &&taskResults.next())
             {
@@ -152,7 +154,8 @@ public abstract class TaskAllocationMethod {
                 LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiencyRequired);//Build the skill set for the task
 
                 LOG.debug("Adding the task with the name {} to the graph",taskName);
-                allocationGraph.addTaskNode(new Task(id,taskName,projectID,dateFrom.getTime(),dateTo.getTime(),completed,skillSet));
+                allocationGraph.addTaskNode(new Node<Task>(new Task(id,taskName,projectID,dateFrom.getTime(),
+                        dateTo.getTime(),completed,skillSet),NodeType.TASK));
             }
         }
         catch(SQLException e){
