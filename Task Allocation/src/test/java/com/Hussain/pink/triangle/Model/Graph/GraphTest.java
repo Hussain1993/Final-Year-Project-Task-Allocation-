@@ -16,80 +16,80 @@ public class GraphTest {
 
     @Test
     public void testIsEmpty() {
-        Graph<Employee,Task> t = new Graph<>();
+        Graph<Node<Employee>,Node<Task>> t = new Graph<>();
         assertTrue(t.isEmpty());
     }
 
     @Test
     public void testGetEmployeeNodes() {
-        Set<Employee> set = new HashSet<>();
-        Employee e = new Employee(1,"Hussain",null,0);
-        set.add(e);
-        Graph<Employee, Task> graph = new Graph<>();
-        graph.addEmployeeNode(e);
+        Node<Employee> employeeNode = new Node<>(new Employee(1,"Hussain",null,0), NodeType.EMPLOYEE);
+        Set<Node<Employee>> set = new HashSet<>();
+        set.add(employeeNode);
+        Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
+        graph.addEmployeeNode(employeeNode);
         assertEquals(set,graph.getEmployeeNodes());
     }
 
     @Test
     public void testGetTaskNodes() {
-        Set<Task> t = new HashSet<>();
-        Task task = new Task(1,null,1,1,1,false,null);
-        t.add(task);
-        Graph<Employee, Task> graph = new Graph<>();
-        graph.addTaskNode(task);
+        Node<Task> taskNode = new Node<>(new Task(1,"",1,1,1,false,null), NodeType.TASK);
+        Set<Node<Task>> t = new HashSet<>();
+        t.add(taskNode);
+        Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
+        graph.addTaskNode(taskNode);
         assertEquals(t,graph.getTaskNodes());
     }
 
     @Test
     public void testAddEdge() {
-        Employee e = new Employee(1,null,null,0);
-        Task t = new Task(1,null,1,1,1,false,null);
+        Node<Employee> employeeNode = new Node<>(new Employee(1,"",null,0), NodeType.EMPLOYEE);
+        Node<Task> taskNode = new Node<>(new Task(1,"",1,1,1,false,null),NodeType.TASK);
 
-        Graph<Employee, Task> graph = new Graph<>();
-        graph.addEmployeeNode(e);
-        graph.addTaskNode(t);
+        Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
 
-        graph.addEdge(e,t);
+        graph.addEmployeeNode(employeeNode);
+        graph.addTaskNode(taskNode);
 
-        assertTrue(graph.hasRelationship(e,t));
+        graph.addEdge(employeeNode,taskNode);
+
+        assertTrue(graph.hasRelationship(employeeNode,taskNode));
 
     }
 
     @Test
     public void testGetMappedTask(){
-        Employee e = new Employee(1,"Test Employee",null,0);
-        Task t = new Task(1,"Test Task",1,1L,1L,false,null);
+        Node<Employee> employeeNode = new Node<>(new Employee(1,"Test Employee",null,0),NodeType.EMPLOYEE);
+        Node<Task> taskNode = new Node<>(new Task(1,"Test Task",1,1L,1L,false,null), NodeType.TASK);
 
-        Graph<Employee, Task> testGraph = new Graph<>();
+        Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
 
-        testGraph.addEmployeeNode(e);
-        testGraph.addTaskNode(t);
+        testGraph.addEmployeeNode(employeeNode);
+        testGraph.addTaskNode(taskNode);
 
-        testGraph.addEdge(e,t);
+        testGraph.addEdge(employeeNode,taskNode);
 
-        Set<Task> mappedTasks = new LinkedHashSet<>();
-        mappedTasks.add(t);
+        Set<Node<Task>> mappedTasks = new LinkedHashSet<>();
+        mappedTasks.add(taskNode);
 
-        assertTrue(mappedTasks.containsAll(testGraph.getMappedTask(e)));
+        assertTrue(mappedTasks.containsAll(testGraph.getMappedTask(employeeNode)));
     }
 
     @Test
     public void testMultiMapGraph() {
-        Employee e = new Employee(1,"Test Employee",null,0);
+        Node<Employee> employeeNode = new Node<>(new Employee(1,"Test Employee",null,0), NodeType.EMPLOYEE);
+        Node<Task> t1 = new Node<>(new Task(1,"Task 1",1,1L,1L,false,null), NodeType.TASK);
+        Node<Task> t2 = new Node<>(new Task(2,"Task 2",2,1L,1L,false,null), NodeType.TASK);
 
-        Task t1 = new Task(1,"Task 1",1,1L,1L,false,null);
-        Task t2 = new Task(2,"Task 2",2,1L,1L,false,null);
+        Graph<Node<Employee>,Node<Task>> testGraph = new Graph<>();
 
-        Graph<Employee,Task> testGraph = new Graph<>();
-
-        testGraph.addEmployeeNode(e);
+        testGraph.addEmployeeNode(employeeNode);
         testGraph.addTaskNode(t1);
         testGraph.addTaskNode(t2);
 
-        testGraph.addEdge(e,t1);
-        testGraph.addEdge(e,t2);
+        testGraph.addEdge(employeeNode,t1);
+        testGraph.addEdge(employeeNode,t2);
 
-        assertTrue(testGraph.hasRelationship(e,t1) && testGraph.hasRelationship(e,t2));
+        assertTrue(testGraph.hasRelationship(employeeNode,t1) && testGraph.hasRelationship(employeeNode,t2));
     }
 
     @Test
