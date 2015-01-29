@@ -6,7 +6,6 @@ import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 import static org.junit.Assert.assertEquals;
@@ -20,10 +19,6 @@ public class PathsTest {
 
         final Node[] p2 = {new Node(new Employee(2,"",null,0),NodeType.EMPLOYEE),
         new Node(new Task(102,"",100,1L,1L,false,null),NodeType.TASK)};
-
-        ArrayList<Node[]> paths = new ArrayList<Node[]>(){{
-           add(p1); add(p2);
-        }};
 
         Stack<Node> stack = new Stack<>();
         stack.push(new Node("Source",NodeType.SOURCE));
