@@ -1,6 +1,7 @@
 package com.Hussain.pink.triangle.Utils;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -119,7 +120,7 @@ public class TaskAllocationFile {
     }
 
     public static boolean saveTaskAllocationFile(String filePath, DefaultTableModel allocationTableModel){
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory documentBuilderFactory = new DocumentBuilderFactoryImpl();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document doc = documentBuilder.newDocument();
@@ -131,7 +132,7 @@ public class TaskAllocationFile {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(filePath));
+            StreamResult result = new StreamResult(filePath);
             transformer.setOutputProperty(OutputKeys.INDENT,"yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source,result);

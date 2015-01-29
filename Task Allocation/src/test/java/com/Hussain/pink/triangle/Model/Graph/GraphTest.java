@@ -5,13 +5,10 @@ import com.Hussain.pink.triangle.Organisation.Task;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class GraphTest {
 
@@ -24,7 +21,7 @@ public class GraphTest {
     @Test
     public void testGetEmployeeNodes() {
         Node<Employee> employeeNode = new Node<>(new Employee(1,"Hussain",null,0), NodeType.EMPLOYEE);
-        Set<Node<Employee>> set = new HashSet<>();
+        ArrayList<Node<Employee>> set = new ArrayList<>();
         set.add(employeeNode);
         Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
         graph.addEmployeeNode(employeeNode);
@@ -34,7 +31,7 @@ public class GraphTest {
     @Test
     public void testGetTaskNodes() {
         Node<Task> taskNode = new Node<>(new Task(1,"",1,1,1,false,null), NodeType.TASK);
-        Set<Node<Task>> t = new HashSet<>();
+        ArrayList<Node<Task>> t = new ArrayList<>();
         t.add(taskNode);
         Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
         graph.addTaskNode(taskNode);

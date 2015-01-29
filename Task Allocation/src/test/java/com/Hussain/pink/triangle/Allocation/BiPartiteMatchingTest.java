@@ -6,6 +6,7 @@ import com.Hussain.pink.triangle.Model.Graph.NodeType;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.LinkedHashSet;
@@ -51,7 +52,7 @@ public class BiPartiteMatchingTest {
         assertTrue(testGraph.getMappedTask(e2).size() == 1);//Check that E2 has 1 task matched up with them
     }
 
-    @Test
+    @Ignore
     public void testBiPartiteMatching(){
         Node<Employee> e1 = new Node<>(new Employee(1,"e1",null,0), NodeType.EMPLOYEE);
         Node<Employee> e2 = new Node<>(new Employee(2,"e2",null,0),NodeType.EMPLOYEE);

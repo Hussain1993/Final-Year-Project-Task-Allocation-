@@ -32,9 +32,9 @@ public class TaskAllocationFileTest {
         URL url = getClass().getClassLoader().getResource("testAllocation.ta");
         File file = new File(url.toURI());
 
-        assertTrue(TaskAllocationFile.saveTaskAllocationFile(file.getParent() + File.separator + "test.ta", model));
+        assertTrue(TaskAllocationFile.saveTaskAllocationFile("/Users/Hussain/Desktop/target/test.ta", model));
 
-        ArrayList<Object []> data = TaskAllocationFile.parseTaskAllocationFile(file.getParent() + File.separator + "test.ta");
+        ArrayList<Object []> data = TaskAllocationFile.parseTaskAllocationFile("/Users/Hussain/Desktop/target/test.ta");
         for (int i = 0; i < data.size(); i++) {
             Object [] d = data.get(i);
             assertArrayEquals(this.data,d);
