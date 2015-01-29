@@ -109,25 +109,22 @@ public class Allocation {
      * @param taskAllocationGraph The task allocation graph
      * @return A list of rows to be displayed
      */
-    private ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph){
+    private ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph) {
         ArrayList<Object[]> tableRows = new ArrayList<>();
-        if(taskAllocationGraph.hasEdges())//Check that there are edges within the graph
+        if (taskAllocationGraph.hasEdges())//Check that there are edges within the graph
         {
             Set<Map.Entry<Node<Employee>, Node<Task>>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
-            for(Map.Entry<Node<Employee>, Node<Task>> employeeTaskEntry : entrySet)
-            {
+            for (Map.Entry<Node<Employee>, Node<Task>> employeeTaskEntry : entrySet) {
                 Node<Employee> employeeNode = employeeTaskEntry.getKey();
                 Node<Task> taskNode = employeeTaskEntry.getValue();
                 Employee e = employeeNode.getObject();
                 Task t = taskNode.getObject();
                 //The last column will always be initially false, as the user has not
                 //been assigned any of the tasks within the table
-                Object [] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};
+                Object[] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};
                 tableRows.add(rowData);
             }
-        }
-        else
-        {
+        } else {
             LOG.info("There were no allocations within the graph, returning an empty table");
         }
         return tableRows;
