@@ -6,7 +6,7 @@ import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * A specific task allocation scheme, in this
@@ -22,8 +22,8 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
 
     @Override
     public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
-        Set<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
-        Set<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
+        List<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
+        List<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
         for (Node<Employee> employeeNode : employeeNodes) {
             Employee employee = employeeNode.getObject();
             for (Node<Task> taskNode : taskNodes) {

@@ -1,9 +1,9 @@
 package com.Hussain.pink.triangle.Model.Graph;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedListMultimap;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,18 +15,18 @@ import java.util.Set;
  * Created by Hussain on 14/11/2014.
  */
 public class Graph<E,T> {
-    private HashMultimap<E,T> employeeMatching;
-    private LinkedHashSet<E> employeeNodes;
-    private LinkedHashSet<T> taskNodes;
+    private LinkedListMultimap<E,T> employeeMatching;
+    private ArrayList<E> employeeNodes;
+    private ArrayList<T> taskNodes;
     private int numberOfEdges = 0;
 
     /**
      * Create an empty graph
      */
     public Graph() {
-        employeeMatching = HashMultimap.create();
-        employeeNodes = new LinkedHashSet<>();
-        taskNodes = new LinkedHashSet<>();
+        employeeMatching = LinkedListMultimap.create();
+        employeeNodes = new ArrayList<>();
+        taskNodes = new ArrayList<>();
     }
 
     /**
@@ -35,8 +35,8 @@ public class Graph<E,T> {
      * @param employeeNodes Nodes to be added
      * @param taskNodes Nodes to be added
      */
-    public Graph(LinkedHashSet<E> employeeNodes, LinkedHashSet<T> taskNodes){
-        employeeMatching = HashMultimap.create();
+    public Graph(ArrayList<E> employeeNodes, ArrayList<T> taskNodes){
+        employeeMatching = LinkedListMultimap.create();
         this.employeeNodes  = employeeNodes;
         this.taskNodes = taskNodes;
     }
@@ -45,7 +45,7 @@ public class Graph<E,T> {
      * Return the allocation graph
      * @return The graph representing the allocations
      */
-    public HashMultimap<E,T> getEmployeeToTaskMapping(){
+    public LinkedListMultimap<E,T> getEmployeeToTaskMapping(){
         return this.employeeMatching;
     }
 
@@ -78,7 +78,7 @@ public class Graph<E,T> {
      * Get all the employee nodes within the graph
      * @return A set containing all the employees within the graph
      */
-    public LinkedHashSet<E> getEmployeeNodes(){
+    public ArrayList<E> getEmployeeNodes(){
         return this.employeeNodes;
     }
 
@@ -86,7 +86,7 @@ public class Graph<E,T> {
      * Get all the tasks nodes within the graph
      * @return A set containing all the tasks within the graph
      */
-    public LinkedHashSet<T> getTaskNodes(){
+    public ArrayList<T> getTaskNodes(){
         return this.taskNodes;
     }
 
@@ -137,7 +137,7 @@ public class Graph<E,T> {
      * @param employee The employee to get all the mapped tasks for
      * @return A set of mapped tasks for the employee
      */
-    public Set<T> getMappedTask(E employee){
+    public List<T> getMappedTask(E employee){
         return employeeMatching.get(employee);
     }
 

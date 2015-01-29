@@ -4,6 +4,7 @@ import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -94,8 +95,8 @@ public class GraphTest {
 
     @Test
     public void testAreThereEdgesTrue() {
-        LinkedHashSet<String> set1 = new LinkedHashSet<String>(){{add("Test");}};
-        LinkedHashSet<String> set2 = new LinkedHashSet<String>(){{add("Test");}};
+        ArrayList<String> set1 = new ArrayList<String>(){{add("Test");}};
+        ArrayList<String> set2 = new ArrayList<String>(){{add("Test");}};
 
         Graph<String,String> testGraph = new Graph<>(set1,set2);
 
@@ -106,8 +107,8 @@ public class GraphTest {
 
     @Test
     public void testAreThereEdgesFalse() {
-        LinkedHashSet<String> set1 = new LinkedHashSet<String>(){{add("Test");}};
-        LinkedHashSet<String> set2 = new LinkedHashSet<String>(){{add("Test");}};
+        ArrayList<String> set1 = new ArrayList<String>(){{add("Test");}};
+        ArrayList<String> set2 = new ArrayList<String>(){{add("Test");}};
 
         Graph<String,String> testGraph = new Graph<>(set1,set2);
 

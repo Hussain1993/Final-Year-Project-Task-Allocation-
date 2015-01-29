@@ -3,9 +3,9 @@ package com.Hussain.pink.triangle.Model.Graph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Created by Hussain on 27/01/2015.
@@ -14,7 +14,7 @@ public class List {
     private static final Node<String> SOURCE = new Node<>("Source",NodeType.SOURCE);
     private static final Node<String> SINK = new Node<>("Sink", NodeType.SINK);
 
-    private HashMap<Node, Set<? extends Node>> list;
+    private HashMap<Node, java.util.List<? extends Node>> list;
     private Graph<Node<Employee>,Node<Task>> allocationGraph;
 
     public List(Graph<Node<Employee>,Node<Task>> allocationGraph){
@@ -48,14 +48,14 @@ public class List {
             if(!taskToEmployeeList.isEmpty())
             {
                 taskToEmployeeList.add(SINK);
-                LinkedHashSet clonedSet = new LinkedHashSet(taskToEmployeeList);
-                list.put(taskNode,clonedSet);
+                ArrayList clonedList = new ArrayList(taskToEmployeeList);
+                list.put(taskNode,clonedList);
             }
             taskToEmployeeList.clear();
         }
     }
 
-    public Set<? extends Node> listElements(Node head){
+    public java.util.List<? extends Node> listElements(Node head){
         if(!list.isEmpty() && list.containsKey(head))
         {
             return list.get(head);
@@ -63,12 +63,24 @@ public class List {
         return null;
     }
 
+    public Node getFirstElement(Node head){
+        if(!list.isEmpty() && list.containsKey(head))
+        {
+            java.util.List<? extends Node> elements = listElements(head);
+            if(elements.size() > 0)
+            {
+                return elements.get(0);
+            }
+        }
+        return SINK;
+    }
+
     public void removeFromList(Node head, Node nodeToBeRemoved){
         if(!list.containsKey(head))
         {
             return;
         }
-        Set<? extends Node> elements = listElements(head);
+        java.util.List<? extends Node> elements = listElements(head);
         elements.remove(nodeToBeRemoved);
     }
 
@@ -83,7 +95,7 @@ public class List {
         }
         else if(listElements(taskNode) != null && listElements(taskNode).size() > 2) // This is the case when more than one employee is mapped to the same task
         {
-            Set<? extends Node> employeeNodes = listElements(taskNode);
+            java.util.List<? extends Node> employeeNodes = listElements(taskNode);
             for(Node<Employee> employeeNode : employeeNodes)
             {
                 if(!employeeNode.equals(employeeAssignedNode))
@@ -96,7 +108,7 @@ public class List {
     }
 
     private Node getSink(Node<Task> taskNode){
-        Set<? extends Node> elements = listElements(taskNode);
+        java.util.List<? extends Node> elements = listElements(taskNode);
         for(Node node : elements)
         {
             if(node.getNodeType().equals(NodeType.SINK))

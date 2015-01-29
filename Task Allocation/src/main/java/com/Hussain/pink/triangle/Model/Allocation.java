@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class takes the options that the user
@@ -113,7 +113,7 @@ public class Allocation {
         ArrayList<Object[]> tableRows = new ArrayList<>();
         if (taskAllocationGraph.hasEdges())//Check that there are edges within the graph
         {
-            Set<Map.Entry<Node<Employee>, Node<Task>>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
+            List<Map.Entry<Node<Employee>, Node<Task>>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
             for (Map.Entry<Node<Employee>, Node<Task>> employeeTaskEntry : entrySet) {
                 Node<Employee> employeeNode = employeeTaskEntry.getKey();
                 Node<Task> taskNode = employeeTaskEntry.getValue();
