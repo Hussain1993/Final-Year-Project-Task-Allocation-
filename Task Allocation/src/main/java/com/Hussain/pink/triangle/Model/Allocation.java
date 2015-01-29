@@ -109,7 +109,7 @@ public class Allocation {
      * @param taskAllocationGraph The task allocation graph
      * @return A list of rows to be displayed
      */
-    public ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph){
+    private ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph){
         ArrayList<Object[]> tableRows = new ArrayList<>();
         if(taskAllocationGraph.hasEdges())//Check that there are edges within the graph
         {
