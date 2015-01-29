@@ -5,8 +5,6 @@ import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -36,20 +34,5 @@ public class BiPartiteMatching extends TaskAllocationMethod {
                 }
             }
         }
-    }
-
-    public void matching(Graph<Employee, Task> allocationGraph){
-        ArrayList<LinkedList<Integer>> vertices = new ArrayList<>();
-
-        Set<Employee> employeeNodes = allocationGraph.getEmployeeNodes();
-        Integer source = Integer.MAX_VALUE;
-        LinkedList<Integer> sourceNodes = new LinkedList<>();
-        sourceNodes.add(source);
-        for(Employee employee : employeeNodes)
-        {
-            sourceNodes.add(employee.getId());
-
-        }
-        vertices.add(sourceNodes);
     }
 }
