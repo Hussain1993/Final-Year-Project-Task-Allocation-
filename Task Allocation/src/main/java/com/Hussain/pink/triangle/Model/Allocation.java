@@ -36,7 +36,7 @@ public class Allocation {
         {
             case 0: taskAllocationMethod = new GreedyTaskAllocation();break;
             case 1: taskAllocationMethod = new BiPartiteMatching();break;
-            default: taskAllocationMethod = new GreedyTaskAllocation(); break;
+            default: taskAllocationMethod = new GreedyTaskAllocation(); break; //This is the default method to use
         }
     }
 
@@ -109,7 +109,7 @@ public class Allocation {
      * @param taskAllocationGraph The task allocation graph
      * @return A list of rows to be displayed
      */
-    private ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph){
+    public ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph){
         ArrayList<Object[]> tableRows = new ArrayList<>();
         if(taskAllocationGraph.hasEdges())//Check that there are edges within the graph
         {
