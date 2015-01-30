@@ -4,10 +4,11 @@ import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.List;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Model.Graph.NodeType;
+import com.Hussain.pink.triangle.Model.Paths;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -18,8 +19,6 @@ import java.util.Stack;
 public class BiPartiteMatching extends TaskAllocationMethod {
     private static final Node<String> SOURCE = new Node<>("Source", NodeType.SOURCE);
     private static final Node<String> SINK = new Node<>("Sink",NodeType.SINK);
-    private static final Stack<Node> stack = new Stack<>();
-    private static final LinkedHashSet<Node> nodesWeHaveVisited = new LinkedHashSet<>();
 
     @Override
     public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
@@ -43,32 +42,50 @@ public class BiPartiteMatching extends TaskAllocationMethod {
         }
     }
 
-    public void biPartiteMatching(Graph<Node<Employee>, Node<Task>> allocationGraph){
+    public Paths biPartiteMatching(Graph<Node<Employee>, Node<Task>> allocationGraph){
+        Paths paths = new Paths();
+        Stack<Node> stack = new Stack<>();
+        ArrayList<Node> nodesWeHaveVisited = new ArrayList<>();
         List adjacencyList = new List(allocationGraph);
         stack.push(SOURCE);
-        while (!stack.isEmpty())
+        while (!stack.isEmpty() && !adjacencyList.listElements(stack.peek()).isEmpty())
         {
-            Node top = stack.peek();
-            while(!adjacencyList.listElements(top).isEmpty())
+            while(!adjacencyList.listElements(stack.peek()).isEmpty())
             {
-                Node first = adjacencyList.getFirstElement(top);
+                Node first = adjacencyList.getFirstElement(stack.peek());
                 if(!nodesWeHaveVisited.contains(first))
                 {
+                    adjacencyList.removeFromList(stack.peek(),first);
                     stack.push(first);
-                    adjacencyList.removeFromList(top,first);
-                    if(stack.peek() != SINK)
+                    if(!stack.peek().getNodeType().equals(NodeType.SINK))
                     {
                         nodesWeHaveVisited.add(stack.peek());
+                        if(stack.size() == 5)
+                        {
+                            stack.push(SINK);
+                            addPath(paths,stack);
+                            stack.clear();
+                            stack.push(SOURCE);
+                        }
+                        continue;
                     }
                     else
                     {
-                        //Empty the stack and the print the path
+                        addPath(paths,stack);
                         stack.clear();
                         stack.push(SOURCE);
                     }
                 }
+                adjacencyList.removeFromList(stack.peek(),first);
+                stack.push(first);
                 stack.pop();
             }
+            stack.pop();
         }
+        return paths;
+    }
+
+    private void addPath(Paths paths, Stack<Node> stack){
+        paths.addNewPaths(stack);
     }
 }
