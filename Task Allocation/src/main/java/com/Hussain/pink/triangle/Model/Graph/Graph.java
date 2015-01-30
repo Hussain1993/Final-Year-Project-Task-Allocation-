@@ -149,4 +149,30 @@ public class Graph<E,T> {
     public boolean hasEdges(){
         return numberOfEdges > 0;
     }
+
+    public void clear(){
+        this.employeeMatching.clear();
+        this.employeeNodes.clear();
+        this.taskNodes.clear();
+        numberOfEdges = 0;
+    }
+
+    public boolean equals(Object other){
+        if(other == null)
+        {
+            return false;
+        }
+        if(other == this)
+        {
+            return true;
+        }
+        if(!(other instanceof Graph))
+        {
+            return false;
+        }
+        Graph otherGraph = (Graph) other;
+        return this.getEmployeeNodes().containsAll(otherGraph.getEmployeeNodes())
+                && this.getTaskNodes().containsAll(otherGraph.getTaskNodes())
+                && this.getEmployeeToTaskMapping().equals(otherGraph.getEmployeeToTaskMapping());
+    }
 }

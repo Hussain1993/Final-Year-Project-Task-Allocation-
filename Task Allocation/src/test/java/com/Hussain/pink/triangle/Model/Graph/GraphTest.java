@@ -110,6 +110,62 @@ public class GraphTest {
         Graph<String,String> testGraph = new Graph<>(set1,set2);
 
         assertFalse(testGraph.hasEdges());
+    }
 
+    @Test
+    public void testClear(){
+        Node<Employee> e = new Node<>(new Employee(1,"",null,0),NodeType.EMPLOYEE);
+
+        Node<Task> t = new Node<>(new Task(1,"",1,1L,1L,false,null),NodeType.TASK);
+
+        Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
+
+        testGraph.addEdge(e,t);
+
+        assertFalse(testGraph.isEmpty());
+        assertTrue(testGraph.getEmployeeNodes().size() > 0);
+        assertTrue(testGraph.getTaskNodes().size() > 0);
+        assertTrue(testGraph.hasEdges());
+
+        testGraph.clear();
+
+        assertTrue(testGraph.isEmpty());
+        assertTrue(testGraph.getEmployeeNodes().size() == 0);
+        assertTrue(testGraph.getTaskNodes().size() == 0);
+        assertFalse(testGraph.hasEdges());
+    }
+
+    @Test
+    public void testEqualsNULL(){
+        Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
+        assertFalse(testGraph.equals(null));
+    }
+
+    @Test
+    public void testEqualsSameObject(){
+        Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
+        assertTrue(testGraph.equals(testGraph));
+    }
+
+    @Test
+    public void testEqualsDifferent(){
+        Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
+
+        assertFalse(testGraph.equals(""));
+    }
+
+    @Test
+    public void testEqualsTrue(){
+        Node<Employee> e = new Node<>(new Employee(1,"",null,0),NodeType.EMPLOYEE);
+
+        Node<Task> t = new Node<>(new Task(1,"",1,1L,1L,false,null),NodeType.TASK);
+
+        Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
+        Graph<Node<Employee>, Node<Task>> sameGraph = new Graph<>();
+
+        testGraph.addEdge(e,t);
+        sameGraph.addEdge(e,t);
+
+        assertTrue(testGraph.equals(sameGraph));
     }
 }
