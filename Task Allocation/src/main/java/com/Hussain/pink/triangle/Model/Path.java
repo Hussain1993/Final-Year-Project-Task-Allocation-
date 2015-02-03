@@ -6,25 +6,21 @@ import com.Hussain.pink.triangle.Model.Graph.NodeType;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
  * Created by Hussain on 29/01/2015.
  */
 public class Path {
-    private Graph<Node<Employee>, Node<Task>> copyOfAllocationGraph;
+    private ArrayList<Node[]> paths;
 
     public Path(){
-        //There is nothing to do
-    }
-
-    public Path(Graph<Node<Employee>, Node<Task>> allocationGraph){
-        this.copyOfAllocationGraph = allocationGraph;
-        this.copyOfAllocationGraph.clear();
+        paths = new ArrayList<>();
     }
 
     public void addNewPath(Stack<Node> pathStack){
-        while (!pathStack.isEmpty())
+        while(!pathStack.isEmpty())
         {
             if(pathStack.peek().getNodeType().equals(NodeType.SOURCE))
             {
@@ -38,32 +34,36 @@ public class Path {
             {
                 Node<Task> taskNode = null;
                 Node<Employee> employeeNode = null;
-                if(pathStack.peek().getNodeType().equals(NodeType.TASK))
+                if(pathStack.peek().getNodeType().equals(NodeType.TASK))//We know for sure that the the node is a task node
                 {
-                    taskNode = pathStack.pop();//We know that this node will be a task node
+                    taskNode = pathStack.pop();
                 }
-                if(pathStack.peek().getNodeType().equals(NodeType.EMPLOYEE))
+                if(pathStack.peek().getNodeType().equals(NodeType.EMPLOYEE))//We know for sure that the node is a employee node
                 {
-                    employeeNode = pathStack.pop();//We know that this node will be a employee node
+                    employeeNode = pathStack.pop();
                 }
                 if(taskNode != null && employeeNode != null)//Sanity check
                 {
-                    copyOfAllocationGraph.addEdge(employeeNode,taskNode);
+                    Node[] path = {employeeNode,taskNode};
+                    paths.add(path);
                 }
             }
         }
     }
 
-    public void setAllocationGraph(Graph<Node<Employee>, Node<Task>> allocationGraph){
-        if(this.copyOfAllocationGraph == null && allocationGraph != null)
+    public void buildPathToMap(Graph<Node<Employee>,Node<Task>> graph){
+        if(graph != null)
         {
-            this.copyOfAllocationGraph = allocationGraph;
-            this.copyOfAllocationGraph.clear();
+            graph.clear();
+            for(Node [] pathNodes : paths)
+            {
+                if(pathNodes.length == 2)
+                {
+                    graph.addEdge(pathNodes[0],pathNodes[1]);
+                }
+            }
         }
     }
 
-    public Graph<Node<Employee>, Node<Task>> getAllocationGraph(){
-        return this.copyOfAllocationGraph;
-    }
 
 }

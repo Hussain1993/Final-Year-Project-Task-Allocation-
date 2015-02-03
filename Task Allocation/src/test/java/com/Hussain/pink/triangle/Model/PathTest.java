@@ -15,9 +15,10 @@ public class PathTest {
 
     @Test
     public void testPath(){
+        Path path = new Path();
+
         Graph<Node<Employee>, Node<Task>> expectedGraph = buildExpectedGraph();
-        Graph<Node<Employee>, Node<Task>> testGraph = buildExpectedGraph();
-        testGraph.clear();
+        Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();//Empty graph
 
         Stack<Node> stack = new Stack<>();
 
@@ -27,16 +28,18 @@ public class PathTest {
         stack.push(new Node<>(new Task(7,"T7",100,1L,1L,false,null),NodeType.TASK));
 
         stack.push(new Node<>(new Employee(3,"E3",null,0),NodeType.EMPLOYEE));
-        stack.push(new Node<>(new Task(9,"T9",100,1L,1L,false,null),NodeType.TASK));
+        stack.push( new Node<>(new Task(9,"T9",100,1L,1L,false,null),NodeType.TASK));
 
         stack.push(new Node("Sink",NodeType.SINK));
 
-        Path path = new Path(testGraph);
         path.addNewPath(stack);
+        path.buildPathToMap(testGraph);
 
-        assertEquals(path.getAllocationGraph(),expectedGraph);
+        assertEquals(expectedGraph,testGraph);
 
     }
+
+
 
     private Graph<Node<Employee>, Node<Task>> buildExpectedGraph(){
         Node<Employee> e1 = new Node<>(new Employee(1,"E1",null,0), NodeType.EMPLOYEE);
