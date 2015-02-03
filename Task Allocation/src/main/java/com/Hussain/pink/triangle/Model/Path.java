@@ -1,36 +1,32 @@
 package com.Hussain.pink.triangle.Model;
 
+import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Model.Graph.NodeType;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 /**
  * Created by Hussain on 29/01/2015.
  */
-public class Paths {
-    ArrayList<Node[]> paths;
+public class Path {
+    Graph<Node<Employee>, Node<Task>> copyOfAllocationGraph;
 
-    public Paths(){
-        paths = new ArrayList<>();
+    public Path(Graph<Node<Employee>, Node<Task>> allocationGraph){
+        this.copyOfAllocationGraph = allocationGraph;
+        this.copyOfAllocationGraph.clear();
     }
 
-    public ArrayList<Node[]> getPaths(){
-        return this.paths;
-    }
-
-    public void addNewPaths(Stack<Node> pathStack){
+    public void addNewPath(Stack<Node> pathStack){
         while (!pathStack.isEmpty())
         {
-            if(pathStack.peek().getNodeType().equals(NodeType.SINK))
+            if(pathStack.peek().getNodeType().equals(NodeType.SOURCE))
             {
                 pathStack.pop();
             }
-            else if(pathStack.peek().getNodeType().equals(NodeType.SOURCE))
+            else if(pathStack.peek().getNodeType().equals(NodeType.SINK))
             {
                 pathStack.pop();
             }
@@ -48,23 +44,14 @@ public class Paths {
                 }
                 if(taskNode != null && employeeNode != null)
                 {
-                    Node[] path = {employeeNode,taskNode};
-                    paths.add(path);
+                    copyOfAllocationGraph.addEdge(employeeNode,taskNode);
                 }
             }
         }
     }
 
-    public String printPath(){
-        return toString();
+    public Graph<Node<Employee>, Node<Task>> getAllocationGraph(){
+        return this.copyOfAllocationGraph;
     }
 
-    public String toString(){
-        String path = "";
-        for(Node [] pathNodes : paths)
-        {
-            path = path + Arrays.toString(pathNodes) + "\n";
-        }
-        return path.trim();
-    }
 }
