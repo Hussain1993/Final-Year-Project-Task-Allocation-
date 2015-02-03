@@ -192,7 +192,7 @@ public class AllocationView extends JFrame{
      */
     private void maximum(){
         Allocation bipartiteMatching = new Allocation(MAXIMUM);
-        bipartiteMatching.allocateEmployeesAndTasks();
+        populateTable(bipartiteMatching.allocateEmployeesAndTasks());
     }
 
     /**

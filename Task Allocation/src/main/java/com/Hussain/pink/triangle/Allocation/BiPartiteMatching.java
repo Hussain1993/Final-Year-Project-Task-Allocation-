@@ -1,7 +1,7 @@
 package com.Hussain.pink.triangle.Allocation;
 
-import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.AdjacencyList;
+import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Model.Graph.NodeType;
 import com.Hussain.pink.triangle.Model.Path;
@@ -9,6 +9,7 @@ import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -24,8 +25,8 @@ public class BiPartiteMatching extends TaskAllocationMethod {
 
     @Override
     public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
-        java.util.List<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
-        java.util.List<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
+        List<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
+        List<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
         //Loop over every single employee and find the task they can be matched to
         //DON't keep a record of which tasks that have been matched
         for(Node<Employee> employeeNode : employeeNodes)
