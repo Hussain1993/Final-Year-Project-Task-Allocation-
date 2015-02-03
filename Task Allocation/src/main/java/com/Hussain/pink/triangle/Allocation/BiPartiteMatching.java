@@ -1,10 +1,10 @@
 package com.Hussain.pink.triangle.Allocation;
 
 import com.Hussain.pink.triangle.Model.Graph.Graph;
-import com.Hussain.pink.triangle.Model.Graph.List;
+import com.Hussain.pink.triangle.Model.Graph.AdjacencyList;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Model.Graph.NodeType;
-import com.Hussain.pink.triangle.Model.Paths;
+import com.Hussain.pink.triangle.Model.Path;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
@@ -19,6 +19,8 @@ import java.util.Stack;
 public class BiPartiteMatching extends TaskAllocationMethod {
     private static final Node<String> SOURCE = new Node<>("Source", NodeType.SOURCE);
     private static final Node<String> SINK = new Node<>("Sink",NodeType.SINK);
+
+    private Path path = new Path();
 
     @Override
     public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
@@ -40,13 +42,14 @@ public class BiPartiteMatching extends TaskAllocationMethod {
                 }
             }
         }
+        biPartiteMatching(allocationGraph);
     }
 
-    public Paths biPartiteMatching(Graph<Node<Employee>, Node<Task>> allocationGraph){
-        Paths paths = new Paths();
+    public void biPartiteMatching(Graph<Node<Employee>, Node<Task>> allocationGraph){
         Stack<Node> stack = new Stack<>();
         ArrayList<Node> nodesWeHaveVisited = new ArrayList<>();
-        List adjacencyList = new List(allocationGraph);
+        AdjacencyList adjacencyList = new AdjacencyList(allocationGraph);
+        path.setAllocationGraph(allocationGraph);
         stack.push(SOURCE);
         while (!stack.isEmpty() && !adjacencyList.listElements(stack.peek()).isEmpty())
         {
@@ -63,7 +66,7 @@ public class BiPartiteMatching extends TaskAllocationMethod {
                         if(stack.size() == 5)
                         {
                             stack.push(SINK);
-                            addPath(paths,stack);
+                            addPath(stack);
                             stack.clear();
                             stack.push(SOURCE);
                         }
@@ -71,21 +74,26 @@ public class BiPartiteMatching extends TaskAllocationMethod {
                     }
                     else
                     {
-                        addPath(paths,stack);
+                        addPath(stack);
                         stack.clear();
                         stack.push(SOURCE);
                     }
                 }
                 adjacencyList.removeFromList(stack.peek(),first);
-                stack.push(first);
-                stack.pop();
+                //stack.push(first);
+                //stack.pop();
             }
             stack.pop();
         }
-        return paths;
     }
 
-    private void addPath(Paths paths, Stack<Node> stack){
-        paths.addNewPaths(stack);
+    private void addPath(Stack<Node> pathStack){
+        path.addNewPath(pathStack);
     }
+
+    public Path getPath(){
+        return path;
+    }
+
+
 }

@@ -63,7 +63,7 @@ public class Allocation {
 
         taskAllocationMethod.allocateTasks(taskAllocationGraph);
 
-        return buildRows(taskAllocationGraph);//Build a return the rows
+        return buildRows(taskAllocationGraph);//Build and return the rows
     }
 
     /**
@@ -111,21 +111,30 @@ public class Allocation {
      */
     private ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph) {
         ArrayList<Object[]> tableRows = new ArrayList<>();
-        if (taskAllocationGraph.hasEdges())//Check that there are edges within the graph
+        if(taskAllocationMethod instanceof BiPartiteMatching)
         {
-            List<Map.Entry<Node<Employee>, Node<Task>>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
-            for (Map.Entry<Node<Employee>, Node<Task>> employeeTaskEntry : entrySet) {
-                Node<Employee> employeeNode = employeeTaskEntry.getKey();
-                Node<Task> taskNode = employeeTaskEntry.getValue();
-                Employee e = employeeNode.getObject();
-                Task t = taskNode.getObject();
-                //The last column will always be initially false, as the user has not
-                //been assigned any of the tasks within the table
-                Object[] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};
-                tableRows.add(rowData);
+
+        }
+        else if(taskAllocationMethod instanceof GreedyTaskAllocation)
+        {
+            if (taskAllocationGraph.hasEdges())//Check that there are edges within the graph
+            {
+                List<Map.Entry<Node<Employee>, Node<Task>>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
+                for (Map.Entry<Node<Employee>, Node<Task>> employeeTaskEntry : entrySet) {
+                    Node<Employee> employeeNode = employeeTaskEntry.getKey();
+                    Node<Task> taskNode = employeeTaskEntry.getValue();
+                    Employee e = employeeNode.getObject();
+                    Task t = taskNode.getObject();
+                    //The last column will always be initially false, as the user has not
+                    //been assigned any of the tasks within the table
+                    Object[] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};
+                    tableRows.add(rowData);
+                }
             }
-        } else {
-            LOG.info("There were no allocations within the graph, returning an empty table");
+            else
+            {
+                LOG.info("There were no allocations within the graph, returning an empty table");
+            }
         }
         return tableRows;
     }

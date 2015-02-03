@@ -34,7 +34,7 @@ public class ListTest {
         testGraph.addEdge(e2,t5);
         testGraph.addEdge(e3,t5);
 
-        List testList = new List(testGraph);
+        AdjacencyList testList = new AdjacencyList(testGraph);
 
         assertTrue("The source is not pointing to all three employees",testList.listElements(SOURCE).size() == 3);
         assertTrue("Employee 1 is not pointing to 1 task", testList.listElements(e1).size() == 1);
@@ -57,7 +57,7 @@ public class ListTest {
         testGraph.addEmployeeNode(e2);
         testGraph.addEmployeeNode(e3);
 
-        List testList = new List(testGraph);
+        AdjacencyList testList = new AdjacencyList(testGraph);
 
         assertTrue(testList.listElements(SOURCE).size() == 3);
     }
@@ -73,7 +73,7 @@ public class ListTest {
         testGraph.addEmployeeNode(e2);
         testGraph.addEmployeeNode(e3);
 
-        List testList = new List(testGraph);
+        AdjacencyList testList = new AdjacencyList(testGraph);
 
         assertTrue(testList.listElements(SOURCE).size() == 3);
 
@@ -101,7 +101,7 @@ public class ListTest {
         testGraph.addEdge(e1,t1);
         testGraph.addEdge(e2,t1);
 
-        List testList = new List(testGraph);
+        AdjacencyList testList = new AdjacencyList(testGraph);
 
         assertEquals(e2, testList.getOtherEmployeesMappedToSameTask(t1,e1));
     }
@@ -118,7 +118,7 @@ public class ListTest {
         testGraph.addTaskNode(t1);
         testGraph.addEdge(e1,t1);
 
-        List testList = new List(testGraph);
+        AdjacencyList testList = new AdjacencyList(testGraph);
 
         assertEquals(SINK, testList.getOtherEmployeesMappedToSameTask(t1,e1));
     }
