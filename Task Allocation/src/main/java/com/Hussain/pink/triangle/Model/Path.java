@@ -12,7 +12,11 @@ import java.util.Stack;
  * Created by Hussain on 29/01/2015.
  */
 public class Path {
-    Graph<Node<Employee>, Node<Task>> copyOfAllocationGraph;
+    private Graph<Node<Employee>, Node<Task>> copyOfAllocationGraph;
+
+    public Path(){
+        //There is nothing to do
+    }
 
     public Path(Graph<Node<Employee>, Node<Task>> allocationGraph){
         this.copyOfAllocationGraph = allocationGraph;
@@ -47,6 +51,14 @@ public class Path {
                     copyOfAllocationGraph.addEdge(employeeNode,taskNode);
                 }
             }
+        }
+    }
+
+    public void setAllocationGraph(Graph<Node<Employee>, Node<Task>> allocationGraph){
+        if(this.copyOfAllocationGraph == null && allocationGraph != null)
+        {
+            this.copyOfAllocationGraph = allocationGraph;
+            this.copyOfAllocationGraph.clear();
         }
     }
 
