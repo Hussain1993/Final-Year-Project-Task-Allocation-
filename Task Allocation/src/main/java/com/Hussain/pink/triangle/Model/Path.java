@@ -36,13 +36,13 @@ public class Path {
                 Node<Employee> employeeNode = null;
                 if(pathStack.peek().getNodeType().equals(NodeType.TASK))
                 {
-                    taskNode = pathStack.pop();
+                    taskNode = pathStack.pop();//We know that this node will be a task node
                 }
                 if(pathStack.peek().getNodeType().equals(NodeType.EMPLOYEE))
                 {
-                    employeeNode = pathStack.pop();
+                    employeeNode = pathStack.pop();//We know that this node will be a employee node
                 }
-                if(taskNode != null && employeeNode != null)
+                if(taskNode != null && employeeNode != null)//Sanity check
                 {
                     copyOfAllocationGraph.addEdge(employeeNode,taskNode);
                 }
