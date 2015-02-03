@@ -49,7 +49,6 @@ public class BiPartiteMatching extends TaskAllocationMethod {
         Stack<Node> stack = new Stack<>();
         ArrayList<Node> nodesWeHaveVisited = new ArrayList<>();
         AdjacencyList adjacencyList = new AdjacencyList(allocationGraph);
-        path.setAllocationGraph(allocationGraph);
         stack.push(SOURCE);
         while (!stack.isEmpty() && !adjacencyList.listElements(stack.peek()).isEmpty())
         {
@@ -85,15 +84,11 @@ public class BiPartiteMatching extends TaskAllocationMethod {
             }
             stack.pop();
         }
+        path.buildPathToMap(allocationGraph);
     }
 
     private void addPath(Stack<Node> pathStack){
         path.addNewPath(pathStack);
     }
-
-    public Path getPath(){
-        return path;
-    }
-
 
 }

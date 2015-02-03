@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import java.util.LinkedHashSet;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Hussain on 26/01/2015.
@@ -19,6 +19,8 @@ public class BiPartiteMatchingTest {
 
     @Test
     public void testAllocateTasks(){
+        Graph<Node<Employee>, Node<Task>> expectedGraph = new Graph<>();
+
         final Skill java = new Skill("Java",1);
         final Skill uml = new Skill("UML",1);
 
@@ -36,6 +38,9 @@ public class BiPartiteMatchingTest {
         Node<Task> t1 = new Node<>(new Task(3,"T1",100,1L,1L,false,e1SkillSet),NodeType.TASK);
         Node<Task> t2 = new Node<>(new Task(4,"T2",102,1L,1L,false,e2SkillSet),NodeType.TASK);
 
+        expectedGraph.addEdge(e1,t1);
+        expectedGraph.addEdge(e2,t2);
+
         Graph<Node<Employee>,Node<Task>> testGraph = new Graph<>();
 
         testGraph.addEmployeeNode(e1);
@@ -47,12 +52,13 @@ public class BiPartiteMatchingTest {
         TaskAllocationMethod testTaskAllocationMethod = new BiPartiteMatching();
         testTaskAllocationMethod.allocateTasks(testGraph);
 
-        assertTrue(testGraph.getMappedTask(e1).size() == 2);//Check that E1 has 2 tasks matched up with them
-        assertTrue(testGraph.getMappedTask(e2).size() == 1);//Check that E2 has 1 task matched up with them
+        assertEquals(expectedGraph,testGraph);
     }
 
     @Test
     public void testBiPartiteMatching(){
+        Graph<Node<Employee>, Node<Task>> expectedGraph = buildExpectedGraph();
+
         Node<Employee> e1 = new Node<>(new Employee(1,"E1",null,0),NodeType.EMPLOYEE);
         Node<Employee> e2 = new Node<>(new Employee(2,"E2",null,0),NodeType.EMPLOYEE);
         Node<Employee> e3 = new Node<>(new Employee(3,"E3",null,0),NodeType.EMPLOYEE);
@@ -92,11 +98,29 @@ public class BiPartiteMatchingTest {
         BiPartiteMatching matching = new BiPartiteMatching();
         matching.biPartiteMatching(testGraph);
 
-        String expected = "[[Node: Employee: E3 Type:EMPLOYEE], [Node: Task: T9 Type:TASK]]\n" +
-                "[[Node: Employee: E1 Type:EMPLOYEE], [Node: Task: T7 Type:TASK]]\n" +
-                "[[Node: Employee: E2 Type:EMPLOYEE], [Node: Task: T6 Type:TASK]]\n" +
-                "[[Node: Employee: E4 Type:EMPLOYEE], [Node: Task: T8 Type:TASK]]";
+        assertEquals(expectedGraph,testGraph);
 
        // assertEquals(expected,matching.biPartiteMatching(testGraph).printPath());
+    }
+
+    private Graph<Node<Employee>, Node<Task>> buildExpectedGraph(){
+        Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
+
+        Node<Employee> e1 = new Node<>(new Employee(1,"E1",null,0),NodeType.EMPLOYEE);
+        Node<Employee> e2 = new Node<>(new Employee(2,"E2",null,0),NodeType.EMPLOYEE);
+        Node<Employee> e3 = new Node<>(new Employee(3,"E3",null,0),NodeType.EMPLOYEE);
+        Node<Employee> e4 = new Node<>(new Employee(4,"E4",null,0),NodeType.EMPLOYEE);
+
+        Node<Task> t6 = new Node<>(new Task(6,"T6",100,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t7 = new Node<>(new Task(7,"T7",100,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t8 = new Node<>(new Task(8,"T8",100,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t9 = new Node<>(new Task(9,"T9",100,1L,1L,false,null),NodeType.TASK);
+
+        graph.addEdge(e1,t7);
+        graph.addEdge(e2,t6);
+        graph.addEdge(e3,t9);
+        graph.addEdge(e4,t8);
+
+        return graph;
     }
 }
