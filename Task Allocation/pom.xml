@@ -14,7 +14,6 @@
     </properties>
 
     <build>
-        <outputDirectory>/Users/Hussain/Desktop/target</outputDirectory>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
