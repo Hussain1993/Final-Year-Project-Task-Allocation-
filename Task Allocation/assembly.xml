@@ -15,36 +15,36 @@
 
     <fileSets>
         <fileSet>
-            <directory>${basedir}/bin</directory>
-            <outputDirectory>/</outputDirectory>
+            <directory>${basedir}\bin</directory>
+            <outputDirectory>\</outputDirectory>
             <includes>
-                <include>**/**</include>
+                <include>**\**</include>
             </includes>
         </fileSet>
         <fileSet>
-            <directory>${basedir}/Scripts</directory>
+            <directory>${basedir}\Scripts</directory>
             <outputDirectory>Scripts</outputDirectory>
             <excludes>
                 <exclude>StartMySQL.sh</exclude>
             </excludes>
             <includes>
-                <include>**/**</include>
+                <include>**\**</include>
             </includes>
         </fileSet>
 
         <fileSet>
-            <directory>${basedir}/config</directory>
+            <directory>${basedir}\config</directory>
             <outputDirectory>config</outputDirectory>
             <includes>
-                <include>**/**</include>
+                <include>**\**</include>
             </includes>
         </fileSet>
 
         <fileSet>
-            <directory>${basedir}/Example CSV Files</directory>
-            <outputDirectory>/Example CSV Files</outputDirectory>
+            <directory>${basedir}\Example CSV Files</directory>
+            <outputDirectory>\Example CSV Files</outputDirectory>
             <includes>
-                <include>**/**</include>
+                <include>**\**</include>
             </includes>
         </fileSet>
     </fileSets>
