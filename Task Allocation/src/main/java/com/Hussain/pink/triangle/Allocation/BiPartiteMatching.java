@@ -80,8 +80,6 @@ public class BiPartiteMatching extends TaskAllocationMethod {
                     }
                 }
                 adjacencyList.removeFromList(stack.peek(),first);
-                //stack.push(first);
-                //stack.pop();
             }
             stack.pop();
         }
