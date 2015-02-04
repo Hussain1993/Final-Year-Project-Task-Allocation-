@@ -100,7 +100,6 @@ public class BiPartiteMatchingTest {
 
         assertEquals(expectedGraph,testGraph);
 
-       // assertEquals(expected,matching.biPartiteMatching(testGraph).printPath());
     }
 
     private Graph<Node<Employee>, Node<Task>> buildExpectedGraph(){
