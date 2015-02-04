@@ -103,9 +103,9 @@ public class AllocationView extends JFrame{
 
                 switch (algorithmBox.getSelectedIndex())
                 {
-                    case GREEDY: greedy(); break;
-                    case MAXIMUM: maximum(); break;
-                    default: greedy(); break;
+                    case GREEDY: populateTable(new Allocation(GREEDY).allocateEmployeesAndTasks()); break;
+                    case MAXIMUM: populateTable(new Allocation(MAXIMUM).allocateEmployeesAndTasks()); break;
+                    default: populateTable(new Allocation(GREEDY).allocateEmployeesAndTasks()); break;
                 }
             }
         });
@@ -177,22 +177,6 @@ public class AllocationView extends JFrame{
             return 0;
         }
 
-    }
-
-    /**
-     * This is an allocation of the tasks using a greedy method
-     */
-    private void greedy(){
-        Allocation greedyAllocation = new Allocation(GREEDY);
-        populateTable(greedyAllocation.allocateEmployeesAndTasks());
-    }
-
-    /**
-     * This is an allocation of the tasks using a maximum method
-     */
-    private void maximum(){
-        Allocation bipartiteMatching = new Allocation(MAXIMUM);
-        populateTable(bipartiteMatching.allocateEmployeesAndTasks());
     }
 
     /**
