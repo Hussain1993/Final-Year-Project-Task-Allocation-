@@ -1,6 +1,7 @@
 package com.Hussain.pink.triangle.View;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +19,6 @@ public class FirstView  extends JFrame{
         super("Task Allocation");
         setContentPane(root);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         addActionListeners();
         pack();
     }
@@ -28,16 +28,22 @@ public class FirstView  extends JFrame{
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = FirstView.this.getLocationOnScreen();
                 FirstView.this.dispose();
-                new RegisterView().setVisible(true);
+                RegisterView registerView = new RegisterView();
+                registerView.setLocation(locationOnScreen);
+                registerView.setVisible(true);
             }
         });
 
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = FirstView.this.getLocationOnScreen();
                 FirstView.this.dispose();
-                new LoginView().setVisible(true);
+                LoginView loginView = new LoginView();
+                loginView.setLocation(locationOnScreen);
+                loginView.setVisible(true);
             }
         });
     }

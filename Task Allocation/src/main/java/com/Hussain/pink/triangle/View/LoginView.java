@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -50,8 +51,11 @@ public class LoginView extends JFrame{
                     if(DatabaseQueries.logUserIntoSystem(username,hashedPassword))
                     {
                         LOG.info("The user {} has logged into the system", username);
+                        Point locationOnScreen = LoginView.this.getLocationOnScreen();
                         LoginView.this.dispose();
-                        new WelcomeScreen().setVisible(true);
+                        WelcomeScreen welcomeScreen = new WelcomeScreen();
+                        welcomeScreen.setLocation(locationOnScreen);
+                        welcomeScreen.setVisible(true);
                     }
                     else
                     {
@@ -70,16 +74,22 @@ public class LoginView extends JFrame{
         registerScreenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = LoginView.this.getLocationOnScreen();
                 LoginView.this.dispose();
-                new RegisterView().setVisible(true);
+                RegisterView registerView = new RegisterView();
+                registerView.setLocation(locationOnScreen);
+                registerView.setVisible(true);
             }
         });
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = LoginView.this.getLocationOnScreen();
                 LoginView.this.dispose();
-                new FirstView().setVisible(true);
+                FirstView firstView = new FirstView();
+                firstView.setLocation(locationOnScreen);
+                firstView.setVisible(true);
             }
         });
     }

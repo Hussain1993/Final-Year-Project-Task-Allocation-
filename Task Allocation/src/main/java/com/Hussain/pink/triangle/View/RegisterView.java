@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -52,8 +53,11 @@ public class RegisterView extends JFrame{
                             if(numberOfUsersEnteredIntoDatabase == 1)
                             {
                                 LOG.info("A new user has been added to the database, with the username: {}",username);
+                                Point locationOnScreen = RegisterView.this.getLocationOnScreen();
                                 RegisterView.this.dispose();
-                                new LoginView().setVisible(true);
+                                LoginView loginView = new LoginView();
+                                loginView.setLocation(locationOnScreen);
+                                loginView.setVisible(true);
                             }
                             else
                             {
@@ -81,16 +85,22 @@ public class RegisterView extends JFrame{
         loginScreenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = RegisterView.this.getLocationOnScreen();
                 RegisterView.this.dispose();
-                new LoginView().setVisible(true);
+                LoginView loginView = new LoginView();
+                loginView.setLocation(locationOnScreen);
+                loginView.setVisible(true);
             }
         });
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = RegisterView.this.getLocationOnScreen();
                 RegisterView.this.dispose();
-                new FirstView().setVisible(true);
+                FirstView firstView = new FirstView();
+                firstView.setLocation(locationOnScreen);
+                firstView.setVisible(true);
             }
         });
     }

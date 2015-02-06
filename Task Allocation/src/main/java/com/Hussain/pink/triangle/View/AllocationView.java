@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -79,7 +80,7 @@ public class AllocationView extends JFrame{
                 String file = FileIO.openFileDialog(AllocationView.this, extension, description,FileIO.OPEN_MODE);
                 if (file != null)
                 {
-                loadFileIntoTable(file);
+                    loadFileIntoTable(file);
                 }
             }
         });
@@ -120,8 +121,11 @@ public class AllocationView extends JFrame{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = AllocationView.this.getLocationOnScreen();
                 AllocationView.this.dispose();
-                new WelcomeScreen().setVisible(true);
+                WelcomeScreen welcomeScreen = new WelcomeScreen();
+                welcomeScreen.setLocation(locationOnScreen);
+                welcomeScreen.setVisible(true);
             }
         });
 

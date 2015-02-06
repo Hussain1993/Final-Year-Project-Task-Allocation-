@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -138,8 +139,11 @@ public class ImportCSVView extends JFrame{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new WelcomeScreen().setVisible(true);
+                Point locationOnScreen = ImportCSVView.this.getLocationOnScreen();
                 ImportCSVView.this.dispose();
+                WelcomeScreen welcomeScreen = new WelcomeScreen();
+                welcomeScreen.setLocation(locationOnScreen);
+                welcomeScreen.setVisible(true);
             }
         });
     }
