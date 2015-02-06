@@ -11,6 +11,7 @@ import com.mockrunner.mock.jdbc.MockResultSetMetaData;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -55,6 +56,33 @@ public class TaskAllocationMethodTest {
 
         assertTrue("All the employees have not been added",testGraph.getEmployeeNodes().containsAll(employeeNodes));
         assertTrue("All the tasks have not been added", testGraph.getTaskNodes().containsAll(taskNodes));
+    }
+
+    @Test
+    public void testBuildGraph2(){
+        MockResultSet mockEmployeeResultSet = new MockResultSet("EmployeeResultSet");
+
+        MockResultSetMetaData mockEmployeeResultSetMetaData = new MockResultSetMetaData();
+        mockEmployeeResultSetMetaData.setColumnCount(9);
+
+        mockEmployeeResultSet.setResultSetMetaData(mockEmployeeResultSetMetaData);
+
+        mockEmployeeResultSet.addColumn("ID",new Integer[]{1});
+        mockEmployeeResultSet.addColumn("NAME", new String[] {"TestName"});
+        mockEmployeeResultSet.addColumn("SKILLS", new String[] {"1"});
+        mockEmployeeResultSet.addColumn("COST", new Integer[] {200});
+        mockEmployeeResultSet.addColumn("PROFICIENCY", new String[]{"1"});
+
+        mockEmployeeResultSet.addColumn("TASK_ID",new Integer[] {100});
+        mockEmployeeResultSet.addColumn("DATE_FROM", new Date[] {new Date(1L)});
+        mockEmployeeResultSet.addColumn("DATE_TO", new Date[] {new Date(1L)});
+        mockEmployeeResultSet.addColumn("COMPLETED", new Boolean[] {false});
+
+        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+        Graph<Node<Employee>, Node<Task>> testGraph = taskAllocationMethod.buildGraph(mockEmployeeResultSet,null);
+
+        ArrayList<Node<Employee>> employeeNodes = testGraph.getEmployeeNodes();
+        assertNotNull(employeeNodes.get(0).getObject().getTaskAssigned());
     }
 
     private Set<Node<Employee>> buildEmployeeNodes(){
@@ -218,5 +246,82 @@ public class TaskAllocationMethodTest {
 
         assertTrue(taskAllocation.checkEmployeeAvailableForTask(e,t));
 
+    }
+
+    @Test
+    public void testCheckEmployeeAvailableForTask_TaskCompleted(){
+        Task taskAssignedToEmployee = new Task(100,"Test",900,1L,1L,true,null);
+        Employee employee = new Employee(1,"Test",null,0,taskAssignedToEmployee);
+
+        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+
+        assertTrue(taskAllocationMethod.checkEmployeeAvailableForTask(employee,null));
+    }
+
+    @Test
+    public void testTaskGroupOrder(){
+        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+
+        String expectedProjectGroupOrder = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, " +
+                "TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
+                "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) FROM TASKS, SKILLS, TASK_SKILLS, " +
+                "PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID " +
+                "AND TASKS.PROJECT_ID = PROJECTS.ID group by projects.id, tasks.id";
+
+        String expectedTaskGroupOrder = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, " +
+                "TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
+                "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) FROM TASKS, SKILLS, TASK_SKILLS, " +
+                "PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID AND " +
+                "TASKS.PROJECT_ID = PROJECTS.ID group by tasks.id";
+
+        taskAllocationMethod.setTaskGroupOrder(true);
+
+        assertEquals(expectedProjectGroupOrder,taskAllocationMethod.getTaskQuery().toString());
+
+        taskAllocationMethod = new GreedyTaskAllocation();
+
+        taskAllocationMethod.setTaskGroupOrder(false);
+
+        assertEquals(expectedTaskGroupOrder,taskAllocationMethod.getTaskQuery().toString());
+    }
+
+    @Test
+    public void testQueryOrder(){
+        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+
+        taskAllocationMethod.setEmployeeQuery(false);
+
+        taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,TaskAllocationMethod.EMPLOYEE_QUERY);
+        taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,TaskAllocationMethod.TASK_QUERY);
+
+        String expectedEmployeeQuery = "select employees.id,concat_ws(' ',employees.first_name,employees.last_name) " +
+                "as name,group_concat(skills.skill),\n" +
+                " employees.cost, group_concat(employee_skills.PROFICIENCY)\n" +
+                " from employee_skills join employees on employee_skills.employee_id = employees.id\n" +
+                " join skills on employee_skills.skill_id = skills.id group by employees.id order by name asc";
+
+        String expectedTaskQuery = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, TASKS.DATE_TO, " +
+                "TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) " +
+                "FROM TASKS, SKILLS, TASK_SKILLS, PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND " +
+                "SKILLS.ID = TASK_SKILLS.SKILL_ID AND TASKS.PROJECT_ID = PROJECTS.ID order by name asc";
+
+        assertEquals(expectedEmployeeQuery,taskAllocationMethod.getEmployeeQuery().toString());
+        assertEquals(expectedTaskQuery, taskAllocationMethod.getTaskQuery().toString());
+    }
+
+    @Test
+    public void testSetEmployeeQuery(){
+       TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+
+        taskAllocationMethod.setEmployeeQuery(true);
+
+        String expectedEmployeeQuery = "SELECT EMPLOYEES.ID, CONCAT_WS(' ',EMPLOYEES.FIRST_NAME,EMPLOYEES.LAST_NAME) " +
+                "AS NAME, GROUP_CONCAT(SKILLS.SKILL), EMPLOYEES.COST, GROUP_CONCAT(EMPLOYEE_SKILLS.PROFICIENCY), " +
+                "ASSIGNED_TO.TASK_ID, TASKS.DATE_FROM, TASKS.DATE_TO, TASKS.COMPLETED  FROM EMPLOYEE_SKILLS " +
+                "JOIN EMPLOYEES ON EMPLOYEE_SKILLS.EMPLOYEE_ID = EMPLOYEES.ID JOIN SKILLS ON " +
+                "EMPLOYEE_SKILLS.SKILL_ID = SKILLS.ID LEFT JOIN ASSIGNED_TO ON EMPLOYEES.ID = ASSIGNED_TO.EMPLOYEE_ID " +
+                "LEFT JOIN TASKS ON ASSIGNED_TO.TASK_ID = TASKS.ID GROUP BY EMPLOYEES.ID";
+
+        assertEquals(expectedEmployeeQuery, taskAllocationMethod.getEmployeeQuery().toString());
     }
 }

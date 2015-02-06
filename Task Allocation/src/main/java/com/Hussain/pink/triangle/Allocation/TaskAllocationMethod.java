@@ -58,9 +58,7 @@ public abstract class TaskAllocationMethod {
     private Connection conn;
     private Statement stmt;
 
-    protected static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
-
-    protected Graph<Node<Employee>,Node<Task>> allocationGraph;
+    private static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
 
     public static final String ORDER_NAME_ALPHABETICAL = " order by name asc";
     public static final String ORDER_NAME_REVERSE_ALPHABETICAL = " order by name desc";
@@ -93,7 +91,7 @@ public abstract class TaskAllocationMethod {
      * returned
      */
     public Graph<Node<Employee>,Node<Task>> buildGraph(ResultSet employeeResults, ResultSet taskResults){
-        allocationGraph = new Graph<>();
+        Graph<Node<Employee>, Node<Task>> allocationGraph = new Graph<>();
         try{
             while(employeeResults != null && employeeResults.next())
             {
@@ -136,7 +134,7 @@ public abstract class TaskAllocationMethod {
                     e = new Employee(id,name,skillSet,cost);
                 }
                 LOG.debug("Adding the employee with the name {} to the graph",name);
-                allocationGraph.addEmployeeNode(new Node<>(e,NodeType.EMPLOYEE));
+                allocationGraph.addEmployeeNode(new Node<>(e, NodeType.EMPLOYEE));
             }
             while(taskResults != null &&taskResults.next())
             {
@@ -153,8 +151,8 @@ public abstract class TaskAllocationMethod {
                 LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiencyRequired);//Build the skill set for the task
 
                 LOG.debug("Adding the task with the name {} to the graph",taskName);
-                allocationGraph.addTaskNode(new Node<>(new Task(id,taskName,projectID,dateFrom.getTime(),
-                        dateTo.getTime(),completed,skillSet),NodeType.TASK));
+                allocationGraph.addTaskNode(new Node<>(new Task(id, taskName, projectID, dateFrom.getTime(),
+                        dateTo.getTime(), completed, skillSet), NodeType.TASK));
             }
         }
         catch(SQLException e){
