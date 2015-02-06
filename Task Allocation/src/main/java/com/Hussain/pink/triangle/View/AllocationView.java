@@ -139,6 +139,8 @@ public class AllocationView extends JFrame{
      */
     private void loadFileIntoTable(String filePath){
         ArrayList<Object[]> dataRows = TaskAllocationFile.parseTaskAllocationFile(filePath);
+        //Clear the table before we show the suggested allocation to the user
+        tableModel.setRowCount(0);
         for(Object[] row: dataRows)
         {
             tableModel.addRow(row);
