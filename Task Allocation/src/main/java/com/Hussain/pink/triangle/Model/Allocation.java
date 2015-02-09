@@ -26,6 +26,8 @@ public class Allocation {
     private static final Logger LOG = LoggerFactory.getLogger(Allocation.class);
 
     private TaskAllocationMethod taskAllocationMethod;
+    private ResultSet employeesResultSet;
+    private ResultSet tasksResultSet;
 
     /**
      * Make a new allocation depending on which algorithm that should be used
@@ -56,14 +58,39 @@ public class Allocation {
         setEmployeeQueryOrder();
         setTaskQueryOrder();
 
-        ResultSet employeesResultSet = taskAllocationMethod.executeQuery(TaskAllocationMethod.EMPLOYEE_QUERY);
-        ResultSet taskResultSet = taskAllocationMethod.executeQuery(TaskAllocationMethod.TASK_QUERY);
+        Thread employeeThread = new Thread(){
+            public void run(){
+                employeesResultSet = Allocation.this.taskAllocationMethod.executeQuery(TaskAllocationMethod.EMPLOYEE_QUERY);
+            }
+        };
 
-        Graph<Node<Employee>,Node<Task>> taskAllocationGraph = taskAllocationMethod.buildGraph(employeesResultSet,taskResultSet);
 
-        taskAllocationMethod.allocateTasks(taskAllocationGraph);
+        final Thread taskThread = new Thread(){
+          public void run(){
+              tasksResultSet = Allocation.this.taskAllocationMethod.executeQuery(TaskAllocationMethod.TASK_QUERY);
+          }
+        };
 
-        return buildRows(taskAllocationGraph);//Build and return the rows
+        employeeThread.start();
+        taskThread.start();
+
+        try{
+            employeeThread.join();
+            taskThread.join();
+        }
+        catch (InterruptedException e) {
+            LOG.error("There was an error with the query threads",e);
+        }
+
+        if(employeesResultSet != null && tasksResultSet != null)
+        {
+            Graph<Node<Employee>,Node<Task>> taskAllocationGraph = taskAllocationMethod.buildGraph(employeesResultSet,tasksResultSet);
+
+            taskAllocationMethod.allocateTasks(taskAllocationGraph);
+
+            return buildRows(taskAllocationGraph);//Build and return the rows
+        }
+        return new ArrayList<>();
     }
 
     /**
@@ -130,31 +157,6 @@ public class Allocation {
         {
             LOG.info("There were no allocations within the graph, returning an empty table");
         }
-//        if(taskAllocationMethod instanceof BiPartiteMatching)
-//        {
-//
-//        }
-//        else if(taskAllocationMethod instanceof GreedyTaskAllocation)
-//        {
-//            if (taskAllocationGraph.hasEdges())//Check that there are edges within the graph
-//            {
-//                List<Map.Entry<Node<Employee>, Node<Task>>> entrySet = taskAllocationGraph.getEmployeeToTaskMapping().entries();
-//                for (Map.Entry<Node<Employee>, Node<Task>> employeeTaskEntry : entrySet) {
-//                    Node<Employee> employeeNode = employeeTaskEntry.getKey();
-//                    Node<Task> taskNode = employeeTaskEntry.getValue();
-//                    Employee e = employeeNode.getObject();
-//                    Task t = taskNode.getObject();
-//                    //The last column will always be initially false, as the user has not
-//                    //been assigned any of the tasks within the table
-//                    Object[] rowData = {e.getId(), e.getName(), t.getTaskName(), t.getId(), false};
-//                    tableRows.add(rowData);
-//                }
-//            }
-//            else
-//            {
-//                LOG.info("There were no allocations within the graph, returning an empty table");
-//            }
-//        }
         return tableRows;
     }
 }
