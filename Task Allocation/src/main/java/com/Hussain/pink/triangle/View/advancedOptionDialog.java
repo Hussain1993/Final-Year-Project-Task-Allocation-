@@ -19,6 +19,7 @@ public class advancedOptionDialog extends JDialog {
     private JComboBox employeeAssignedTaskComboBox;
     private JComboBox orderOfEmployeesComboBox;
     private JComboBox groupTasksComboBox;
+    private JCheckBox heuristicCheckBox;
 
     public advancedOptionDialog() {
         setContentPane(rootPanel);
