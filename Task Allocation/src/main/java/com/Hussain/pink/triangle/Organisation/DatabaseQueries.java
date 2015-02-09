@@ -159,4 +159,27 @@ public class DatabaseQueries {
         }
         return false;
     }
+
+    public static boolean areThereUsersInTheSystem(){
+        String query = "select id from USERS";
+        conn = DatabaseConnection.getDatabaseConnection();
+        if(conn != null)
+        {
+            try{
+                stmt = conn.prepareStatement(query);
+
+                ResultSet resultSet = stmt.executeQuery();
+
+                return !isResultSetEmpty(resultSet);
+            }
+            catch (SQLException e) {
+                LOG.error("There was an error with the SQL statement", e);
+                return false;
+            }
+            finally {
+                DbUtils.closeQuietly(conn,stmt,null);
+            }
+        }
+        return false;
+    }
 }

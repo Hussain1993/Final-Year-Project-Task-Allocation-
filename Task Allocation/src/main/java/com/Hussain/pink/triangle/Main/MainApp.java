@@ -1,6 +1,6 @@
 package com.Hussain.pink.triangle.Main;
 
-import com.Hussain.pink.triangle.View.FirstView;
+import com.Hussain.pink.triangle.Threads.StartingThread;
 import com.Hussain.pink.triangle.View.LogView;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -14,6 +14,6 @@ public class MainApp {
     public static void main(String[] args) {
         Security.addProvider(new BouncyCastleProvider());//Add the Bouncy Castle security provider at the start
         LogView.getInstance().setVisible(true);//Show the logging window
-        new FirstView().setVisible(true);//Show the actual application to the user
+        new Thread(new StartingThread()).start();
     }
 }
