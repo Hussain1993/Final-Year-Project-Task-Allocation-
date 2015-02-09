@@ -90,6 +90,8 @@ public class advancedOptionDialog extends JDialog {
         {
             groupTasksComboBox.setSelectedIndex(0);
         }
+
+        heuristicCheckBox.setSelected(AdvancedOptions.getUseHeuristic());
         pack();
     }
 
@@ -118,6 +120,8 @@ public class advancedOptionDialog extends JDialog {
         }
 
         AdvancedOptions.setGroupTasksByProject(BooleanUtils.toBoolean(groupTasksComboBox.getSelectedItem().toString()));
+
+        AdvancedOptions.setUseHeuristic(heuristicCheckBox.isSelected());
 
         dispose();
     }
