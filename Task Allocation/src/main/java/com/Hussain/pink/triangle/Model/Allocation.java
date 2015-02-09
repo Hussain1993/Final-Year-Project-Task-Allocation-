@@ -90,7 +90,7 @@ public class Allocation {
 
             return buildRows(taskAllocationGraph);//Build and return the rows
         }
-        return new ArrayList<>();
+        return new ArrayList<>();//Return an empty array list at the end
     }
 
     /**
