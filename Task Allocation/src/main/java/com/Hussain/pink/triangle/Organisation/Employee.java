@@ -10,13 +10,14 @@ import java.util.LinkedHashSet;
  * retrieved from the database
  *
  */
-public class Employee {
+public class Employee implements Comparable<Employee> {
 
     private int id;
     private String name;
     private LinkedHashSet<Skill> skills;
     private double cost;
 
+    private int heuristicFunctionScore;
 
     private Task taskAssigned;
 
@@ -78,6 +79,14 @@ public class Employee {
         return this.taskAssigned;
     }
 
+   public int getHeuristicFunctionScore(){
+       return heuristicFunctionScore;
+   }
+
+   public void setHeuristicFunctionScore(int heuristicFunctionScore){
+       this.heuristicFunctionScore = heuristicFunctionScore;
+   }
+
     @Override
     public boolean equals(Object other) {
         if(other == null)
@@ -108,5 +117,12 @@ public class Employee {
         hash = hash * 31 + getName().hashCode();
         hash = hash * 5 + getEmployeeType().hashCode();
         return hash;
+    }
+
+    @Override
+    public int compareTo(Employee employee) {
+        int otherHeuristicFunctionScore = employee.getHeuristicFunctionScore();
+
+        return this.getHeuristicFunctionScore() - otherHeuristicFunctionScore;
     }
 }

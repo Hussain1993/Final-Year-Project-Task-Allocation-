@@ -4,6 +4,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.LinkedHashSet;
+import java.util.PriorityQueue;
 
 import static org.junit.Assert.*;
 
@@ -78,5 +79,31 @@ public class EmployeeTest {
         Employee employeeAssignedATask = new Employee(1,null,null,1,t);
 
         assertEquals(EmployeeType.ASSIGNED_TASK, employeeAssignedATask.getEmployeeType());
+    }
+
+    @Test
+    public void testGetSetHeuristicFunctionScore() {
+        Employee e = new Employee(1,"",null,0);
+
+        e.setHeuristicFunctionScore(10);
+
+        assertEquals(10,e.getHeuristicFunctionScore());
+
+    }
+
+    @Test
+    public void testCompare(){
+        Employee e1 = new Employee(1,"E1",null,0);
+        Employee e2 = new Employee(2,"E2",null,0);
+
+        e1.setHeuristicFunctionScore(1000);
+        e2.setHeuristicFunctionScore(9);
+
+        PriorityQueue<Employee> employeePriorityQueue = new PriorityQueue<>();
+
+        employeePriorityQueue.add(e1);
+        employeePriorityQueue.add(e2);
+
+        assertEquals(e2,employeePriorityQueue.peek());
     }
 }

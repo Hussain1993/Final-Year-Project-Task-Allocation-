@@ -50,6 +50,18 @@ public class FileIO {
         return filePath;
     }
 
+    public static String chooseDirectory(Component component){
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Directory to save CSV Files");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        if(chooser.showOpenDialog(component) == JFileChooser.APPROVE_OPTION)
+        {
+            return chooser.getSelectedFile().getPath();
+        }
+        return null;
+    }
+
     /**
      * Small utility method to check if a file exists
      * using a String path

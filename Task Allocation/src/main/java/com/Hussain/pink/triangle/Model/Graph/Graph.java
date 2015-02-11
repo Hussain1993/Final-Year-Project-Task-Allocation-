@@ -27,6 +27,7 @@ public class Graph<E,T> {
         employeeMatching = LinkedListMultimap.create();
         employeeNodes = new ArrayList<>();
         taskNodes = new ArrayList<>();
+
     }
 
     /**
@@ -150,11 +151,34 @@ public class Graph<E,T> {
         return numberOfEdges > 0;
     }
 
+    /**
+     * This clears the map
+     */
     public void clear(){
         this.employeeMatching.clear();
         this.employeeNodes.clear();
         this.taskNodes.clear();
         numberOfEdges = 0;
+    }
+
+    public ArrayList<E> getMappedEmployees(T taskToCheck){
+        ArrayList<E> mappedEmployees = new ArrayList<>();
+        for (E key : this.employeeMatching.keySet())
+        {
+            if(getMappedTask(key).contains(taskToCheck))
+            {
+                mappedEmployees.add(key);
+            }
+        }
+        return mappedEmployees;
+    }
+
+    public void removeEdgesForHeuristicFunction(ArrayList<E> employeeNodes, E matchedEmployee, T matchedTask){
+        employeeMatching.removeAll(matchedEmployee);
+        for (E employeeNode : employeeNodes)
+        {
+            employeeMatching.remove(employeeNode,matchedTask);
+        }
     }
 
     public boolean equals(Object other){

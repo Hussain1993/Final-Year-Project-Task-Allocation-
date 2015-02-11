@@ -27,22 +27,9 @@ public class BiPartiteMatching extends TaskAllocationMethod {
     public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
         List<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
         List<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
-        //Loop over every single employee and find the task they can be matched to
-        //DON'T keep a record of which tasks that have been matched
-        for(Node<Employee> employeeNode : employeeNodes)
-        {
-            Employee e = employeeNode.getObject();
-            for(Node<Task> taskNode : taskNodes)
-            {
-                Task t = taskNode.getObject();
-                boolean employeeAvailableForTask = checkEmployeeAvailableForTask(e,t);
-                boolean skillsMatch = checkSkillsMatch(e,t);
-                if(employeeAvailableForTask && skillsMatch)
-                {
-                    allocationGraph.addEdge(employeeNode,taskNode);
-                }
-            }
-        }
+
+        addAllPossibleMatching(employeeNodes, taskNodes, allocationGraph);
+
         biPartiteMatching(allocationGraph);
     }
 

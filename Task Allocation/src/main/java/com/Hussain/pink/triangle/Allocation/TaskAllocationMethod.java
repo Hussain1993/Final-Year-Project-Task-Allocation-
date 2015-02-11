@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * This abstract class will be used to query the database,
@@ -382,4 +383,24 @@ public abstract class TaskAllocationMethod {
         }
         return skillSet;
     }
+
+    public void addAllPossibleMatching(List<Node<Employee>> employeeNodes, List<Node<Task>> taskNodes, Graph<Node<Employee>, Node
+            <Task>> allocationGraph){
+
+        for(Node<Employee> employeeNode : employeeNodes)
+        {
+            Employee employee = employeeNode.getObject();
+            for(Node<Task> taskNode : taskNodes)
+            {
+                Task task = taskNode.getObject();
+                boolean employeeAvailableForTask = checkEmployeeAvailableForTask(employee,task);
+                boolean skillsMatch = checkSkillsMatch(employee,task);
+                if(employeeAvailableForTask && skillsMatch)
+                {
+                    allocationGraph.addEdge(employeeNode, taskNode);
+                }
+            }
+        }
+    }
+
 }

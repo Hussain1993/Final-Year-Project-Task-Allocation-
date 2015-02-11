@@ -37,6 +37,12 @@
               <text value="Allocation"/>
             </properties>
           </component>
+          <component id="e4c6b" class="javax.swing.JButton" binding="exportDatabaseButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Export Database"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

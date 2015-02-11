@@ -1,11 +1,13 @@
 package com.Hussain.pink.triangle.Allocation;
 
+import com.Hussain.pink.triangle.Model.EuclideanHeuristic;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +26,20 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
     public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
         List<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
         List<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
+
+        if(true)//They would like to use the heuristic function when matching employees to tasks
+        {
+            greedyHeuristic(employeeNodes,taskNodes,allocationGraph);
+        }
+        else
+        {
+            greedy(employeeNodes,taskNodes,allocationGraph);
+        }
+    }
+
+
+    private void greedy(List<Node<Employee>> employeeNodes, List<Node<Task>> taskNodes,
+                        Graph<Node<Employee>, Node<Task>> allocationGraph){
         for (Node<Employee> employeeNode : employeeNodes) {
             Employee employee = employeeNode.getObject();
             for (Node<Task> taskNode : taskNodes) {
@@ -38,10 +54,26 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
                 if(skillsMatch && employeeAvailableForTask)
                 {
                     allocationGraph.addEdge(employeeNode,taskNode);
-                    matchedTasks = ArrayUtils.add(matchedTasks,task);
+                    matchedTasks = ArrayUtils.add(matchedTasks, task);
                     //Once a employee has been matched up with a task move to the next employee on the list
                     break;
                 }
+            }
+        }
+    }
+
+    public void greedyHeuristic(List<Node<Employee>> employeeNodes, List<Node<Task>> taskNodes,
+                                 Graph<Node<Employee>, Node<Task>> allocationGraph){
+        //addAllPossibleMatching(employeeNodes,taskNodes,allocationGraph);
+        for(Node<Task> taskNode : taskNodes)
+        {
+            ArrayList<Node<Employee>> listOfApplicableEmployees = allocationGraph.getMappedEmployees(taskNode);
+            if(listOfApplicableEmployees.size() > 1)
+            {
+                Node<Employee> bestMatchedEmployee = EuclideanHeuristic.findBestMatchEmployee(listOfApplicableEmployees);
+                listOfApplicableEmployees.remove(bestMatchedEmployee);
+                allocationGraph.removeEdgesForHeuristicFunction(listOfApplicableEmployees,bestMatchedEmployee,taskNode);
+                allocationGraph.addEdge(bestMatchedEmployee,taskNode);
             }
         }
     }

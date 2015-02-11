@@ -1,5 +1,8 @@
 package com.Hussain.pink.triangle.View;
 
+import com.Hussain.pink.triangle.CSV.ExportCSV;
+import com.Hussain.pink.triangle.Utils.FileIO;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,6 +17,7 @@ public class WelcomeScreen extends JFrame{
     private JPanel rootPanel;
     private JButton importCSVsButton;
     private JButton allocationButton;
+    private JButton exportDatabaseButton;
 
     public WelcomeScreen(){
         super("Task Allocation");
@@ -44,6 +48,15 @@ public class WelcomeScreen extends JFrame{
                 AllocationView allocationView = new AllocationView();
                 allocationView.setLocation(locationOnScreen);
                 allocationView.setVisible(true);
+            }
+        });
+
+        exportDatabaseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String folderToStoreCSVFiles = FileIO.chooseDirectory(WelcomeScreen.this);
+                ExportCSV exportCSV = new ExportCSV(folderToStoreCSVFiles);
+                exportCSV.exportDatabase();
             }
         });
     }

@@ -25,7 +25,7 @@ public class GraphTest {
         set.add(employeeNode);
         Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
         graph.addEmployeeNode(employeeNode);
-        assertEquals(set,graph.getEmployeeNodes());
+        assertEquals(set, graph.getEmployeeNodes());
     }
 
     @Test
@@ -48,7 +48,7 @@ public class GraphTest {
         graph.addEmployeeNode(employeeNode);
         graph.addTaskNode(taskNode);
 
-        graph.addEdge(employeeNode,taskNode);
+        graph.addEdge(employeeNode, taskNode);
 
         assertTrue(graph.hasRelationship(employeeNode,taskNode));
 
@@ -85,7 +85,7 @@ public class GraphTest {
         testGraph.addTaskNode(t2);
 
         testGraph.addEdge(employeeNode,t1);
-        testGraph.addEdge(employeeNode,t2);
+        testGraph.addEdge(employeeNode, t2);
 
         assertTrue(testGraph.hasRelationship(employeeNode,t1) && testGraph.hasRelationship(employeeNode,t2));
     }
@@ -167,5 +167,24 @@ public class GraphTest {
         sameGraph.addEdge(e,t);
 
         assertTrue(testGraph.equals(sameGraph));
+    }
+
+    @Test
+    public void testGetMappedEmployees(){
+        final Node<Employee> e1 = new Node<>(new Employee(1,"E1",null,0),NodeType.EMPLOYEE);
+        final Node<Employee> e2 = new Node<>(new Employee(2,"E2",null,0),NodeType.EMPLOYEE);
+
+        ArrayList<Node<Employee>> expectedList = new ArrayList<Node<Employee>>(){{
+            add(e1); add(e2);
+        }};
+
+        Node<Task> t1 = new Node<>(new Task(1,"T1",100,1L,1L,false,null),NodeType.TASK);
+
+        Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
+
+        testGraph.addEdge(e1,t1);
+        testGraph.addEdge(e2,t1);
+
+        assertTrue(expectedList.containsAll(testGraph.getMappedEmployees(t1)));
     }
 }
