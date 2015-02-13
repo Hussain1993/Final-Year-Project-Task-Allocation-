@@ -14,6 +14,8 @@ public class AdvancedOptions {
     private static OrderType TASKS_ORDER = OrderType.NONE; //This is the default ordering
     private static boolean GROUP_TASKS_BY_PROJECT = false;
 
+    private static boolean USE_HEURISTIC = false;
+
 
     /**
      * Gets the property whether the query should check
@@ -85,5 +87,13 @@ public class AdvancedOptions {
      */
     public static void setGroupTasksByProject(boolean groupTasksByProject) {
         GROUP_TASKS_BY_PROJECT = groupTasksByProject;
+    }
+
+    public static boolean getUseHeuristic(){
+        return USE_HEURISTIC;
+    }
+
+    public static void setUseHeuristic(boolean heuristic){
+        USE_HEURISTIC = heuristic;
     }
 }

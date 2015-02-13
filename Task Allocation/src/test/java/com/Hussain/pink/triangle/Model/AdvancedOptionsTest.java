@@ -43,4 +43,14 @@ public class AdvancedOptionsTest {
 
         assertTrue(AdvancedOptions.groupTasksByProject());
     }
+
+    @Test
+    public void testGetSetUseHeuristic() {
+        assertFalse(AdvancedOptions.getUseHeuristic());
+
+        AdvancedOptions.setUseHeuristic(true);
+
+        assertTrue(AdvancedOptions.getUseHeuristic());
+
+    }
 }
