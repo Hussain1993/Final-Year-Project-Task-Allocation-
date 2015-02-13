@@ -174,11 +174,16 @@ public class Graph<E,T> {
     }
 
     public void removeEdgesForHeuristicFunction(ArrayList<E> employeeNodes, E matchedEmployee, T matchedTask){
-        employeeMatching.removeAll(matchedEmployee);
+        numberOfEdges -= employeeMatching.removeAll(matchedEmployee).size();
         for (E employeeNode : employeeNodes)
         {
             employeeMatching.remove(employeeNode,matchedTask);
+            numberOfEdges--;
         }
+    }
+
+    public int getNumberOfEdges(){
+        return this.numberOfEdges;
     }
 
     public boolean equals(Object other){

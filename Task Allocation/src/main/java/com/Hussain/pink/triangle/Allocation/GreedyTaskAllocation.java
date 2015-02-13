@@ -1,6 +1,6 @@
 package com.Hussain.pink.triangle.Allocation;
 
-import com.Hussain.pink.triangle.Model.EuclideanHeuristic;
+import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Organisation.Employee;
@@ -27,7 +27,7 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
         List<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
         List<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
 
-        if(false)//They would like to use the heuristic function when matching employees to tasks
+        if(AdvancedOptions.getUseHeuristic())//They would like to use the heuristic function when matching employees to tasks
         {
             greedyHeuristic(employeeNodes,taskNodes,allocationGraph);
         }
@@ -64,7 +64,7 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
 
     public void greedyHeuristic(List<Node<Employee>> employeeNodes, List<Node<Task>> taskNodes,
                                  Graph<Node<Employee>, Node<Task>> allocationGraph){
-        //addAllPossibleMatching(employeeNodes,taskNodes,allocationGraph);
+        addAllPossibleMatching(employeeNodes,taskNodes,allocationGraph);
         for(Node<Task> taskNode : taskNodes)
         {
             ArrayList<Node<Employee>> listOfApplicableEmployees = allocationGraph.getMappedEmployees(taskNode);

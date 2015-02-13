@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Model;
+package com.Hussain.pink.triangle.Allocation;
 
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Model.Graph.NodeType;
