@@ -40,7 +40,7 @@ public class ExportCSV {
                     gate.await();
                 }
                 catch (InterruptedException | BrokenBarrierException e) {
-                    LOG.error("There was an error with the thread");
+                    LOG.error("There was an error with the thread",e);
                 }
                 if(!ExportCSV.this.exportAssignedTo())
                 {
@@ -56,7 +56,7 @@ public class ExportCSV {
                     gate.await();
                 }
                 catch (InterruptedException | BrokenBarrierException e) {
-                    LOG.error("There was an error with the thread");
+                    LOG.error("There was an error with the thread",e);
                 }
                 if(!ExportCSV.this.exportEmployees())
                 {
@@ -72,7 +72,7 @@ public class ExportCSV {
                     gate.await();
                 }
                 catch (InterruptedException | BrokenBarrierException e) {
-                    LOG.error("There was an error with the thread");
+                    LOG.error("There was an error with the thread",e);
                 }
                 if(!ExportCSV.this.exportEmployeeSkills())
                 {
@@ -88,7 +88,7 @@ public class ExportCSV {
                     gate.await();
                 }
                 catch (InterruptedException | BrokenBarrierException e) {
-                    LOG.error("There was an error with the thread");
+                    LOG.error("There was an error with the thread",e);
                 }
                 if(!ExportCSV.this.exportProjects())
                 {
@@ -104,7 +104,7 @@ public class ExportCSV {
                     gate.await();
                 }
                 catch (InterruptedException | BrokenBarrierException e) {
-                    LOG.error("There was an error with the thread");
+                    LOG.error("There was an error with the thread",e);
                 }
                 if(!ExportCSV.this.exportSkills())
                 {
@@ -120,7 +120,7 @@ public class ExportCSV {
                     gate.await();
                 }
                 catch (InterruptedException | BrokenBarrierException e) {
-                    LOG.error("There was an error with the thread");
+                    LOG.error("There was an error with the thread",e);
                 }
                 if(!ExportCSV.this.exportTasks())
                 {
@@ -136,7 +136,7 @@ public class ExportCSV {
                     gate.await();
                 }
                 catch (InterruptedException | BrokenBarrierException e) {
-                    LOG.error("There was an error with the thread");
+                    LOG.error("There was an error with the thread",e);
                 }
                 if(!ExportCSV.this.exportTaskSkills())
                 {
@@ -152,7 +152,7 @@ public class ExportCSV {
                     gate.await();
                 }
                 catch (InterruptedException | BrokenBarrierException e) {
-                    LOG.error("There was an error with the thread");
+                    LOG.error("There was an error with the thread",e);
                 }
                 if(!ExportCSV.this.exportUsers())
                 {
