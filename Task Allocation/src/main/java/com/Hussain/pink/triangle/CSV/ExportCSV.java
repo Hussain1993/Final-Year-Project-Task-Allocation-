@@ -14,6 +14,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 /**
  * Created by Hussain on 11/02/2015.
@@ -28,9 +30,18 @@ public class ExportCSV {
     }
 
     public void exportDatabase(){
+        final CyclicBarrier gate = new CyclicBarrier(9);
+
+
         Thread assignedTo = new Thread(){
             @Override
             public void run() {
+                try{
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error with the thread");
+                }
                 if(!ExportCSV.this.exportAssignedTo())
                 {
                     LOG.error("There was an error when saving the ASSIGNED_TO csv file");
@@ -41,6 +52,12 @@ public class ExportCSV {
         Thread employees = new Thread(){
             @Override
             public void run() {
+                try{
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error with the thread");
+                }
                 if(!ExportCSV.this.exportEmployees())
                 {
                     LOG.error("There was an error when saving the EMPLOYEES csv file");
@@ -51,6 +68,12 @@ public class ExportCSV {
         Thread employeeSkills = new Thread(){
             @Override
             public void run() {
+                try{
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error with the thread");
+                }
                 if(!ExportCSV.this.exportEmployeeSkills())
                 {
                     LOG.error("There was an error when saving the EMPLOYEE_SKILLS csv file");
@@ -61,6 +84,12 @@ public class ExportCSV {
         Thread projects = new Thread(){
             @Override
             public void run() {
+                try{
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error with the thread");
+                }
                 if(!ExportCSV.this.exportProjects())
                 {
                     LOG.error("There was an error when saving the PROJECTS csv file");
@@ -71,6 +100,12 @@ public class ExportCSV {
         Thread skills = new Thread(){
             @Override
             public void run() {
+                try{
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error with the thread");
+                }
                 if(!ExportCSV.this.exportSkills())
                 {
                     LOG.error("There was an error when saving the SKILLS csv file");
@@ -81,6 +116,12 @@ public class ExportCSV {
         Thread tasks = new Thread(){
             @Override
             public void run() {
+                try{
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error with the thread");
+                }
                 if(!ExportCSV.this.exportTasks())
                 {
                     LOG.error("There was an error when saving the TASKS csv file");
@@ -91,6 +132,12 @@ public class ExportCSV {
         Thread taskSkills = new Thread(){
             @Override
             public void run() {
+                try{
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error with the thread");
+                }
                 if(!ExportCSV.this.exportTaskSkills())
                 {
                     LOG.error("There was an error when saving the TASK_SKILLS csv file");
@@ -101,6 +148,12 @@ public class ExportCSV {
         Thread users = new Thread(){
             @Override
             public void run() {
+                try{
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error with the thread");
+                }
                 if(!ExportCSV.this.exportUsers())
                 {
                     LOG.error("There was an error when saving the USERS csv file");
@@ -118,6 +171,7 @@ public class ExportCSV {
         users.start();
 
         try{
+            gate.await();//This starts all the threads
             assignedTo.join();
             employees.join();
             employeeSkills.join();
@@ -127,8 +181,8 @@ public class ExportCSV {
             taskSkills.join();
             users.join();
         }
-        catch (InterruptedException e) {
-            LOG.error("There was an error with a thread");
+        catch (InterruptedException | BrokenBarrierException e) {
+            LOG.error("There was an error with a thread",e);
         }
         LOG.info("Database has been exported to the folder {}",folderToSaveCSVFiles);
     }
