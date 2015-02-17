@@ -18,6 +18,9 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 /**
+ * This is class that will export the data
+ * that is contained in the database to CSV files.
+ * A new file will be created for each table
  * Created by Hussain on 11/02/2015.
  */
 public class ExportCSV {
@@ -25,10 +28,20 @@ public class ExportCSV {
 
     private String folderToSaveCSVFiles;
 
+    /**
+     *
+     * @param folderToSaveCSVFiles This is the folder the user would like
+     *                             save all the csv files to
+     */
     public ExportCSV(String folderToSaveCSVFiles){
         this.folderToSaveCSVFiles = folderToSaveCSVFiles;
     }
 
+    /**
+     * This method will create a thread for each table export and will start each thread in
+     * turn to start the export process. The method uses the <code>CyclicBarrier</code> to make
+     * sure that all the threads start at roughly the same time
+     */
     public void exportDatabase(){
         final CyclicBarrier gate = new CyclicBarrier(9);
 
@@ -187,54 +200,93 @@ public class ExportCSV {
         LOG.info("Database has been exported to the folder {}",folderToSaveCSVFiles);
     }
 
+    /**
+     * Export the ASSIGNED_TO table
+     * @return true if the file has been created and saved, false otherwise
+     */
     private boolean exportAssignedTo(){
         String query = "SELECT * FROM ASSIGNED_TO";
         String filePath = folderToSaveCSVFiles + File.separator + "ASSIGNED_TO.csv";
         return executeQuery(query,filePath);
     }
 
+    /**
+     * Export the ASSIGNED_TO table
+     * @return true if the file has been created and saved, false otherwise
+     */
     private boolean exportEmployees(){
         String query = "SELECT * FROM EMPLOYEES";
         String filePath = folderToSaveCSVFiles + File.separator + "EMPLOYEES.csv";
         return executeQuery(query,filePath);
     }
 
+    /**
+     * Export the ASSIGNED_TO table
+     * @return true if the file has been created and saved, false otherwise
+     */
     private boolean exportEmployeeSkills(){
         String query = "SELECT * FROM EMPLOYEE_SKILLS";
         String filePath = folderToSaveCSVFiles + File.separator + "EMPLOYEE_SKILLS.csv";
         return executeQuery(query,filePath);
     }
 
+    /**
+     * Export the ASSIGNED_TO table
+     * @return true if the file has been created and saved, false otherwise
+     */
     private boolean exportProjects(){
         String query = "SELECT * FROM PROJECTS";
         String filePath = folderToSaveCSVFiles + File.separator + "PROJECTS.csv";
         return executeQuery(query,filePath);
     }
 
+    /**
+     * Export the ASSIGNED_TO table
+     * @return true if the file has been created and saved, false otherwise
+     */
     private boolean exportSkills(){
         String query = "SELECT * FROM SKILLS";
         String filePath = folderToSaveCSVFiles + File.separator + "SKILLS.csv";
         return executeQuery(query,filePath);
     }
 
+    /**
+     * Export the ASSIGNED_TO table
+     * @return true if the file has been created and saved, false otherwise
+     */
     private boolean exportTasks(){
         String query = "SELECT * FROM TASKS";
         String filePath = folderToSaveCSVFiles + File.separator + "TASKS.csv";
         return executeQuery(query,filePath);
     }
 
+    /**
+     * Export the ASSIGNED_TO table
+     * @return true if the file has been created and saved, false otherwise
+     */
     private boolean exportTaskSkills(){
         String query = "SELECT * FROM TASK_SKILLS";
         String filePath = folderToSaveCSVFiles + File.separator + "TASK_SKILLS.csv";
         return executeQuery(query,filePath);
     }
 
+    /**
+     * Export the ASSIGNED_TO table
+     * @return true if the file has been created and saved, false otherwise
+     */
     private boolean exportUsers(){
         String query = "SELECT * FROM USERS";
         String filePath = folderToSaveCSVFiles + File.separator + "USERS.csv";
         return executeQuery(query,filePath);
     }
 
+    /**
+     * Executes a query and saves the output
+     * to a CSV file
+     * @param query The query to execute
+     * @param filePath The file path to save the file to
+     * @return true if the file has been created, false otherwise
+     */
     private boolean executeQuery(String query, String filePath){
         Connection conn = DatabaseConnection.getDatabaseConnection();
         PreparedStatement stmt = null;
@@ -245,7 +297,7 @@ public class ExportCSV {
             resultSet = stmt.executeQuery();
 
             csvWriter = new CSVWriter(new FileWriter(filePath),',',CSVWriter.NO_QUOTE_CHARACTER);
-            csvWriter.writeAll(resultSet,true);
+            csvWriter.writeAll(resultSet,true);//Include the header of the table in the CSV file
         }
         catch (SQLException e) {
             LOG.error("There was an error when trying to export the ASSIGNED_TO table",e);
