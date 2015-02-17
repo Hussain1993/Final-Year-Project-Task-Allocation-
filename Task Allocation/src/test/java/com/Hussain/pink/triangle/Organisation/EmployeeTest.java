@@ -74,7 +74,7 @@ public class EmployeeTest {
         Employee employeeNotAssigned = new Employee(1,null,null,1);
         assertEquals(EmployeeType.NOT_ASSIGNED_TASK, employeeNotAssigned.getEmployeeType());
 
-        Task t = new Task(1,null,1,1,1,false,null);
+        Task t = new Task(1,null,null,1,1,false,null);
 
         Employee employeeAssignedATask = new Employee(1,null,null,1,t);
 

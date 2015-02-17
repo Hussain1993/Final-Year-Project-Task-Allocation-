@@ -27,7 +27,7 @@ public class GreedyTaskAllocationTest {
         skills.add(uml);
         Employee e = new Employee(1,"Test Employee",skills,0);
 
-        Task t = new Task(1,"Test Task", 1,1L,1L,false,skills);
+        Task t = new Task(1,"Test Task",null,1L,1L,false,skills);
 
         Graph<Node<Employee>,Node<Task>> testGraph = new Graph<>();
         Node<Employee> e1 = new Node<>(e,NodeType.EMPLOYEE);
@@ -74,8 +74,8 @@ public class GreedyTaskAllocationTest {
         Node<Employee> e1 = new Node<>(new Employee(1,"E1",e1SkillSet,0),NodeType.EMPLOYEE);
         Node<Employee> e2 = new Node<>(new Employee(2,"E2",e2SkillSet,0),NodeType.EMPLOYEE);
 
-        final Node<Task> t1 = new Node<>(new Task(1,"T1",100,1L,1L,false,t1SkillSet),NodeType.TASK);
-        final Node<Task> t2 = new Node<>(new Task(2,"T2",100,1L,1L,false,t2SkillSet),NodeType.TASK);
+        final Node<Task> t1 = new Node<>(new Task(1,"T1",null,1L,1L,false,t1SkillSet),NodeType.TASK);
+        final Node<Task> t2 = new Node<>(new Task(2,"T2",null,1L,1L,false,t2SkillSet),NodeType.TASK);
 
         Graph<Node<Employee>,Node<Task>> testGraph = new Graph<>();
         testGraph.addEmployeeNode(e1);

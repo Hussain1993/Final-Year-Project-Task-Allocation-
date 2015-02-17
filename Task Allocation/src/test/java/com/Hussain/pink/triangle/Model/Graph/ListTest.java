@@ -17,8 +17,8 @@ public class ListTest {
         Node<Employee> e2 = new Node<>(new Employee(2,"2",null,0), NodeType.EMPLOYEE);
         Node<Employee> e3 = new Node<>(new Employee(3,"3",null,0), NodeType.EMPLOYEE);
 
-        Node<Task> t4 = new Node<>(new Task(4,"4",1,1L,1L,false,null),NodeType.TASK);
-        Node<Task> t5 = new Node<>(new Task(5,"5",1,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t4 = new Node<>(new Task(4,"4",null,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t5 = new Node<>(new Task(5,"5",null,1L,1L,false,null),NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
 
@@ -88,7 +88,7 @@ public class ListTest {
         Node<Employee> e1 = new Node<>(new Employee(1,"",null,0),NodeType.EMPLOYEE);
         Node<Employee> e2 = new Node<>(new Employee(2,"",null,0),NodeType.EMPLOYEE);
 
-        Node<Task> t1 = new Node<>(new Task(1,"",1,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t1 = new Node<>(new Task(1,"",null,1L,1L,false,null),NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
 
@@ -110,7 +110,7 @@ public class ListTest {
     public void testGetOtherOtherEmployeesMappedToSameTask_Sink() {
         Node<Employee> e1 = new Node<>(new Employee(1,"",null,0),NodeType.EMPLOYEE);
 
-        Node<Task> t1 = new Node<>(new Task(1,"",1,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t1 = new Node<>(new Task(1,"",null,1L,1L,false,null),NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
 

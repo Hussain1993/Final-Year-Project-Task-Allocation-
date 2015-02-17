@@ -30,7 +30,7 @@ public class GraphTest {
 
     @Test
     public void testGetTaskNodes() {
-        Node<Task> taskNode = new Node<>(new Task(1,"",1,1,1,false,null), NodeType.TASK);
+        Node<Task> taskNode = new Node<>(new Task(1,"",null,1,1,false,null), NodeType.TASK);
         ArrayList<Node<Task>> t = new ArrayList<>();
         t.add(taskNode);
         Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
@@ -41,7 +41,7 @@ public class GraphTest {
     @Test
     public void testAddEdge() {
         Node<Employee> employeeNode = new Node<>(new Employee(1,"",null,0), NodeType.EMPLOYEE);
-        Node<Task> taskNode = new Node<>(new Task(1,"",1,1,1,false,null),NodeType.TASK);
+        Node<Task> taskNode = new Node<>(new Task(1,"",null,1,1,false,null),NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> graph = new Graph<>();
 
@@ -57,7 +57,7 @@ public class GraphTest {
     @Test
     public void testGetMappedTask(){
         Node<Employee> employeeNode = new Node<>(new Employee(1,"Test Employee",null,0),NodeType.EMPLOYEE);
-        Node<Task> taskNode = new Node<>(new Task(1,"Test Task",1,1L,1L,false,null), NodeType.TASK);
+        Node<Task> taskNode = new Node<>(new Task(1,"Test Task",null,1L,1L,false,null), NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
 
@@ -75,8 +75,8 @@ public class GraphTest {
     @Test
     public void testMultiMapGraph() {
         Node<Employee> employeeNode = new Node<>(new Employee(1,"Test Employee",null,0), NodeType.EMPLOYEE);
-        Node<Task> t1 = new Node<>(new Task(1,"Task 1",1,1L,1L,false,null), NodeType.TASK);
-        Node<Task> t2 = new Node<>(new Task(2,"Task 2",2,1L,1L,false,null), NodeType.TASK);
+        Node<Task> t1 = new Node<>(new Task(1,"Task 1",null,1L,1L,false,null), NodeType.TASK);
+        Node<Task> t2 = new Node<>(new Task(2,"Task 2",null,1L,1L,false,null), NodeType.TASK);
 
         Graph<Node<Employee>,Node<Task>> testGraph = new Graph<>();
 
@@ -116,7 +116,7 @@ public class GraphTest {
     public void testClear(){
         Node<Employee> e = new Node<>(new Employee(1,"",null,0),NodeType.EMPLOYEE);
 
-        Node<Task> t = new Node<>(new Task(1,"",1,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t = new Node<>(new Task(1,"",null,1L,1L,false,null),NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
 
@@ -158,7 +158,7 @@ public class GraphTest {
     public void testEqualsTrue(){
         Node<Employee> e = new Node<>(new Employee(1,"",null,0),NodeType.EMPLOYEE);
 
-        Node<Task> t = new Node<>(new Task(1,"",1,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t = new Node<>(new Task(1,"",null,1L,1L,false,null),NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
         Graph<Node<Employee>, Node<Task>> sameGraph = new Graph<>();
@@ -178,7 +178,7 @@ public class GraphTest {
             add(e1); add(e2);
         }};
 
-        Node<Task> t1 = new Node<>(new Task(1,"T1",100,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t1 = new Node<>(new Task(1,"T1",null,1L,1L,false,null),NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
 

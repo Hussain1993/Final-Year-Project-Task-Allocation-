@@ -35,8 +35,8 @@ public class BiPartiteMatchingTest {
         Node<Employee> e1 = new Node<>(new Employee(1,"e1",e1SkillSet,0), NodeType.EMPLOYEE);
         Node<Employee> e2 = new Node<>(new Employee(2,"e2",e2SkillSet,0),NodeType.EMPLOYEE);
 
-        Node<Task> t1 = new Node<>(new Task(3,"T1",100,1L,1L,false,e1SkillSet),NodeType.TASK);
-        Node<Task> t2 = new Node<>(new Task(4,"T2",102,1L,1L,false,e2SkillSet),NodeType.TASK);
+        Node<Task> t1 = new Node<>(new Task(3,"T1",null,1L,1L,false,e1SkillSet),NodeType.TASK);
+        Node<Task> t2 = new Node<>(new Task(4,"T2",null,1L,1L,false,e2SkillSet),NodeType.TASK);
 
         expectedGraph.addEdge(e1,t1);
         expectedGraph.addEdge(e2,t2);
@@ -65,10 +65,10 @@ public class BiPartiteMatchingTest {
         Node<Employee> e4 = new Node<>(new Employee(4,"E4",null,0),NodeType.EMPLOYEE);
         Node<Employee> e5 = new Node<>(new Employee(5,"E5",null,0),NodeType.EMPLOYEE);
 
-        Node<Task> t6 = new Node<>(new Task(6,"T6",100,1L,1L,false,null),NodeType.TASK);
-        Node<Task> t7 = new Node<>(new Task(7,"T7",100,1L,1L,false,null),NodeType.TASK);
-        Node<Task> t8 = new Node<>(new Task(8,"T8",100,1L,1L,false,null),NodeType.TASK);
-        Node<Task> t9 = new Node<>(new Task(9,"T9",100,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t6 = new Node<>(new Task(6,"T6",null,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t7 = new Node<>(new Task(7,"T7",null,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t8 = new Node<>(new Task(8,"T8",null,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t9 = new Node<>(new Task(9,"T9",null,1L,1L,false,null),NodeType.TASK);
 
         Graph<Node<Employee>, Node<Task>> testGraph = new Graph<>();
 
@@ -110,10 +110,10 @@ public class BiPartiteMatchingTest {
         Node<Employee> e3 = new Node<>(new Employee(3,"E3",null,0),NodeType.EMPLOYEE);
         Node<Employee> e4 = new Node<>(new Employee(4,"E4",null,0),NodeType.EMPLOYEE);
 
-        Node<Task> t6 = new Node<>(new Task(6,"T6",100,1L,1L,false,null),NodeType.TASK);
-        Node<Task> t7 = new Node<>(new Task(7,"T7",100,1L,1L,false,null),NodeType.TASK);
-        Node<Task> t8 = new Node<>(new Task(8,"T8",100,1L,1L,false,null),NodeType.TASK);
-        Node<Task> t9 = new Node<>(new Task(9,"T9",100,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t6 = new Node<>(new Task(6,"T6",null,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t7 = new Node<>(new Task(7,"T7",null,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t8 = new Node<>(new Task(8,"T8",null,1L,1L,false,null),NodeType.TASK);
+        Node<Task> t9 = new Node<>(new Task(9,"T9",null,1L,1L,false,null),NodeType.TASK);
 
         graph.addEdge(e1,t7);
         graph.addEdge(e2,t6);

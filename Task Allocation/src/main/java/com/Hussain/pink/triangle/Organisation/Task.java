@@ -15,17 +15,17 @@ public class Task{
 
     private final int id;
     private final String taskName;
-    private final int projectId;
+    private final Project project;
     private final LocalDate dateFrom;
     private final LocalDate dateTo;
     private final boolean completed;
     private final LinkedHashSet<Skill> skills;
 
-    public Task(int id, String taskName,int projectId,long dateFrom,long dateTo, boolean completed
+    public Task(int id, String taskName,Project project,long dateFrom,long dateTo, boolean completed
     ,LinkedHashSet<Skill> skills){
         this.id = id;
         this.taskName = taskName;
-        this.projectId = projectId;
+        this.project = project;
         this.dateFrom = new LocalDate(dateFrom);
         this.dateTo = new LocalDate(dateTo);
         this.completed = completed;
@@ -40,8 +40,8 @@ public class Task{
         return taskName;
     }
 
-    public int getProjectId() {
-        return projectId;
+    public Project getProject() {
+        return project;
     }
 
     public LocalDate getDateFrom() {
@@ -88,7 +88,6 @@ public class Task{
         int hash = 1;
         hash = hash * 17 + getId();
         hash = hash * 31 + getTaskName().hashCode();
-        hash = hash * 13 + getProjectId();
         return hash;
     }
 }

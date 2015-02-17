@@ -18,7 +18,7 @@ public class NodeTest {
     @Test
     public void testGetObject(){
         Node<Employee> employeeNode = new Node<>(new Employee(1,"",null,0),NodeType.EMPLOYEE);
-        Node<Task> taskNode = new Node<>(new Task(1,"",1,1L,1L,false,null),NodeType.TASK);
+        Node<Task> taskNode = new Node<>(new Task(1,"",null,1L,1L,false,null),NodeType.TASK);
         Node<String> source = new Node<>("Source",NodeType.SOURCE);
 
         assertTrue(employeeNode.getObject() instanceof Employee);

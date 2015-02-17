@@ -49,6 +49,7 @@ public class TaskAllocationMethodTest {
         mockTaskResultSet.addColumn("Completed", new Boolean[]{false,false});
         mockTaskResultSet.addColumn("Skills", new String[]{"1,2","1,2"});
         mockTaskResultSet.addColumn("Proficiency Required", new String[]{"1,1","1,1"});
+        mockTaskResultSet.addColumn("PROJECT",new String[] {"iOS Game","Windows Phone"});
 
         TaskAllocationMethod greedyTaskAllocationMethod = new GreedyTaskAllocation();
         Graph<Node<Employee>,Node<Task>> testGraph =
@@ -100,8 +101,8 @@ public class TaskAllocationMethodTest {
         skills.add(new Skill("1",1));
         skills.add(new Skill("2",1));
         LinkedHashSet<Node<Task>> taskNodes = new LinkedHashSet<>();
-        taskNodes.add(new Node<>(new Task(3,"T1",100,1L,1L,false,skills),NodeType.TASK));
-        taskNodes.add(new Node<>(new Task(4,"T2",102,1L,1L,false,skills),NodeType.TASK));
+        taskNodes.add(new Node<>(new Task(3,"T1",null,1L,1L,false,skills),NodeType.TASK));
+        taskNodes.add(new Node<>(new Task(4,"T2",null,1L,1L,false,skills),NodeType.TASK));
         return taskNodes;
     }
 
@@ -112,7 +113,7 @@ public class TaskAllocationMethodTest {
         LinkedHashSet<Skill> skillSet = new LinkedHashSet<>();
         skillSet.add(java);
         Employee e = new Employee(1,"Test",skillSet,0);
-        Task t = new Task(1,"t1",1,1,1,false,skillSet);
+        Task t = new Task(1,"t1",null,1,1,false,skillSet);
         assertTrue(taskAllocation.checkSkillsMatch(e,t));
     }
 
@@ -127,7 +128,7 @@ public class TaskAllocationMethodTest {
         taskSkillSet.add(java);
 
         Employee e = new Employee(1, "", employeeSkillSet, 0);
-        Task t = new Task(1, "", 1, 1, 1, false, taskSkillSet);
+        Task t = new Task(1, "", null, 1, 1, false, taskSkillSet);
 
         assertFalse(taskAllocation.checkSkillsMatch(e,t));
     }
@@ -148,7 +149,7 @@ public class TaskAllocationMethodTest {
         taskSkillSet.add(java);
 
         Employee e = new Employee(1,"",employeeSkillSet,0);
-        Task t = new Task(1,"",1,1,1,false,taskSkillSet);
+        Task t = new Task(1,"",null,1,1,false,taskSkillSet);
 
         assertTrue(taskAllocation.checkSkillsMatch(e,t));
 
@@ -173,7 +174,7 @@ public class TaskAllocationMethodTest {
         taskSkills.add(uml);
 
         Employee e = new Employee(1,null,employeeSkills,0);
-        Task t = new Task(1, null, 1, 1, 1, false, taskSkills);
+        Task t = new Task(1, null, null, 1, 1, false, taskSkills);
 
         assertTrue(taskAllocation.checkSkillsMatch(e,t));
     }
@@ -199,7 +200,7 @@ public class TaskAllocationMethodTest {
         taskSkills.add(uml);
 
         Employee e = new Employee(1, null, employeeSkills, 0);
-        Task t = new Task(1, null, 1, 1, 1, false, taskSkills);
+        Task t = new Task(1, null, null, 1, 1, false, taskSkills);
 
         assertTrue(taskAllocation.checkSkillsMatch(e,t));
 
@@ -227,22 +228,22 @@ public class TaskAllocationMethodTest {
 
     @Test
     public void testCheckEmployeeAvailableForTask_TimeRangeDoesOverlap() {
-        Task task = new Task(1,null,100,1073779200000L,1100131200000L,false,null);
+        Task task = new Task(1,null,null,1073779200000L,1100131200000L,false,null);
         GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
         Employee e = new Employee(1,null,null,0,task);
 
-        Task t = new Task(1,null,1,1089500400000L,1089500400000L,false,null);
+        Task t = new Task(1,null,null,1089500400000L,1089500400000L,false,null);
 
         assertFalse(taskAllocation.checkEmployeeAvailableForTask(e, t));
     }
 
     @Test
     public void testCheckEmployeeAvailableForTask_TimeRangeDoesNotOverlap() {
-        Task task = new Task(1,null,100,1073779200000L,1100131200000L,false,null);
+        Task task = new Task(1,null,null,1073779200000L,1100131200000L,false,null);
         GreedyTaskAllocation taskAllocation = new GreedyTaskAllocation();
         Employee e = new Employee(1,null,null,0,task);
 
-        Task t = new Task(1,null,1,1105401600000L,1108080000000L,false,null);
+        Task t = new Task(1,null,null,1105401600000L,1108080000000L,false,null);
 
         assertTrue(taskAllocation.checkEmployeeAvailableForTask(e,t));
 
@@ -250,7 +251,7 @@ public class TaskAllocationMethodTest {
 
     @Test
     public void testCheckEmployeeAvailableForTask_TaskCompleted(){
-        Task taskAssignedToEmployee = new Task(100,"Test",900,1L,1L,true,null);
+        Task taskAssignedToEmployee = new Task(100,"Test",null,1L,1L,true,null);
         Employee employee = new Employee(1,"Test",null,0,taskAssignedToEmployee);
 
         TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
@@ -264,25 +265,25 @@ public class TaskAllocationMethodTest {
 
         String expectedProjectGroupOrder = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, " +
                 "TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
-                "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) FROM TASKS, SKILLS, TASK_SKILLS, " +
+                "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED), PROJECTS.NAME FROM TASKS, SKILLS, TASK_SKILLS, " +
                 "PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID " +
                 "AND TASKS.PROJECT_ID = PROJECTS.ID group by projects.id, tasks.id";
 
         String expectedTaskGroupOrder = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, " +
                 "TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
-                "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) FROM TASKS, SKILLS, TASK_SKILLS, " +
+                "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED), PROJECTS.NAME FROM TASKS, SKILLS, TASK_SKILLS, " +
                 "PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID AND " +
                 "TASKS.PROJECT_ID = PROJECTS.ID group by tasks.id";
 
         taskAllocationMethod.setTaskGroupOrder(true);
 
-        assertEquals(expectedProjectGroupOrder,taskAllocationMethod.getTaskQuery().toString());
+        assertEquals(expectedProjectGroupOrder,taskAllocationMethod.getTaskQuery().toString().trim());
 
         taskAllocationMethod = new GreedyTaskAllocation();
 
         taskAllocationMethod.setTaskGroupOrder(false);
 
-        assertEquals(expectedTaskGroupOrder,taskAllocationMethod.getTaskQuery().toString());
+        assertEquals(expectedTaskGroupOrder,taskAllocationMethod.getTaskQuery().toString().trim());
     }
 
     @Test
@@ -301,7 +302,7 @@ public class TaskAllocationMethodTest {
                 " join skills on employee_skills.skill_id = skills.id group by employees.id order by name asc";
 
         String expectedTaskQuery = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, TASKS.DATE_TO, " +
-                "TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) " +
+                "TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED), PROJECTS.NAME " +
                 "FROM TASKS, SKILLS, TASK_SKILLS, PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND " +
                 "SKILLS.ID = TASK_SKILLS.SKILL_ID AND TASKS.PROJECT_ID = PROJECTS.ID order by name asc";
 

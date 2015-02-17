@@ -3,10 +3,7 @@ package com.Hussain.pink.triangle.Allocation;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Model.Graph.NodeType;
-import com.Hussain.pink.triangle.Organisation.Employee;
-import com.Hussain.pink.triangle.Organisation.EmployeeType;
-import com.Hussain.pink.triangle.Organisation.Skill;
-import com.Hussain.pink.triangle.Organisation.Task;
+import com.Hussain.pink.triangle.Organisation.*;
 import com.Hussain.pink.triangle.Utils.DatabaseConnection;
 import org.apache.commons.dbutils.DbUtils;
 import org.joda.time.Interval;
@@ -52,7 +49,7 @@ public abstract class TaskAllocationMethod {
     //SQL query to get the tasks and skills within the database
     private StringBuilder taskQuery = new StringBuilder("SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, " +
             "TASKS.DATE_FROM, TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
-            "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED) FROM TASKS, SKILLS, TASK_SKILLS, PROJECTS  " +
+            "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED), PROJECTS.NAME FROM TASKS, SKILLS, TASK_SKILLS, PROJECTS  " +
             "WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID " +
             "AND TASKS.PROJECT_ID = PROJECTS.ID");
 
@@ -123,7 +120,7 @@ public abstract class TaskAllocationMethod {
                     Date dateTo = employeeResults.getDate(8);
                     boolean taskStatus = employeeResults.getBoolean(9);
 
-                    Task assignedTask = new Task(taskID,"Task Assigned To Employee",-1,dateFrom.getTime(),dateTo.getTime(),taskStatus,null);
+                    Task assignedTask = new Task(taskID,"Task Assigned To Employee",null,dateFrom.getTime(),dateTo.getTime(),taskStatus,null);
 
                     e = new Employee(id,name,skillSet,cost,assignedTask);
 
@@ -150,9 +147,11 @@ public abstract class TaskAllocationMethod {
                 String proficiencyRequired = taskResults.getString(8);
 
                 LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiencyRequired);//Build the skill set for the task
+                String projectName = taskResults.getString(9);
+                Project project = new Project(projectID,projectName);
 
                 LOG.debug("Adding the task with the name {} to the graph",taskName);
-                allocationGraph.addTaskNode(new Node<>(new Task(id, taskName, projectID, dateFrom.getTime(),
+                allocationGraph.addTaskNode(new Node<>(new Task(id, taskName, project, dateFrom.getTime(),
                         dateTo.getTime(), completed, skillSet), NodeType.TASK));
             }
         }

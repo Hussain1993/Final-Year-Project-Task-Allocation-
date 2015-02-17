@@ -19,13 +19,14 @@ public class TaskTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
+        Project project = new Project(100,"iOS Game");
         skillSet.add(java);
         skillSet.add(uml);
 
         Date dateFrom = new Date(1402012800000L);
         Date dateTo = new Date(1404691200000L);
 
-        task = new Task(1,"TaskOne",123,dateFrom.getTime(),dateTo.getTime(),false,skillSet);
+        task = new Task(1,"TaskOne",project,dateFrom.getTime(),dateTo.getTime(),false,skillSet);
     }
 
     @Test
@@ -39,8 +40,9 @@ public class TaskTest {
     }
 
     @Test
-    public void testGetProjectId() {
-        assertEquals(task.getProjectId(),123);
+    public void testGetProject(){
+        Project project = new Project(100,"iOS Game");
+        assertEquals(project,task.getProject());
     }
 
     @Test
@@ -82,13 +84,13 @@ public class TaskTest {
 
     @Test
     public void testEqualsValid() {
-        assertTrue(task.equals(new Task(1,"TaskOne",1,System.currentTimeMillis(),System.currentTimeMillis(),false,new LinkedHashSet<Skill>())));
+        assertTrue(task.equals(new Task(1,"TaskOne",new Project(100,"iOS Game"),System.currentTimeMillis(),System.currentTimeMillis(),false,new LinkedHashSet<Skill>())));
 
     }
 
     @Test
     public void testEqualsNotValid() {
-        assertFalse(task.equals(new Task(2,"Test",2,System.currentTimeMillis(),System.currentTimeMillis(),false,new LinkedHashSet<Skill>())));
+        assertFalse(task.equals(new Task(2,"Test",null,System.currentTimeMillis(),System.currentTimeMillis(),false,new LinkedHashSet<Skill>())));
 
     }
 }
