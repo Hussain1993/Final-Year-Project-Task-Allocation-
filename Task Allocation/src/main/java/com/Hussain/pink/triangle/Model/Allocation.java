@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 /**
  * This class takes the options that the user
@@ -60,8 +62,17 @@ public class Allocation {
         setEmployeeQueryOrder();
         setTaskQueryOrder();
 
+        final CyclicBarrier gate = new CyclicBarrier(3);
+
+
         Thread employeeThread = new Thread(){
             public void run(){
+                try {
+                    gate.await();
+                }
+                catch (InterruptedException | BrokenBarrierException e) {
+                    LOG.error("There was an error when trying to make the thread wait",e);
+                }
                 employeesResultSet = Allocation.this.taskAllocationMethod.executeQuery(TaskAllocationMethod.EMPLOYEE_QUERY);
             }
         };
@@ -69,6 +80,12 @@ public class Allocation {
 
         final Thread taskThread = new Thread(){
           public void run(){
+              try {
+                  gate.await();
+              }
+              catch (InterruptedException | BrokenBarrierException e) {
+                  LOG.error("There was an error when trying to make the thread wait",e);
+              }
               tasksResultSet = Allocation.this.taskAllocationMethod.executeQuery(TaskAllocationMethod.TASK_QUERY);
           }
         };
@@ -77,10 +94,11 @@ public class Allocation {
         taskThread.start();
 
         try{
+            gate.await();
             employeeThread.join();
             taskThread.join();
         }
-        catch (InterruptedException e) {
+        catch (InterruptedException | BrokenBarrierException e) {
             LOG.error("There was an error with the query threads",e);
         }
 
@@ -99,7 +117,7 @@ public class Allocation {
             }
             return buildRows(taskAllocationGraph);//Build and return the rows
         }
-        return new ArrayList<>();//Return an empty array list at the end
+        return new ArrayList<>();//Return an empty array list if there ever is an error
     }
 
     /**
