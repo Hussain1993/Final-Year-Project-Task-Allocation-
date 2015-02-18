@@ -6,6 +6,8 @@ import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Organisation.Employee;
+import com.Hussain.pink.triangle.Organisation.GroupTask;
+import com.Hussain.pink.triangle.Organisation.Project;
 import com.Hussain.pink.triangle.Organisation.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,6 +90,13 @@ public class Allocation {
 
             taskAllocationMethod.allocateTasks(taskAllocationGraph);
 
+            if(AdvancedOptions.groupTasksByProject())
+            {
+                for(Project p : GroupTask.getUnassignedProjects())
+                {
+                    LOG.info("Project that still has outstanding tasks to be completed: {}",p.getProjectName());
+                }
+            }
             return buildRows(taskAllocationGraph);//Build and return the rows
         }
         return new ArrayList<>();//Return an empty array list at the end
@@ -149,7 +158,7 @@ public class Allocation {
                 Task t = taskNode.getObject();
                 //The last column will always be initially false, as the user has not
                 // been assigned any of the tasks within the table
-                Object [] rowData = {e.getId(),e.getName(),t.getTaskName(),t.getId(),false};
+                Object [] rowData = {e.getId(),e.getName(),t.getTaskName(),t.getId(),true};
                 tableRows.add(rowData);
             }
         }

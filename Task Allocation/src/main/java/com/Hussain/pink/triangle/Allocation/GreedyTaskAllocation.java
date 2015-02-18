@@ -1,9 +1,11 @@
 package com.Hussain.pink.triangle.Allocation;
 
+import com.Hussain.pink.triangle.Exception.ProjectGroupNotFoundException;
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Organisation.Employee;
+import com.Hussain.pink.triangle.Organisation.GroupTask;
 import com.Hussain.pink.triangle.Organisation.Task;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -55,6 +57,7 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
                 {
                     allocationGraph.addEdge(employeeNode,taskNode);
                     matchedTasks = ArrayUtils.add(matchedTasks, task);
+                    processProjectGroup(task);
                     //Once a employee has been matched up with a task move to the next employee on the list
                     break;
                 }
@@ -74,6 +77,19 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
                 listOfApplicableEmployees.remove(bestMatchedEmployee);
                 allocationGraph.removeEdgesForHeuristicFunction(listOfApplicableEmployees,bestMatchedEmployee,taskNode);
                 allocationGraph.addEdge(bestMatchedEmployee,taskNode);
+                processProjectGroup(taskNode.getObject());
+            }
+        }
+    }
+
+    private void processProjectGroup(Task task){
+        if(AdvancedOptions.groupTasksByProject())
+        {
+            try{
+                GroupTask.removeTaskFromGroup(task.getProject());
+            }
+            catch (ProjectGroupNotFoundException e){
+                LOG.error("There was an error when removing the task from the project",e);
             }
         }
     }

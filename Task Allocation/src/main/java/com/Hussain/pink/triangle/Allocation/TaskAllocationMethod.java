@@ -1,5 +1,6 @@
 package com.Hussain.pink.triangle.Allocation;
 
+import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.Graph;
 import com.Hussain.pink.triangle.Model.Graph.Node;
 import com.Hussain.pink.triangle.Model.Graph.NodeType;
@@ -26,6 +27,7 @@ import java.util.List;
  * Created by Hussain on 14/11/2014.
  */
 public abstract class TaskAllocationMethod {
+    protected static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
     //This is the generic SQL query that will be used to get the employees and their skills from the database,
     //This query will not check if the employee has been assigned to a task previously
     private StringBuilder genericEmployeeQuery = new StringBuilder("select employees.id,concat_ws(' ',employees.first_name,employees.last_name) as name,group_concat(skills.skill),\n" +
@@ -55,8 +57,6 @@ public abstract class TaskAllocationMethod {
 
     private Connection conn;
     private Statement stmt;
-
-    private static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
 
     public static final String ORDER_NAME_ALPHABETICAL = " order by name asc";
     public static final String ORDER_NAME_REVERSE_ALPHABETICAL = " order by name desc";
@@ -150,6 +150,10 @@ public abstract class TaskAllocationMethod {
                 String projectName = taskResults.getString(9);
                 Project project = new Project(projectID,projectName);
 
+                if(AdvancedOptions.groupTasksByProject())
+                {
+                    GroupTask.addNewTaskToGroup(project);
+                }
                 LOG.debug("Adding the task with the name {} to the graph",taskName);
                 allocationGraph.addTaskNode(new Node<>(new Task(id, taskName, project, dateFrom.getTime(),
                         dateTo.getTime(), completed, skillSet), NodeType.TASK));
