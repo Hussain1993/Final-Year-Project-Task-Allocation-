@@ -24,6 +24,7 @@ public class ImportCSV {
     public static final int EMPLOYEE_SKILLS_TABLE = 5;
     public static final int TASKS_SKILLS_TABLE = 6;
     public static final int ASSIGNED_TO_TABLE = 7;
+    public static final int USERS_TABLE = 8;
 
     /**
      * This method will take a CSV file and import it into
@@ -38,6 +39,7 @@ public class ImportCSV {
      *                  <li>EMPLOYEE SKILLS<li/>
      *                  <li>TASKS SKILLS<li/>
      *                  <li>ASSIGNED_TO</li>
+     *                  <li>USERS</li>
      *              <ol/>
      */
     public static int importCSV(String filePath, int table){
@@ -60,6 +62,8 @@ public class ImportCSV {
                 case TASKS_SKILLS_TABLE: query = String.format(query,filePath,"TASK_SKILLS");
                     break;
                 case ASSIGNED_TO_TABLE: query = String.format(query,filePath,"ASSIGNED_TO");
+                    break;
+                case USERS_TABLE: query = String.format(query,filePath, "USERS");
                     break;
                 default: throw new SQLException("The option was not recognised " + table);
             }

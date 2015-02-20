@@ -26,6 +26,7 @@ public class ImportCSVView extends JFrame{
     private String employeeSkillsCSVPath = "";
     private String taskSkillsCSVPath = "";
     private String assignedToCSVPath = "";
+    private String usersCSVPath = "";
 
     private JPanel rootPanel;
     private JTextField employeeCSVText;
@@ -45,6 +46,8 @@ public class ImportCSVView extends JFrame{
     private JButton backButton;
     private JTextField assignedToCSVText;
     private JButton browseButtonAssignedTo;
+    private JTextField usersCSVText;
+    private JButton browseButtonUsers;
 
     private static final String extension = "csv";
     private static final String description = "CSV files";
@@ -115,6 +118,14 @@ public class ImportCSVView extends JFrame{
             }
         });
 
+        browseButtonUsers.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                usersCSVPath = FileIO.openFileDialog(ImportCSVView.this,extension,description,FileIO.OPEN_MODE);
+                usersCSVText.setText(usersCSVPath);
+            }
+        });
+
 
         importButton.addActionListener(new ActionListener() {
             @Override
@@ -133,6 +144,15 @@ public class ImportCSVView extends JFrame{
                 employeeSkillsCSVText.setText("");
                 taskSkillsCSVText.setText("");
                 assignedToCSVText.setText("");
+                usersCSVText.setText("");
+                employeesCSVPath = "";
+                skillsCSVPath = "";
+                projectsCSVPath = "";
+                tasksCSVPath = "";
+                employeeSkillsCSVPath = "";
+                taskSkillsCSVPath = "";
+                assignedToCSVPath = "";
+                usersCSVPath = "";
             }
         });
 
@@ -152,7 +172,7 @@ public class ImportCSVView extends JFrame{
         int numberOfRowsInserted = 0;
         try {
             if(employeesCSVPath.isEmpty() && skillsCSVPath.isEmpty() && projectsCSVPath.isEmpty() && tasksCSVPath.isEmpty()
-            && employeeSkillsCSVPath.isEmpty() && taskSkillsCSVPath.isEmpty() && assignedToCSVPath.isEmpty())
+            && employeeSkillsCSVPath.isEmpty() && taskSkillsCSVPath.isEmpty() && assignedToCSVPath.isEmpty() && usersCSVPath.isEmpty())
             {
                JOptionPane.showMessageDialog(new JFrame(),"At least one path has to be specified","Warning",JOptionPane.ERROR_MESSAGE);
             }
@@ -229,11 +249,22 @@ public class ImportCSVView extends JFrame{
                     File assignedToFile = new File(assignedToCSVPath);
                     if(!assignedToFile.exists())
                     {
-                        throw new FileNotFoundException(String.format("The file %s was not found",taskSkillsCSVPath));
+                        throw new FileNotFoundException(String.format("The file %s was not found",assignedToCSVPath));
                     }
                     LOG.info("Importing the CSV {} file into the ASSIGNED_TO table",assignedToCSVPath);
                     numberOfRowsInserted = ImportCSV.importCSV(assignedToCSVPath,ImportCSV.ASSIGNED_TO_TABLE);
                     LOG.info("Finished importing the CSV file, {} row(s) has been inserted",numberOfRowsInserted);
+                }
+                if(!usersCSVPath.isEmpty())
+                {
+                    File usersFile = new File(usersCSVPath);
+                    if(!usersFile.exists())
+                    {
+                        throw new FileNotFoundException(String.format("The file %s was not found",usersCSVPath));
+                    }
+                    LOG.info("Importing the CSV {} file into the USERS table",usersCSVPath);
+                    numberOfRowsInserted = ImportCSV.importCSV(usersCSVPath,ImportCSV.USERS_TABLE);
+                    LOG.info("Finished importing the CSV file, {} row(s) have been inserted",numberOfRowsInserted);
                 }
             }
         }

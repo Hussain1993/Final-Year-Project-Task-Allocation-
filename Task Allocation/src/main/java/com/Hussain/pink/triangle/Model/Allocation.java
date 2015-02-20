@@ -112,7 +112,8 @@ public class Allocation {
             {
                 for(Project p : GroupTask.getUnassignedProjects())
                 {
-                    LOG.info("Project that still has outstanding tasks to be completed: {}",p.getProjectName());
+                    int numberOfOutstandingTasks = GroupTask.getNumberOfMappedTasksForProject(p);
+                    LOG.info("The project {} has {} outstanding task(s)",p.getProjectName(),numberOfOutstandingTasks);
                 }
             }
             return buildRows(taskAllocationGraph);//Build and return the rows
