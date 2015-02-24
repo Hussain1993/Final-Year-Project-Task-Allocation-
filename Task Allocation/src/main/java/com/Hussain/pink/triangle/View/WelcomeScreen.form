@@ -43,6 +43,12 @@
               <text value="Export Database"/>
             </properties>
           </component>
+          <component id="3565f" class="javax.swing.JButton" binding="compareButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Compare"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

@@ -18,6 +18,7 @@ public class WelcomeScreen extends JFrame{
     private JButton importCSVsButton;
     private JButton allocationButton;
     private JButton exportDatabaseButton;
+    private JButton compareButton;
 
     public WelcomeScreen(){
         super("Task Allocation");
@@ -57,6 +58,17 @@ public class WelcomeScreen extends JFrame{
                 String folderToStoreCSVFiles = FileIO.chooseDirectory(WelcomeScreen.this);
                 ExportCSV exportCSV = new ExportCSV(folderToStoreCSVFiles);
                 exportCSV.exportDatabase();
+            }
+        });
+
+        compareButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = WelcomeScreen.this.getLocationOnScreen();
+                WelcomeScreen.this.dispose();
+                CompareView compareView = new CompareView();
+                compareView.setLocation(locationOnScreen);
+                compareView.setVisible(true);
             }
         });
     }
