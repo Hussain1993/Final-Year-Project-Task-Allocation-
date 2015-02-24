@@ -26,8 +26,8 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
 
     @Override
     public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
-        List<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
-        List<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
+        ArrayList<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
+        ArrayList<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
 
         if(AdvancedOptions.getUseHeuristic())//They would like to use the heuristic function when matching employees to tasks
         {

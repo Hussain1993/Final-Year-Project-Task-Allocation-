@@ -9,7 +9,6 @@ import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -25,8 +24,8 @@ public class BiPartiteMatching extends TaskAllocationMethod {
 
     @Override
     public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
-        List<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
-        List<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
+        ArrayList<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
+        ArrayList<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
 
         addAllPossibleMatching(employeeNodes, taskNodes, allocationGraph);
 
