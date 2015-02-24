@@ -1,6 +1,7 @@
 package com.Hussain.pink.triangle.View;
 
 import com.Hussain.pink.triangle.Model.AllocationTableModel;
+import com.Hussain.pink.triangle.Organisation.DatabaseQueries;
 import com.Hussain.pink.triangle.Utils.FileIO;
 import com.Hussain.pink.triangle.Utils.TaskAllocationFile;
 import org.apache.commons.io.FilenameUtils;
@@ -29,6 +30,8 @@ public class CompareView extends JFrame {
     private JLabel fileNameLabel2;
     private JPanel tablePanel1;
     private JPanel tablePanel2;
+    private JButton assignButton1;
+    private JButton assignButton2;
 
     private AllocationTableModel tableModel1;
     private AllocationTableModel tableModel2;
@@ -83,6 +86,20 @@ public class CompareView extends JFrame {
                     fileNameLabel2.setText(fileName);
                     loadFileIntoTable(file,TABLE_TWO);
                 }
+            }
+        });
+
+        assignButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LOG.info("The number of employees that have been assigned tasks is: {}", DatabaseQueries.assignTasksToEmployees(tableModel1));
+            }
+        });
+
+        assignButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LOG.info("The number of employees that have been assigned tasks is: {}",DatabaseQueries.assignTasksToEmployees(tableModel2));
             }
         });
     }

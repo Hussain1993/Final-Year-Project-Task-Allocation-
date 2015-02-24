@@ -1,6 +1,7 @@
 package com.Hussain.pink.triangle.Organisation;
 
 import com.Hussain.pink.triangle.Exception.UsernameInUseException;
+import com.Hussain.pink.triangle.Model.AllocationTableModel;
 import com.Hussain.pink.triangle.Utils.DatabaseConnection;
 import org.apache.commons.dbutils.DbUtils;
 import org.slf4j.Logger;
@@ -21,13 +22,18 @@ public class DatabaseQueries {
     private static PreparedStatement stmt;
     private static Connection conn;
 
+    private static final int EMPLOYEE_ID_COLUMN_INDEX = 0;
+    private static final int TASK_ID_COLUMN_INDEX = 3;
+    private static final int ASSIGN_TASK_COLUMN_INDEX = 4;
+
+
     /**
      * This method will take the tasks the user has chosen to assign to the employees
      * in the task allocation and add this allocation to the database.
      * @param employeesAndTasks A list of employee IDs and the task ID they have been assigned to
      * @return The number of rows that have been inserted into the database
      */
-    public static int assignTasksToEmployees(ArrayList<int []> employeesAndTasks){
+    private static int assignTasksToEmployees(ArrayList<int []> employeesAndTasks){
         String query = "insert into ASSIGNED_TO values (?,?,?)";
         conn = DatabaseConnection.getDatabaseConnection();
         try{
@@ -181,5 +187,30 @@ public class DatabaseQueries {
             }
         }
         return false;
+    }
+
+    public static int assignTasksToEmployees(AllocationTableModel tableModel){
+        ArrayList<int []> employeeTaskRows = new ArrayList<>();
+        for (int row = 0; row < tableModel.getRowCount(); row++)
+        {
+            if((Boolean) tableModel.getValueAt(row,ASSIGN_TASK_COLUMN_INDEX))
+            {
+                //We have a employee that the user would like to assign to a task
+                //Get the employee ID and the task ID
+                int employeeID = Integer.parseInt(String.valueOf(tableModel.getValueAt(row,EMPLOYEE_ID_COLUMN_INDEX)));
+                int taskID = Integer.parseInt(String.valueOf(tableModel.getValueAt(row,TASK_ID_COLUMN_INDEX)));
+                int [] rowData = {employeeID,taskID};
+                employeeTaskRows.add(rowData);
+            }
+        }
+        if(employeeTaskRows.size() > 0)
+        {
+            return assignTasksToEmployees(employeeTaskRows);
+        }
+        else
+        {
+            LOG.info("You have not assigned any tasks to employees");
+            return 0;
+        }
     }
 }
