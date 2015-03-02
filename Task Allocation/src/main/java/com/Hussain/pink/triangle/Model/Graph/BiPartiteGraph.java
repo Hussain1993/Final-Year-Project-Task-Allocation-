@@ -4,8 +4,7 @@ import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import com.google.common.collect.LinkedListMultimap;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Hussain on 02/03/2015.
@@ -13,13 +12,13 @@ import java.util.List;
 public class BiPartiteGraph {
     private LinkedListMultimap<String,String> biPartiteGraph;
 
-    private HashMap<String,Employee> employeeIndexMap;
-    private HashMap<String,Task> taskIndexMap;
+    private LinkedHashMap<String,Employee> employeeIndexMap;
+    private LinkedHashMap<String,Task> taskIndexMap;
 
     public BiPartiteGraph(){
         biPartiteGraph = LinkedListMultimap.create();
-        employeeIndexMap = new HashMap<>();
-        taskIndexMap = new HashMap<>();
+        employeeIndexMap = new LinkedHashMap<>();
+        taskIndexMap = new LinkedHashMap<>();
     }
 
     public void addEmployeeToIndexMap(Employee employee){
@@ -30,6 +29,14 @@ public class BiPartiteGraph {
     public void addTaskToIndexMap(Task task){
         String taskName = task.getTaskName();
         taskIndexMap.put(taskName,task);
+    }
+
+    public Set<String> getEmployeeNodes(){
+        return employeeIndexMap.keySet();
+    }
+
+    public Set<String> getTaskNodes(){
+        return taskIndexMap.keySet();
     }
 
     public Employee getEmployeeByName(String employeeName){
