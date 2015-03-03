@@ -1,6 +1,5 @@
 package com.Hussain.pink.triangle.Organisation;
 
-import com.Hussain.pink.triangle.Exception.ProjectGroupNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,12 +28,8 @@ public class GroupTask {
         }
     }
 
-    public static void removeTaskFromGroup(Project project) throws ProjectGroupNotFoundException{
-        if(!projectToTaskMapping.containsKey(project))
-        {
-            throw new ProjectGroupNotFoundException("The project group was not found for the project: " + project.getProjectName());
-        }
-        else
+    public static void removeTaskFromGroup(Project project){
+        if (projectToTaskMapping.containsKey(project))
         {
             int numberOfTasks = projectToTaskMapping.get(project);
             numberOfTasks--;
@@ -47,7 +42,7 @@ public class GroupTask {
             }
             else
             {
-                projectToTaskMapping.put(project,numberOfTasks);
+                projectToTaskMapping.put(project,numberOfTasks);//The updated number of tasks remaining
             }
         }
     }
