@@ -1,17 +1,18 @@
 package com.Hussain.pink.triangle.Allocation;
 
-import com.Hussain.pink.triangle.Model.Graph.Node;
-import com.Hussain.pink.triangle.Model.Graph.NodeType;
+import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class EuclideanHeuristicTest {
+
 
     @Test
     public void testFindBestMatchEmployee() {
@@ -36,15 +37,17 @@ public class EuclideanHeuristicTest {
         Employee e2 = new Employee(2,"E2",e2SkillSet,0);
         Employee e3 = new Employee(3,"E3",e3SkillSet,0);
 
-        Node<Employee> n1 = new Node<>(e1, NodeType.EMPLOYEE);
-        Node<Employee> n2 = new Node<>(e2,NodeType.EMPLOYEE);
-        Node<Employee> n3 = new Node<>(e3, NodeType.EMPLOYEE);
+        List<String> listOfApplicableEmployees = new ArrayList<String>(){{
+            add("E1"); add("E2"); add("E3");
+        }};
 
-        ArrayList<Node<Employee>> listOfEmployees = new ArrayList<>();
-        listOfEmployees.add(n1);
-        listOfEmployees.add(n2);
-        listOfEmployees.add(n3);
+        BiPartiteGraph biPartiteGraph = new BiPartiteGraph();
+        biPartiteGraph.addEmployeeToIndexMap(e1);
+        biPartiteGraph.addEmployeeToIndexMap(e2);
+        biPartiteGraph.addEmployeeToIndexMap(e3);
 
-        assertEquals(n1, EuclideanHeuristic.findBestMatchEmployee(listOfEmployees));
+        assertEquals("E1", EuclideanHeuristic.findBestMatchedEmployee(listOfApplicableEmployees,biPartiteGraph));
     }
+
+
 }
