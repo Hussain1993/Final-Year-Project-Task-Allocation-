@@ -9,6 +9,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class BiPartiteGraphTest {
 
@@ -99,5 +101,49 @@ public class BiPartiteGraphTest {
         graph.addTaskToIndexMap(t2);
 
         assertEquals(expectedOrderOfTasks,graph.getTaskNodes());//Make sure the order is correct
+    }
+
+    @SuppressWarnings({"ObjectEqualsNull", "EqualsWithItself", "EqualsBetweenInconvertibleTypes"})
+    @Test
+    public void testEquals() {
+        Employee e1 = new Employee(1, "E1", null, 0);
+        Employee e2 = new Employee(2, "E2", null, 0);
+        Employee e3 = new Employee(3, "E3", null, 0);
+
+        Task t1 = new Task(1, "T1", null, 1L, 1L, false, null);
+        Task t2 = new Task(2, "T2", null, 1L, 1L, false, null);
+        Task t3 = new Task(3, "T3", null, 1L, 1L, false, null);
+
+        BiPartiteGraph graph1 = new BiPartiteGraph();
+
+        graph1.addEmployeeToIndexMap(e1);
+        graph1.addEmployeeToIndexMap(e2);
+
+        graph1.addTaskToIndexMap(t1);
+        graph1.addTaskToIndexMap(t2);
+
+        BiPartiteGraph shouldBeTheSame = new BiPartiteGraph();
+
+        shouldBeTheSame.addEmployeeToIndexMap(e1);
+        shouldBeTheSame.addEmployeeToIndexMap(e2);
+
+        shouldBeTheSame.addTaskToIndexMap(t1);
+        shouldBeTheSame.addTaskToIndexMap(t2);
+
+        BiPartiteGraph graph2 = new BiPartiteGraph();
+
+        graph2.addEmployeeToIndexMap(e1);
+        graph2.addEmployeeToIndexMap(e2);
+        graph2.addEmployeeToIndexMap(e3);
+
+        graph2.addTaskToIndexMap(t1);
+        graph2.addTaskToIndexMap(t2);
+        graph2.addTaskToIndexMap(t3);
+
+        assertFalse(graph1.equals(null));
+        assertTrue(graph1.equals(graph1));
+        assertFalse(graph1.equals(""));
+        assertTrue(graph1.equals(shouldBeTheSame));
+        assertFalse(graph1.equals(graph2));
     }
 }

@@ -4,7 +4,9 @@ import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 import com.google.common.collect.LinkedListMultimap;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Hussain on 02/03/2015.
@@ -39,6 +41,10 @@ public class BiPartiteGraph {
         return taskIndexMap.keySet();
     }
 
+    public LinkedListMultimap<String, String> getBiPartiteGraph() {
+        return biPartiteGraph;
+    }
+
     public Employee getEmployeeByName(String employeeName){
         return employeeIndexMap.get(employeeName);
     }
@@ -62,5 +68,25 @@ public class BiPartiteGraph {
 
     public List<String> getAdjacentNodes(String node){
         return biPartiteGraph.get(node);//The node is either a employee or task node
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if(other == null)
+        {
+            return false;
+        }
+        if(other == this)
+        {
+            return true;
+        }
+        if(!(other instanceof BiPartiteGraph))
+        {
+            return false;
+        }
+        BiPartiteGraph otherBiPartiteGraph = (BiPartiteGraph) other;
+        return this.getBiPartiteGraph().equals(otherBiPartiteGraph.getBiPartiteGraph())
+                && this.getEmployeeNodes().containsAll(otherBiPartiteGraph.getEmployeeNodes())
+                && this.getTaskNodes().containsAll(otherBiPartiteGraph.getTaskNodes());
     }
 }
