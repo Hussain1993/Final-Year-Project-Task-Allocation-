@@ -1,8 +1,6 @@
 package com.Hussain.pink.triangle.Allocation;
 
-import com.Hussain.pink.triangle.Model.Graph.Graph;
-import com.Hussain.pink.triangle.Model.Graph.Node;
-import com.Hussain.pink.triangle.Model.Graph.NodeType;
+import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
 import com.Hussain.pink.triangle.Organisation.Task;
@@ -11,9 +9,7 @@ import com.mockrunner.mock.jdbc.MockResultSetMetaData;
 import org.junit.Test;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -22,88 +18,63 @@ import static org.junit.Assert.*;
  */
 public class TaskAllocationMethodTest {
 
+
     @Test
     public void testBuildGraph() {
-        Set<Node<Employee>> employeeNodes = buildEmployeeNodes();
-        Set<Node<Task>> taskNodes = buildTaskNodes();
+        MockResultSet employeeResultSet = buildEmployeeResults();
+        MockResultSet taskResultSet = buildTaskResults();
+        BiPartiteGraph biPartiteGraph = buildExpectedGraph();
 
+        TaskAllocationMethod greedy = new GreedyTaskAllocation();
+        BiPartiteGraph actualBiPartiteGraph = greedy.buildGraph(employeeResultSet,taskResultSet);
+
+        assertTrue(biPartiteGraph.equals(actualBiPartiteGraph));
+    }
+
+    private MockResultSet buildEmployeeResults(){
         MockResultSet mockEmployeeResultSet = new MockResultSet("EmployeeResultSet");
-        MockResultSetMetaData mockEmployeeResultSetMetaData = new MockResultSetMetaData();
-        mockEmployeeResultSetMetaData.setColumnCount(8);
-        MockResultSet mockTaskResultSet = new MockResultSet("TaskResultSet");
-
-        mockEmployeeResultSet.setResultSetMetaData(mockEmployeeResultSetMetaData);
-        mockEmployeeResultSet.addColumn("ID", new Integer[]{1,2});
-        mockEmployeeResultSet.addColumn("Name", new String[]{"Beyonce","Alex"});
-        mockEmployeeResultSet.addColumn("Skills", new String[]{"1,2","1,2"});
-        mockEmployeeResultSet.addColumn("Cost", new Integer[]{300,200});
-        mockEmployeeResultSet.addColumn("Proficiency",new String[]{"1,1","1,1"});
-
-        mockTaskResultSet.addColumn("ID", new Integer[]{3,4});
-        mockTaskResultSet.addColumn("NAME", new String[]{"T1","T2"});
-        mockTaskResultSet.addColumn("PROJECT ID", new Integer[]{100,102});
-        mockTaskResultSet.addColumn("Date From", new Date[]{new Date(1L),
-                new Date(1L)});
-        mockTaskResultSet.addColumn("Date To", new Date[]{new Date(1L),
-                new Date(1L)});
-        mockTaskResultSet.addColumn("Completed", new Boolean[]{false,false});
-        mockTaskResultSet.addColumn("Skills", new String[]{"1,2","1,2"});
-        mockTaskResultSet.addColumn("Proficiency Required", new String[]{"1,1","1,1"});
-        mockTaskResultSet.addColumn("PROJECT",new String[] {"iOS Game","Windows Phone"});
-
-        TaskAllocationMethod greedyTaskAllocationMethod = new GreedyTaskAllocation();
-        Graph<Node<Employee>,Node<Task>> testGraph =
-                greedyTaskAllocationMethod.buildGraph(mockEmployeeResultSet, mockTaskResultSet);
-
-        assertTrue("All the employees have not been added",testGraph.getEmployeeNodes().containsAll(employeeNodes));
-        assertTrue("All the tasks have not been added", testGraph.getTaskNodes().containsAll(taskNodes));
+        MockResultSetMetaData mockEmployeeMockResultSetMetaData = new MockResultSetMetaData();
+        mockEmployeeMockResultSetMetaData.setColumnCount(8);
+        mockEmployeeResultSet.setResultSetMetaData(mockEmployeeMockResultSetMetaData);
+        mockEmployeeResultSet.addColumn("ID",new Integer[]{1,2});
+        mockEmployeeResultSet.addColumn("NAME",new String [] {"E1","E2"});
+        mockEmployeeResultSet.addColumn("SKILLS",new String [] {"Java,C++","Java"});
+        mockEmployeeResultSet.addColumn("COST",new Integer [] {0,0});
+        mockEmployeeResultSet.addColumn("PROFICIENCY",new String [] {"1,1","1"});
+        return mockEmployeeResultSet;
     }
 
-    @Test
-    public void testBuildGraph2(){
-        MockResultSet mockEmployeeResultSet = new MockResultSet("EmployeeResultSet");
-
-        MockResultSetMetaData mockEmployeeResultSetMetaData = new MockResultSetMetaData();
-        mockEmployeeResultSetMetaData.setColumnCount(9);
-
-        mockEmployeeResultSet.setResultSetMetaData(mockEmployeeResultSetMetaData);
-
-        mockEmployeeResultSet.addColumn("ID",new Integer[]{1});
-        mockEmployeeResultSet.addColumn("NAME", new String[] {"TestName"});
-        mockEmployeeResultSet.addColumn("SKILLS", new String[] {"1"});
-        mockEmployeeResultSet.addColumn("COST", new Integer[] {200});
-        mockEmployeeResultSet.addColumn("PROFICIENCY", new String[]{"1"});
-
-        mockEmployeeResultSet.addColumn("TASK_ID",new Integer[] {100});
-        mockEmployeeResultSet.addColumn("DATE_FROM", new Date[] {new Date(1L)});
-        mockEmployeeResultSet.addColumn("DATE_TO", new Date[] {new Date(1L)});
-        mockEmployeeResultSet.addColumn("COMPLETED", new Boolean[] {false});
-
-        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
-        Graph<Node<Employee>, Node<Task>> testGraph = taskAllocationMethod.buildGraph(mockEmployeeResultSet,null);
-
-        ArrayList<Node<Employee>> employeeNodes = testGraph.getEmployeeNodes();
-        assertNotNull(employeeNodes.get(0).getObject().getTaskAssigned());
+    private MockResultSet buildTaskResults(){
+        MockResultSet mockTaskResultSet = new MockResultSet("TasksResultSet");
+        mockTaskResultSet.addColumn("ID",new Integer [] {1,2});
+        mockTaskResultSet.addColumn("NAME",new String [] {"T1","T2"});
+        mockTaskResultSet.addColumn("PROJECT_ID",new Integer [] {0,0});
+        mockTaskResultSet.addColumn("DATE_FROM",new Date [] {new Date(1L), new Date(1L)});
+        mockTaskResultSet.addColumn("DATE_TO",new Date [] {new Date(1L), new Date(1L)});
+        mockTaskResultSet.addColumn("COMPLETED",new Boolean [] {false,false});
+        mockTaskResultSet.addColumn("SKILLS",new String [] {"Java","C++"});
+        mockTaskResultSet.addColumn("PROFICIENCY_REQUIRED",new String [] {"1","1"});
+        mockTaskResultSet.addColumn("PROJECT",new String [] {"Stock App","Hardware"});
+        return mockTaskResultSet;
     }
 
-    private Set<Node<Employee>> buildEmployeeNodes(){
-        LinkedHashSet<Skill> skills = new LinkedHashSet<>();
-        skills.add(new Skill("1",1));
-        skills.add(new Skill("2",1));
-        LinkedHashSet<Node<Employee>> employeeNodes = new LinkedHashSet<>();
-        employeeNodes.add(new Node<>(new Employee(1,"Beyonce",skills,300), NodeType.EMPLOYEE));
-        employeeNodes.add(new Node<>(new Employee(2,"Alex",skills,200),NodeType.EMPLOYEE));
-        return employeeNodes;
-    }
+    private BiPartiteGraph buildExpectedGraph(){
+        Employee e1 = new Employee(1, "E1", null, 0);
+        Employee e2 = new Employee(2, "E2", null, 0);
 
-    private Set<Node<Task>> buildTaskNodes(){
-        LinkedHashSet<Skill> skills = new LinkedHashSet<>();
-        skills.add(new Skill("1",1));
-        skills.add(new Skill("2",1));
-        LinkedHashSet<Node<Task>> taskNodes = new LinkedHashSet<>();
-        taskNodes.add(new Node<>(new Task(3,"T1",null,1L,1L,false,skills),NodeType.TASK));
-        taskNodes.add(new Node<>(new Task(4,"T2",null,1L,1L,false,skills),NodeType.TASK));
-        return taskNodes;
+        Task t1 = new Task(1, "T1", null, 1L, 1L, false, null);
+        Task t2 = new Task(2, "T2", null, 1L, 1L, false, null);
+
+        BiPartiteGraph biPartiteGraph = new BiPartiteGraph();
+        biPartiteGraph.addEmployeeToIndexMap(e1);
+        biPartiteGraph.addEmployeeToIndexMap(e2);
+        biPartiteGraph.addTaskToIndexMap(t1);
+        biPartiteGraph.addTaskToIndexMap(t2);
+
+        biPartiteGraph.addEdge(e1,t1);
+        biPartiteGraph.addEdge(e1,t2);
+        biPartiteGraph.addEdge(e2,t1);
+        return biPartiteGraph;
     }
 
     @Test

@@ -1,9 +1,7 @@
 package com.Hussain.pink.triangle.Allocation;
 
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
-import com.Hussain.pink.triangle.Model.Graph.Graph;
-import com.Hussain.pink.triangle.Model.Graph.Node;
-import com.Hussain.pink.triangle.Model.Graph.NodeType;
+import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.*;
 import com.Hussain.pink.triangle.Utils.DatabaseConnection;
 import org.apache.commons.dbutils.DbUtils;
@@ -14,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.Set;
 
 /**
  * This abstract class will be used to query the database,
@@ -28,6 +26,11 @@ import java.util.List;
  */
 public abstract class TaskAllocationMethod {
     protected static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
+
+    protected final Matching<String> matching = new Matching<>();
+    protected Set<String> unmatchedEmployees;
+    protected Set<String> unmatchedTasks;
+
     //This is the generic SQL query that will be used to get the employees and their skills from the database,
     //This query will not check if the employee has been assigned to a task previously
     private StringBuilder genericEmployeeQuery = new StringBuilder("select employees.id,concat_ws(' ',employees.first_name,employees.last_name) as name,group_concat(skills.skill),\n" +
@@ -69,52 +72,35 @@ public abstract class TaskAllocationMethod {
     public static final int EMPLOYEE_QUERY = 4;
     public static final int TASK_QUERY = 5;
 
-    /**
-     * Method that should be implemented by subclasses to provide a
-     * method of allocation of the employees to tasks.
-     * @param allocationGraph This is the basic allocation graph that has been created,
-     *                        there will be no matching within this graph but there will be
-     *                        two sets for the employees and tasks and it is the job of the subclass
-     *                        to take this graph and allocate the employees to the task.
-     */
-    public abstract void allocateTasks(Graph<Node<Employee>,Node<Task>> allocationGraph);
+    public abstract Matching<String> allocateTasks(BiPartiteGraph biPartiteGraph);
 
-    /**
-     * This method takes the result of the employee query and the
-     * task query and builds the foundation of the allocation graph
-     * @param employeeResults This is the result of the employees SQL Query
-     * @param taskResults This is the result of the tasks SQL Query
-     * @return Return an allocation graph where there are two sets containing the
-     * employees that have been returned and a set containing the tasks that have been
-     * returned
-     */
-    public Graph<Node<Employee>,Node<Task>> buildGraph(ResultSet employeeResults, ResultSet taskResults){
-        Graph<Node<Employee>, Node<Task>> allocationGraph = new Graph<>();
+    public BiPartiteGraph buildGraph(ResultSet employeeResults, ResultSet taskResults){
+        BiPartiteGraph biPartiteGraph = new BiPartiteGraph();
         try{
-            while(employeeResults != null && employeeResults.next())
+            //Loop over every employee from the database
+            while (employeeResults != null && employeeResults.next())
             {
-                Employee e;
+                Employee employee;
                 int id = employeeResults.getInt(1);
                 String name = employeeResults.getString(2);
                 String skills = employeeResults.getString(3);
                 int cost = employeeResults.getInt(4);
                 String proficiency = employeeResults.getString(5);
 
-                LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiency);//Build the skill set for the employee
-
-                if(skillSet == null)
+                LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiency);
+                if(skillSet == null)//Sanity check, this should never happen
                 {
                     LOG.error("There was an error when building the skill set for the" +
                             "employee {}", name);
+                    continue;//Move onto the next employee from the results
                 }
-
                 ResultSetMetaData resultSetMetaData = employeeResults.getMetaData();
                 //This is the number of columns that there will be when there is a
                 //employee query checking if they have been assigned to a task we are also checking
                 //if there is a TASK ID for this row
                 if(resultSetMetaData.getColumnCount() == 9 && !checkIfColumnIsNull(employeeResults,"TASK_ID"))
                 {
-                    //This is an employee that has a task assigned to them
+                    //This is a task that has an employee assigned to them
                     int taskID = employeeResults.getInt(6);
                     Date dateFrom = employeeResults.getDate(7);
                     Date dateTo = employeeResults.getDate(8);
@@ -122,51 +108,76 @@ public abstract class TaskAllocationMethod {
 
                     Task assignedTask = new Task(taskID,"Task Assigned To Employee",null,dateFrom.getTime(),dateTo.getTime(),taskStatus,null);
 
-                    e = new Employee(id,name,skillSet,cost,assignedTask);
-
+                    LOG.debug("The employee {} has been assigned a previous task of ID {}",name,taskID);
+                    employee = new Employee(id,name,skillSet,cost,assignedTask);
                 }
                 else
                 {
                     //This is an employee that has not been assigned a task, or the user has chosen to not check if
                     //employees have been assigned to a task
-                    e = new Employee(id,name,skillSet,cost);
+                    employee = new Employee(id,name,skillSet,cost);
                 }
                 LOG.debug("Adding the employee with the name {} to the graph",name);
-                allocationGraph.addEmployeeNode(new Node<>(e, NodeType.EMPLOYEE));
+                biPartiteGraph.addEmployeeToIndexMap(employee);
             }
-            while(taskResults != null &&taskResults.next())
+            //Loop over every task within the database
+            while (taskResults != null && taskResults.next())
             {
-                int id = taskResults.getInt(1);
+                int taskID = taskResults.getInt(1);
                 String taskName = taskResults.getString(2);
                 int projectID = taskResults.getInt(3);
                 Date dateFrom = taskResults.getDate(4);
                 Date dateTo = taskResults.getDate(5);
                 boolean completed = taskResults.getBoolean(6);
-
                 String skills = taskResults.getString(7);
                 String proficiencyRequired = taskResults.getString(8);
 
                 LinkedHashSet<Skill> skillSet = buildSkillSet(skills,proficiencyRequired);//Build the skill set for the task
+
+                if(skillSet == null)//Sanity check, this should never happen
+                {
+                    LOG.error("There was an error when building the skill set for the" +
+                            "task {}", taskName);
+                    continue;//Move onto the next task from the results
+                }
+
                 String projectName = taskResults.getString(9);
                 Project project = new Project(projectID,projectName);
-
                 if(AdvancedOptions.groupTasksByProject())
                 {
                     GroupTask.addNewTaskToGroup(project);
                 }
                 LOG.debug("Adding the task with the name {} to the graph",taskName);
-                allocationGraph.addTaskNode(new Node<>(new Task(id, taskName, project, dateFrom.getTime(),
-                        dateTo.getTime(), completed, skillSet), NodeType.TASK));
+                biPartiteGraph.addTaskToIndexMap(new Task(taskID,taskName,project,dateFrom.getTime(),dateTo.getTime(),completed,skillSet));
             }
         }
-        catch(SQLException e){
-            LOG.error("There was an error with the SQL Result Set",e);
+        catch (SQLException e){
+            LOG.error("There was an error with the SQL Statement");
         }
         finally {
             DbUtils.closeQuietly(conn,stmt,employeeResults);
             DbUtils.closeQuietly(taskResults);
         }
-        return allocationGraph;
+        return buildGraph(biPartiteGraph);
+    }
+
+
+    private BiPartiteGraph buildGraph(BiPartiteGraph biPartiteGraph){
+        for (String employeeName : biPartiteGraph.getEmployeeNodes())
+        {
+            Employee employee = biPartiteGraph.getEmployeeByName(employeeName);
+            for (String taskName : biPartiteGraph.getTaskNodes())
+            {
+                Task task = biPartiteGraph.getTaskByName(taskName);
+                boolean employeeAvailableForTask = checkEmployeeAvailableForTask(employee,task);
+                boolean skillsMatch = checkSkillsMatch(employee,task);
+                if(skillsMatch && employeeAvailableForTask)
+                {
+                    biPartiteGraph.addEdge(employee,task);
+                }
+            }
+        }
+        return biPartiteGraph;
     }
 
     /**
@@ -387,23 +398,8 @@ public abstract class TaskAllocationMethod {
         return skillSet;
     }
 
-    public void addAllPossibleMatching(List<Node<Employee>> employeeNodes, List<Node<Task>> taskNodes, Graph<Node<Employee>, Node
-            <Task>> allocationGraph){
-
-        for(Node<Employee> employeeNode : employeeNodes)
-        {
-            Employee employee = employeeNode.getObject();
-            for(Node<Task> taskNode : taskNodes)
-            {
-                Task task = taskNode.getObject();
-                boolean employeeAvailableForTask = checkEmployeeAvailableForTask(employee,task);
-                boolean skillsMatch = checkSkillsMatch(employee,task);
-                if(employeeAvailableForTask && skillsMatch)
-                {
-                    allocationGraph.addEdge(employeeNode, taskNode);
-                }
-            }
-        }
+    public void logUnmatchedEmployeesAndTasks(){
+        LOG.info("The employee(s) have not been assigned to any tasks {}",unmatchedEmployees);
+        LOG.info("The task(s) have not been assigned to any employees {}",unmatchedTasks);
     }
-
 }

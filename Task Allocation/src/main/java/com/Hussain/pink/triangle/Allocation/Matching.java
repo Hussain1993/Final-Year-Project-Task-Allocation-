@@ -24,6 +24,10 @@ public class Matching<V> {
         return matching;
     }
 
+    public boolean hasMatch(){
+        return matching.size() >= 1;
+    }
+
     @Override
     public String toString(){
         StringBuilder stringBuilder = new StringBuilder();
