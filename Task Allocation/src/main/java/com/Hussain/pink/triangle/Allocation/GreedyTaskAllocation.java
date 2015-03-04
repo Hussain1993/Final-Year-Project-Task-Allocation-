@@ -1,16 +1,13 @@
 package com.Hussain.pink.triangle.Allocation;
 
-import com.Hussain.pink.triangle.Exception.ProjectGroupNotFoundException;
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
-import com.Hussain.pink.triangle.Model.Graph.Graph;
-import com.Hussain.pink.triangle.Model.Graph.Node;
-import com.Hussain.pink.triangle.Organisation.Employee;
+import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.GroupTask;
 import com.Hussain.pink.triangle.Organisation.Task;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A specific task allocation scheme, in this
@@ -21,76 +18,77 @@ import java.util.List;
  * Created by Hussain on 21/11/2014.
  */
 public class GreedyTaskAllocation  extends TaskAllocationMethod{
-    private Task[] matchedTasks; //A list of matched tasks
-
 
     @Override
-    public void allocateTasks(Graph<Node<Employee>, Node<Task>> allocationGraph) {
-        ArrayList<Node<Employee>> employeeNodes = allocationGraph.getEmployeeNodes();
-        ArrayList<Node<Task>> taskNodes = allocationGraph.getTaskNodes();
-
-        if(AdvancedOptions.getUseHeuristic())//They would like to use the heuristic function when matching employees to tasks
+    public Matching<String> allocateTasks(BiPartiteGraph biPartiteGraph) {
+        Set<String> employeeNodes = biPartiteGraph.getEmployeeNodes();
+        Set<String> taskNodes = biPartiteGraph.getTaskNodes();
+        unmatchedEmployees = new LinkedHashSet<>(employeeNodes);
+        unmatchedTasks = new LinkedHashSet<>(taskNodes);
+        if(AdvancedOptions.getUseHeuristic())//They would like to use the heuristic
         {
-            greedyHeuristic(employeeNodes,taskNodes,allocationGraph);
+            greedyHeuristic(taskNodes, biPartiteGraph);
         }
         else
         {
-            greedy(employeeNodes,taskNodes,allocationGraph);
+            greedy(employeeNodes,biPartiteGraph);
         }
+        logUnmatchedEmployeesAndTasks();
+        return matching;
     }
 
-
-    private void greedy(List<Node<Employee>> employeeNodes, List<Node<Task>> taskNodes,
-                        Graph<Node<Employee>, Node<Task>> allocationGraph){
-        for (Node<Employee> employeeNode : employeeNodes) {
-            Employee employee = employeeNode.getObject();
-            for (Node<Task> taskNode : taskNodes) {
-                Task task = taskNode.getObject();
-                //Check if this task has been matched up with someone else already
-                if(ArrayUtils.contains(matchedTasks,task))
-                {
-                    continue;
-                }
-                boolean employeeAvailableForTask = checkEmployeeAvailableForTask(employee,task);
-                boolean skillsMatch = checkSkillsMatch(employee,task);
-                if(skillsMatch && employeeAvailableForTask)
-                {
-                    allocationGraph.addEdge(employeeNode,taskNode);
-                    matchedTasks = ArrayUtils.add(matchedTasks, task);
-                    processProjectGroup(task);
-                    //Once a employee has been matched up with a task move to the next employee on the list
-                    break;
-                }
-            }
-        }
-    }
-
-    public void greedyHeuristic(List<Node<Employee>> employeeNodes, List<Node<Task>> taskNodes,
-                                 Graph<Node<Employee>, Node<Task>> allocationGraph){
-        addAllPossibleMatching(employeeNodes,taskNodes,allocationGraph);
-        for(Node<Task> taskNode : taskNodes)
+    private void greedyHeuristic(Set<String> taskNodes, BiPartiteGraph biPartiteGraph){
+        for (String taskName : taskNodes)
         {
-            ArrayList<Node<Employee>> listOfApplicableEmployees = allocationGraph.getMappedEmployees(taskNode);
-            if(listOfApplicableEmployees.size() > 1)
+            Task task = biPartiteGraph.getTaskByName(taskName);
+            List<String> listOfApplicableEmployees = biPartiteGraph.getAdjacentNodes(taskName);
+            if (listOfApplicableEmployees.size() > 1)
             {
-                Node<Employee> bestMatchedEmployee = EuclideanHeuristic.findBestMatchEmployee(listOfApplicableEmployees);
-                listOfApplicableEmployees.remove(bestMatchedEmployee);
-                allocationGraph.removeEdgesForHeuristicFunction(listOfApplicableEmployees,bestMatchedEmployee,taskNode);
-                allocationGraph.addEdge(bestMatchedEmployee,taskNode);
-                processProjectGroup(taskNode.getObject());
+                String bestMatchedEmployee = EuclideanHeuristic.findBestMatchedEmployee(listOfApplicableEmployees, biPartiteGraph);
+                if(unmatchedEmployees.contains(bestMatchedEmployee))
+                {
+                    unmatchedEmployees.remove(bestMatchedEmployee);
+                    unmatchedTasks.remove(taskName);
+                    matching.addMatching(bestMatchedEmployee, taskName);
+                    processGroupTask(task);
+                }
+            }
+            else if (listOfApplicableEmployees.size() == 1)
+            {
+                if(unmatchedEmployees.containsAll(listOfApplicableEmployees))
+                {
+                    unmatchedEmployees.remove(listOfApplicableEmployees.get(0));//There is only one element in the set
+                    unmatchedTasks.remove(taskName);
+                    matching.addMatching(listOfApplicableEmployees.get(0), taskName);
+                    processGroupTask(task);
+                }
             }
         }
     }
 
-    private void processProjectGroup(Task task){
+    public void greedy(Set<String> employeeNodes, BiPartiteGraph biPartiteGraph){
+        LinkedHashSet<String> tasksNodesWeHaveAssigned = new LinkedHashSet<>();
+        for(String employeeName : employeeNodes)
+        {
+            for (String taskName : biPartiteGraph.getAdjacentNodes(employeeName))
+            {
+                if(!tasksNodesWeHaveAssigned.contains(taskName))
+                {
+                    tasksNodesWeHaveAssigned.add(taskName);
+                    unmatchedEmployees.remove(employeeName);
+                    unmatchedTasks.remove(taskName);
+                    matching.addMatching(employeeName,taskName);
+                    processGroupTask(biPartiteGraph.getTaskByName(taskName));
+                    break;//Move onto the next employee
+                }
+            }
+        }
+    }
+
+    private void processGroupTask(Task task){
         if(AdvancedOptions.groupTasksByProject())
         {
-            try{
-                GroupTask.removeTaskFromGroup(task.getProject());
-            }
-            catch (ProjectGroupNotFoundException e){
-                LOG.error("There was an error when removing the task from the project",e);
-            }
+            GroupTask.removeTaskFromGroup(task.getProject());
         }
     }
 }

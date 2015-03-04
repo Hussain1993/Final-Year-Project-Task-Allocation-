@@ -2,9 +2,9 @@ package com.Hussain.pink.triangle.Model;
 
 import com.Hussain.pink.triangle.Allocation.BiPartiteMatching;
 import com.Hussain.pink.triangle.Allocation.GreedyTaskAllocation;
+import com.Hussain.pink.triangle.Allocation.Matching;
 import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
-import com.Hussain.pink.triangle.Model.Graph.Graph;
-import com.Hussain.pink.triangle.Model.Graph.Node;
+import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.GroupTask;
 import com.Hussain.pink.triangle.Organisation.Project;
@@ -14,8 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -95,6 +94,7 @@ public class Allocation {
 
         try{
             gate.await();
+            //Wait for the two threads to finish
             employeeThread.join();
             taskThread.join();
         }
@@ -104,9 +104,9 @@ public class Allocation {
 
         if(employeesResultSet != null && tasksResultSet != null)
         {
-            Graph<Node<Employee>,Node<Task>> taskAllocationGraph = taskAllocationMethod.buildGraph(employeesResultSet,tasksResultSet);
+            BiPartiteGraph biPartiteGraph = taskAllocationMethod.buildGraph(employeesResultSet,tasksResultSet);
 
-            taskAllocationMethod.allocateTasks(taskAllocationGraph);
+            Matching<String> matching = taskAllocationMethod.allocateTasks(biPartiteGraph);
 
             if(AdvancedOptions.groupTasksByProject())
             {
@@ -116,7 +116,7 @@ public class Allocation {
                     LOG.info("The project {} has {} outstanding task(s)",p.getProjectName(),numberOfOutstandingTasks);
                 }
             }
-            return buildRows(taskAllocationGraph);//Build and return the rows
+            return buildRows(matching,biPartiteGraph);//Build and return the rows
         }
         return new ArrayList<>();//Return an empty array list if there ever is an error
     }
@@ -157,33 +157,22 @@ public class Allocation {
         }
     }
 
-    /**
-     * Takes the allocation graph with the edges added and creates
-     * a arraylist of rows that can be used for the TaskAllocation table model
-     * to be displayed to the user
-     * @param taskAllocationGraph The task allocation graph
-     * @return A list of rows to be displayed
-     */
-    private ArrayList<Object[]> buildRows(Graph<Node<Employee>,Node<Task>> taskAllocationGraph) {
+    private ArrayList<Object[]> buildRows(Matching<String> matching, BiPartiteGraph biPartiteGraph){
         ArrayList<Object[]> tableRows = new ArrayList<>();
-        if(taskAllocationGraph.hasEdges())
+        if(matching.hasMatch())
         {
-            List<Map.Entry<Node<Employee>,Node<Task>>> entries = taskAllocationGraph.getEmployeeToTaskMapping().entries();
-            for (Map.Entry<Node<Employee>,Node<Task>> employeeTaskEntry : entries)
+            HashMap<String,String> employeeToTaskMapping = matching.getMatching();
+            for (String employeeName : employeeToTaskMapping.keySet())
             {
-                Node<Employee> employeeNode = employeeTaskEntry.getKey();
-                Node<Task> taskNode = employeeTaskEntry.getValue();
-                Employee e = employeeNode.getObject();
-                Task t = taskNode.getObject();
-                //The last column will always be initially false, as the user has not
-                // been assigned any of the tasks within the table
-                Object [] rowData = {e.getId(),e.getName(),t.getTaskName(),t.getId(),true};
+                Employee employee = biPartiteGraph.getEmployeeByName(employeeName);
+                Task task = biPartiteGraph.getTaskByName(employeeToTaskMapping.get(employeeName));
+                Object [] rowData = {employee.getId(),employee.getName(),task.getTaskName(),task.getId(),true};
                 tableRows.add(rowData);
             }
         }
         else
         {
-            LOG.info("There were no allocations within the graph, returning an empty table");
+            LOG.info("There were no matches within the graph, returning an empty table");
         }
         return tableRows;
     }

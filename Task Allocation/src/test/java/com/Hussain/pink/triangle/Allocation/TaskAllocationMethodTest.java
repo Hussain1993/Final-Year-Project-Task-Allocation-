@@ -296,4 +296,16 @@ public class TaskAllocationMethodTest {
 
         assertEquals(expectedEmployeeQuery, taskAllocationMethod.getEmployeeQuery().toString());
     }
+
+    @Test
+    public void fullSystemTestGreedy(){
+        //TODO Greedy System Test
+        assertTrue(true);
+    }
+
+    @Test
+    public void fullSystemTestBiPartiteMatching(){
+        //TODO Maximum Bipartite Matching
+        assertTrue(true);
+    }
 }
