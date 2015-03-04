@@ -1,5 +1,6 @@
 package com.Hussain.pink.triangle.Allocation;
 
+import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Skill;
@@ -9,6 +10,7 @@ import com.mockrunner.mock.jdbc.MockResultSetMetaData;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 import static org.junit.Assert.*;
@@ -29,6 +31,18 @@ public class TaskAllocationMethodTest {
         BiPartiteGraph actualBiPartiteGraph = greedy.buildGraph(employeeResultSet,taskResultSet);
 
         assertTrue(biPartiteGraph.equals(actualBiPartiteGraph));
+    }
+
+    @Test
+    public void testBuildGraphEmployeeHasTaskAssignedToThem(){
+        MockResultSet employeeResultSet = buildEmployeeResultSetWithTaskAssignedToThem();
+        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+
+        BiPartiteGraph biPartiteGraph = taskAllocationMethod.buildGraph(employeeResultSet,null);
+        assertEquals(1,biPartiteGraph.getEmployeeNodes().size());//Check that there is 1 employee in the set
+        Employee e = biPartiteGraph.getEmployeeByName("Test Employee");
+
+        assertNotNull(e.getTaskAssigned());
     }
 
     private MockResultSet buildEmployeeResults(){
@@ -56,6 +70,23 @@ public class TaskAllocationMethodTest {
         mockTaskResultSet.addColumn("PROFICIENCY_REQUIRED",new String [] {"1","1"});
         mockTaskResultSet.addColumn("PROJECT",new String [] {"Stock App","Hardware"});
         return mockTaskResultSet;
+    }
+
+    private MockResultSet buildEmployeeResultSetWithTaskAssignedToThem(){
+        MockResultSet employeeResultSet = new MockResultSet("EmployeeResultSet");
+        MockResultSetMetaData mockEmployeeMockResultSetMetaData = new MockResultSetMetaData();
+        mockEmployeeMockResultSetMetaData.setColumnCount(9);
+        employeeResultSet.setResultSetMetaData(mockEmployeeMockResultSetMetaData);
+        employeeResultSet.addColumn("ID",new Integer [] {1});
+        employeeResultSet.addColumn("NAME",new String [] {"Test Employee"});
+        employeeResultSet.addColumn("SKILLS",new String [] {"Java"});
+        employeeResultSet.addColumn("COST",new Integer [] {100});
+        employeeResultSet.addColumn("PROFICIENCY",new String [] {"1"});
+        employeeResultSet.addColumn("TASK_ID",new Integer[] {100});
+        employeeResultSet.addColumn("DATE_FROM",new Date[] {new Date(1L)});
+        employeeResultSet.addColumn("DATE_TO",new Date[] {new Date(1L)});
+        employeeResultSet.addColumn("TASK_STATUS",new Boolean [] {false});
+        return employeeResultSet;
     }
 
     private BiPartiteGraph buildExpectedGraph(){
@@ -299,8 +330,33 @@ public class TaskAllocationMethodTest {
 
     @Test
     public void fullSystemTestGreedy(){
-        //TODO Greedy System Test
-        assertTrue(true);
+        MockResultSet employeeResultSet = buildEmployeeResults();
+        MockResultSet taskResultSet = buildTaskResults();
+
+        TaskAllocationMethod greedy = new GreedyTaskAllocation();
+        BiPartiteGraph biPartiteGraph = greedy.buildGraph(employeeResultSet,taskResultSet);
+        Matching<String> matching = greedy.allocateTasks(biPartiteGraph);
+        HashMap<String, String> expectedMatching = new HashMap<>();
+        expectedMatching.put("E1","T1");
+        assertTrue(expectedMatching.equals(matching.getMatching()));
+    }
+
+    @Test
+    public void fullSystemTestGreedyHeuristic(){
+        //TODO Greedy Heuristic System Test
+        MockResultSet employeeResultSet = buildEmployeeResultSetForHeuristicFunction();
+        MockResultSet taskResultSet = buildTaskResultSetForHeuristicFunction();
+
+        TaskAllocationMethod greedyHeuristic = new GreedyTaskAllocation();
+        BiPartiteGraph biPartiteGraph = greedyHeuristic.buildGraph(employeeResultSet,taskResultSet);
+
+        HashMap<String,String> expectedMatching = new HashMap<>();
+        expectedMatching.put("E2","T1");
+        expectedMatching.put("E1","T2");
+
+        AdvancedOptions.setUseHeuristic(true);
+        Matching<String> matching = greedyHeuristic.allocateTasks(biPartiteGraph);
+        assertTrue(expectedMatching.equals(matching.getMatching()));
     }
 
     @Test
@@ -308,4 +364,33 @@ public class TaskAllocationMethodTest {
         //TODO Maximum Bipartite Matching
         assertTrue(true);
     }
+
+    private MockResultSet buildEmployeeResultSetForHeuristicFunction(){
+        MockResultSet employeeResultSet = new MockResultSet("EmployeeResultSet");
+        MockResultSetMetaData mockEmployeeMockResultSetMetaData = new MockResultSetMetaData();
+        mockEmployeeMockResultSetMetaData.setColumnCount(8);
+        employeeResultSet.setResultSetMetaData(mockEmployeeMockResultSetMetaData);
+
+        employeeResultSet.addColumn("ID",new Integer [] {1,2});
+        employeeResultSet.addColumn("NAME",new String [] {"E1","E2"});
+        employeeResultSet.addColumn("SKILLS",new String [] {"Java,UML,XML","Java"});
+        employeeResultSet.addColumn("COST",new Integer [] {0,0});
+        employeeResultSet.addColumn("PROFICIENCY",new String [] {"4,1,1","1"});
+        return employeeResultSet;
+    }
+
+    private MockResultSet buildTaskResultSetForHeuristicFunction(){
+        MockResultSet taskResultSet = new MockResultSet("TaskResultSet");
+        taskResultSet.addColumn("ID",new Integer [] {1,2});
+        taskResultSet.addColumn("NAME",new String [] {"T1","T2"});
+        taskResultSet.addColumn("PROJECT_ID",new Integer [] {0,0});
+        taskResultSet.addColumn("DATE_FROM",new Date[] {new Date(1L), new Date(1L)});
+        taskResultSet.addColumn("DATE_TO",new Date[] {new Date(1L), new Date(1L)});
+        taskResultSet.addColumn("COMPLETED",new Boolean [] {false,false});
+        taskResultSet.addColumn("SKILLS",new String [] {"Java","Java,UML"});
+        taskResultSet.addColumn("PROFICIENCY_REQUIRED",new String [] {"1","4,1"});
+        taskResultSet.addColumn("PROJECT",new String [] {"Stock App","Hardware"});
+        return taskResultSet;
+    }
+
 }

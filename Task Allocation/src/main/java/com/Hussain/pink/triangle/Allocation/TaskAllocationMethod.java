@@ -399,7 +399,7 @@ public abstract class TaskAllocationMethod {
     }
 
     public void logUnmatchedEmployeesAndTasks(){
-        LOG.info("The employee(s) have not been assigned to any tasks {}",unmatchedEmployees);
-        LOG.info("The task(s) have not been assigned to any employees {}",unmatchedTasks);
+        LOG.info("The set of unmatched employees {}",unmatchedEmployees);
+        LOG.info("The set of unmatched tasks {}",unmatchedTasks);
     }
 }
