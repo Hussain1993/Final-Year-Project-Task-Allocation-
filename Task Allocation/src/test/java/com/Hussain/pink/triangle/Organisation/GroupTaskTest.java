@@ -1,6 +1,5 @@
 package com.Hussain.pink.triangle.Organisation;
 
-import com.Hussain.pink.triangle.Exception.ProjectGroupNotFoundException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -19,13 +18,6 @@ public class GroupTaskTest {
 
         assertEquals(2, GroupTask.getNumberOfMappedTasksForProject(p1));//There should be two tasks mapped to this project
         assertEquals(1,GroupTask.getNumberOfMappedTasksForProject(p2));//There should only one task mapped to this project
-    }
-
-
-    @Test(expected = ProjectGroupNotFoundException.class)
-    public void testRemoveTaskFromGroup_Exception() throws Exception{
-        Project p1 = new Project(100,"Windows Phone");
-        GroupTask.removeTaskFromGroup(p1);
     }
 
     @Test
