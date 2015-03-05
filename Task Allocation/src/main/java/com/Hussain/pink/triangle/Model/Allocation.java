@@ -1,9 +1,6 @@
 package com.Hussain.pink.triangle.Model;
 
-import com.Hussain.pink.triangle.Allocation.BiPartiteMatching;
-import com.Hussain.pink.triangle.Allocation.GreedyTaskAllocation;
-import com.Hussain.pink.triangle.Allocation.Matching;
-import com.Hussain.pink.triangle.Allocation.TaskAllocationMethod;
+import com.Hussain.pink.triangle.Allocation.*;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.GroupTask;
@@ -40,7 +37,7 @@ public class Allocation {
         switch(algorithm)
         {
             case 0: taskAllocationMethod = new GreedyTaskAllocation();break;
-            case 1: taskAllocationMethod = new BiPartiteMatching();break;
+            case 1: taskAllocationMethod = new HopcroftKarp();break;
             default: taskAllocationMethod = new GreedyTaskAllocation(); break; //This is the default method to use
         }
     }

@@ -28,6 +28,11 @@ public class Matching<V> {
         return matching.size() >= 1;
     }
 
+    public boolean containsMatching(V startNode, V endNode){
+        return matching.containsKey(startNode) && matching.get(startNode).equals(endNode);
+    }
+
+
     @Override
     public String toString(){
         StringBuilder stringBuilder = new StringBuilder();

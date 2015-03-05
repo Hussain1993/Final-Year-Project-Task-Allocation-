@@ -27,7 +27,7 @@ import java.util.Set;
 public abstract class TaskAllocationMethod {
     protected static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
 
-    protected final Matching<String> matching = new Matching<>();
+    protected Matching<String> matching = new Matching<>();
     protected Set<String> unmatchedEmployees;
     protected Set<String> unmatchedTasks;
 
@@ -398,8 +398,22 @@ public abstract class TaskAllocationMethod {
         return skillSet;
     }
 
-    public void logUnmatchedEmployeesAndTasks(){
-        LOG.info("The set of unmatched employees {}",unmatchedEmployees);
-        LOG.info("The set of unmatched tasks {}",unmatchedTasks);
+    protected void logUnmatchedEmployeesAndTasks(){
+        if(unmatchedEmployees.size() == 0)
+        {
+            LOG.info("All employees within the database have been assigned to a task");
+        }
+        else
+        {
+            LOG.info("The set of unmatched employees {}",unmatchedEmployees);
+        }
+        if(unmatchedTasks.size() == 0)
+        {
+            LOG.info("All tasks have been assigned to a employee");
+        }
+        else
+        {
+            LOG.info("The set of unmatched tasks {}",unmatchedTasks);
+        }
     }
 }

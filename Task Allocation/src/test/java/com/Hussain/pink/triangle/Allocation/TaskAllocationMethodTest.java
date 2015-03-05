@@ -343,7 +343,6 @@ public class TaskAllocationMethodTest {
 
     @Test
     public void fullSystemTestGreedyHeuristic(){
-        //TODO Greedy Heuristic System Test
         MockResultSet employeeResultSet = buildEmployeeResultSetForHeuristicFunction();
         MockResultSet taskResultSet = buildTaskResultSetForHeuristicFunction();
 
@@ -361,8 +360,16 @@ public class TaskAllocationMethodTest {
 
     @Test
     public void fullSystemTestBiPartiteMatching(){
-        //TODO Maximum Bipartite Matching
-        assertTrue(true);
+        MockResultSet employeeResultSet = buildEmployeeResults();
+        MockResultSet taskResultSet = buildTaskResults();
+
+        TaskAllocationMethod bipartiteMatching = new HopcroftKarp();
+        BiPartiteGraph biPartiteGraph = bipartiteMatching.buildGraph(employeeResultSet,taskResultSet);
+        Matching<String> matching = bipartiteMatching.allocateTasks(biPartiteGraph);
+        HashMap<String,String> expectedMatching = new HashMap<>();
+        expectedMatching.put("E1","T2");
+        expectedMatching.put("E2","T1");
+        assertTrue(expectedMatching.equals(matching.getMatching()));
     }
 
     private MockResultSet buildEmployeeResultSetForHeuristicFunction(){

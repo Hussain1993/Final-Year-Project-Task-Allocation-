@@ -31,7 +31,7 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
         }
         else
         {
-            greedy(employeeNodes,biPartiteGraph);
+            matching = GreedyMatching.greedy(unmatchedEmployees,unmatchedTasks,employeeNodes,biPartiteGraph);
         }
         logUnmatchedEmployeesAndTasks();
         return matching;
@@ -61,25 +61,6 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
                     unmatchedTasks.remove(taskName);
                     matching.addMatching(listOfApplicableEmployees.get(0), taskName);
                     processGroupTask(task);
-                }
-            }
-        }
-    }
-
-    public void greedy(Set<String> employeeNodes, BiPartiteGraph biPartiteGraph){
-        LinkedHashSet<String> tasksNodesWeHaveAssigned = new LinkedHashSet<>();
-        for(String employeeName : employeeNodes)
-        {
-            for (String taskName : biPartiteGraph.getAdjacentNodes(employeeName))
-            {
-                if(!tasksNodesWeHaveAssigned.contains(taskName))
-                {
-                    tasksNodesWeHaveAssigned.add(taskName);
-                    unmatchedEmployees.remove(employeeName);
-                    unmatchedTasks.remove(taskName);
-                    matching.addMatching(employeeName,taskName);
-                    processGroupTask(biPartiteGraph.getTaskByName(taskName));
-                    break;//Move onto the next employee
                 }
             }
         }
