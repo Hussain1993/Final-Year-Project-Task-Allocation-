@@ -46,6 +46,8 @@ public class AdvancedOptionsTest {
 
     @Test
     public void testGetSetUseHeuristic() {
+        AdvancedOptions.setUseHeuristic(false);
+
         assertFalse(AdvancedOptions.getUseHeuristic());
 
         AdvancedOptions.setUseHeuristic(true);
