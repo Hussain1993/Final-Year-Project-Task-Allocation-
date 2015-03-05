@@ -12,11 +12,19 @@ import java.util.PriorityQueue;
  * This heuristic should only be used for
  * the Greedy Task Allocation method
  *
- *
  * Created by Hussain on 09/02/2015.
  */
 public class EuclideanHeuristic {
 
+    /**
+     * This finds the best match employee for a
+     * given task, using a euclidean heuristic
+     * @param listOfApplicableEmployees The list of all the applicable
+     *                                  employees for the task
+     * @param biPartiteGraph The bipartite graph so that we can get
+     *                       the employee object mapped to the name
+     * @return The name of the best matched employee for the task
+     */
     public static String findBestMatchedEmployee(List<String> listOfApplicableEmployees, BiPartiteGraph biPartiteGraph){
         PriorityQueue<Employee> employeePriorityQueue = new PriorityQueue<>();
         for (String employeeName : listOfApplicableEmployees)

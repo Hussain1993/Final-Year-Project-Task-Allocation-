@@ -16,6 +16,7 @@ public class HopcroftKarp extends BiPartiteMatching{
         unmatchedEmployees = new LinkedHashSet<>(employeeNodes);
         unmatchedTasks = new LinkedHashSet<>(taskNodes);
         hopcroftKarp(employeeNodes,biPartiteGraph);
+        logUnmatchedEmployeesAndTasks();
         return matching;
     }
 

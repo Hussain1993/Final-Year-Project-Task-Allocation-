@@ -37,6 +37,11 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
         return matching;
     }
 
+    /**
+     * This is greedy heuristic algorithm
+     * @param taskNodes These are all the task nodes
+     * @param biPartiteGraph Used to get object from their name
+     */
     private void greedyHeuristic(Set<String> taskNodes, BiPartiteGraph biPartiteGraph){
         for (String taskName : taskNodes)
         {

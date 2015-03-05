@@ -72,8 +72,22 @@ public abstract class TaskAllocationMethod {
     public static final int EMPLOYEE_QUERY = 4;
     public static final int TASK_QUERY = 5;
 
+    /**
+     * This is the method that will need to be implemented
+     * by any of its subclasses, they should provide
+     * their own matching algorithm
+     * @param biPartiteGraph A graph to hold information
+     * @return A matching of employees to tasks
+     */
     public abstract Matching<String> allocateTasks(BiPartiteGraph biPartiteGraph);
 
+    /**
+     * This is takes the employee and task result from the database
+     * and builds a new bipartite graph
+     * @param employeeResults This is the employee result set that is returned from the database
+     * @param taskResults This is the task result set that is returned from the database
+     * @return A new bipartite to be used later
+     */
     public BiPartiteGraph buildGraph(ResultSet employeeResults, ResultSet taskResults){
         BiPartiteGraph biPartiteGraph = new BiPartiteGraph();
         try{
@@ -161,7 +175,11 @@ public abstract class TaskAllocationMethod {
         return buildGraph(biPartiteGraph);
     }
 
-
+    /**
+     * This build all the allocations within the graph
+     * @param biPartiteGraph This is a bipartite graph with the employee nodes and task nodes with no allocations between them
+     * @return A bipartite graph with all the allocations added in
+     */
     private BiPartiteGraph buildGraph(BiPartiteGraph biPartiteGraph){
         for (String employeeName : biPartiteGraph.getEmployeeNodes())
         {
@@ -173,6 +191,7 @@ public abstract class TaskAllocationMethod {
                 boolean skillsMatch = checkSkillsMatch(employee,task);
                 if(skillsMatch && employeeAvailableForTask)
                 {
+                    //When there is a matching do not move onto the next employee
                     biPartiteGraph.addEdge(employee,task);
                 }
             }
@@ -398,6 +417,11 @@ public abstract class TaskAllocationMethod {
         return skillSet;
     }
 
+    /**
+     * This method logs and shows all the
+     * unmatched employees and tasks after the
+     * allocation has finished
+     */
     protected void logUnmatchedEmployeesAndTasks(){
         if(unmatchedEmployees.size() == 0)
         {
