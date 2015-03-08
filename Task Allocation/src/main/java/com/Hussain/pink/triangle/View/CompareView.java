@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class CompareView extends JFrame {
     private JPanel tablePanel2;
     private JButton assignButton1;
     private JButton assignButton2;
+    private JButton backButton;
 
     private AllocationTableModel tableModel1;
     private AllocationTableModel tableModel2;
@@ -100,6 +102,17 @@ public class CompareView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LOG.info("The number of employees that have been assigned tasks is: {}",DatabaseQueries.assignTasksToEmployees(tableModel2));
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = CompareView.this.getLocationOnScreen();
+                CompareView.this.dispose();
+                WelcomeScreen welcomeScreen = new WelcomeScreen();
+                welcomeScreen.setLocation(locationOnScreen);
+                welcomeScreen.setVisible(true);
             }
         });
     }
