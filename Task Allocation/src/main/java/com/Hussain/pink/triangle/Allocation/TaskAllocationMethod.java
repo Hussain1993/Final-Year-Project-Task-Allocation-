@@ -86,7 +86,7 @@ public abstract class TaskAllocationMethod {
      * and builds a new bipartite graph
      * @param employeeResults This is the employee result set that is returned from the database
      * @param taskResults This is the task result set that is returned from the database
-     * @return A new bipartite to be used later
+     * @return A new bipartite graph to be used later
      */
     public BiPartiteGraph buildGraph(ResultSet employeeResults, ResultSet taskResults){
         BiPartiteGraph biPartiteGraph = new BiPartiteGraph();
@@ -111,7 +111,7 @@ public abstract class TaskAllocationMethod {
                 ResultSetMetaData resultSetMetaData = employeeResults.getMetaData();
                 //This is the number of columns that there will be when there is a
                 //employee query checking if they have been assigned to a task we are also checking
-                //if there is a TASK ID for this row
+                //if there is a TASK ID column for this row
                 if(resultSetMetaData.getColumnCount() == 9 && !checkIfColumnIsNull(employeeResults,"TASK_ID"))
                 {
                     //This is a task that has an employee assigned to them

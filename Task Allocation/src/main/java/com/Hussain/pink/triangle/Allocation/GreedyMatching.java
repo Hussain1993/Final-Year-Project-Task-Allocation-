@@ -56,7 +56,7 @@ public class GreedyMatching {
      * tasks by their project
      * @param task The task to remove from the project
      */
-    private static void processGroupTask(Task task){
+    public static void processGroupTask(Task task){
         if(AdvancedOptions.groupTasksByProject())
         {
             GroupTask.removeTaskFromGroup(task.getProject());

@@ -2,11 +2,12 @@ package com.Hussain.pink.triangle.Allocation;
 
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
-import com.Hussain.pink.triangle.Organisation.GroupTask;
+import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 /**
@@ -49,13 +50,17 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
             List<String> listOfApplicableEmployees = biPartiteGraph.getAdjacentNodes(taskName);
             if (listOfApplicableEmployees.size() > 1)
             {
-                String bestMatchedEmployee = EuclideanHeuristic.findBestMatchedEmployee(listOfApplicableEmployees, biPartiteGraph);
-                if(unmatchedEmployees.contains(bestMatchedEmployee))
+                PriorityQueue<Employee> sortedEmployees = EuclideanHeuristic.findBestMatchedEmployee(listOfApplicableEmployees, biPartiteGraph);
+                while(!sortedEmployees.isEmpty())
                 {
-                    unmatchedEmployees.remove(bestMatchedEmployee);
-                    unmatchedTasks.remove(taskName);
-                    matching.addMatching(bestMatchedEmployee, taskName);
-                    processGroupTask(task);
+                    Employee e = sortedEmployees.poll();
+                    if(unmatchedEmployees.contains(e.getName()))//We have found an unmatched employee from the heuristic function
+                    {
+                        unmatchedEmployees.remove(e.getName());
+                        unmatchedTasks.remove(taskName);
+                        matching.addMatching(e.getName(),taskName);
+                        break;//Move onto the next task
+                    }
                 }
             }
             else if (listOfApplicableEmployees.size() == 1)
@@ -65,16 +70,9 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
                     unmatchedEmployees.remove(listOfApplicableEmployees.get(0));//There is only one element in the set
                     unmatchedTasks.remove(taskName);
                     matching.addMatching(listOfApplicableEmployees.get(0), taskName);
-                    processGroupTask(task);
+                    GreedyMatching.processGroupTask(task);
                 }
             }
-        }
-    }
-
-    private void processGroupTask(Task task){
-        if(AdvancedOptions.groupTasksByProject())
-        {
-            GroupTask.removeTaskFromGroup(task.getProject());
         }
     }
 }

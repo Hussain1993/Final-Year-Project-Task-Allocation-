@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 
 public class EuclideanHeuristicTest {
 
-
     @Test
-    public void testFindBestMatchEmployee() {
+    public void testFindBestMatchedEmployee() {
         final Skill java = new Skill("Java",1);
         final Skill java4 = new Skill("Java",4);
         final Skill uml = new Skill("UML",2);
@@ -46,8 +45,9 @@ public class EuclideanHeuristicTest {
         biPartiteGraph.addEmployeeToIndexMap(e2);
         biPartiteGraph.addEmployeeToIndexMap(e3);
 
-        assertEquals("E1", EuclideanHeuristic.findBestMatchedEmployee(listOfApplicableEmployees,biPartiteGraph));
+        Employee [] expectedEmployees = {e1,e2,e3};
+        Employee [] actualEmployees = EuclideanHeuristic.findBestMatchedEmployee(listOfApplicableEmployees,biPartiteGraph).toArray(new Employee[]{});
+        assertArrayEquals(expectedEmployees,actualEmployees);
+
     }
-
-
 }

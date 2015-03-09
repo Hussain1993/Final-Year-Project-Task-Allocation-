@@ -1,9 +1,9 @@
 package com.Hussain.pink.triangle.Allocation;
 
 /**
- * Maximum BiPartite matching of the tasks and employees
- * Subclasses should extend this class and implement
- * their own matching algorithm
+ *
+ * This class is left empty for future classes to
+ * add their own implementation
  *
  * Created by Hussain on 21/01/2015.
  */

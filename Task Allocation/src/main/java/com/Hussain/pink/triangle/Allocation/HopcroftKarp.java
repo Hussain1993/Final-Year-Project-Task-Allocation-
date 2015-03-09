@@ -1,6 +1,9 @@
 package com.Hussain.pink.triangle.Allocation;
 
+import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
+import com.Hussain.pink.triangle.Organisation.GroupTask;
+import com.Hussain.pink.triangle.Organisation.Task;
 
 import java.util.*;
 
@@ -30,14 +33,14 @@ public class HopcroftKarp extends BiPartiteMatching{
                 LinkedList<String> augmentingPath = it.next();
                 unmatchedEmployees.remove(augmentingPath.getFirst());
                 unmatchedTasks.remove(augmentingPath.getLast());
-                processAugmentingPath(augmentingPath);
+                processAugmentingPath(augmentingPath,biPartiteGraph);
                 it.remove();
             }
             augmentingPaths.addAll(findAugmentingPaths(biPartiteGraph));
         }
     }
 
-    private void processAugmentingPath(LinkedList<String> augmentingPath){
+    private void processAugmentingPath(LinkedList<String> augmentingPath, BiPartiteGraph biPartiteGraph){
         int operation = 0;
         while (augmentingPath.size() > 0)
         {
@@ -45,11 +48,17 @@ public class HopcroftKarp extends BiPartiteMatching{
             String endNode = augmentingPath.peek();
             if((operation % 2) == 0)
             {
-                matching.addMatching(startNode,endNode);
+                if(!matching.containsMatching(startNode,endNode))
+                {
+                    String taskMatchedPreviously = matching.getMatching().get(startNode);
+                    addTaskToProject(taskMatchedPreviously,biPartiteGraph);
+                    matching.addMatching(startNode,endNode);
+                }
             }
             else
             {
                 matching.removeMatching(startNode);
+                addTaskToProject(endNode,biPartiteGraph);
             }
             operation++;
         }
@@ -173,6 +182,14 @@ public class HopcroftKarp extends BiPartiteMatching{
             }
         }
         return false;
+    }
+
+    private void addTaskToProject(String taskName, BiPartiteGraph biPartiteGraph){
+        Task task = biPartiteGraph.getTaskByName(taskName);
+        if(AdvancedOptions.groupTasksByProject())
+        {
+            GroupTask.addNewTaskToGroup(task.getProject());
+        }
     }
 
 }
