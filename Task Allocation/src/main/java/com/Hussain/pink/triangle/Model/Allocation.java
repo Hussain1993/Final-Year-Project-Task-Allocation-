@@ -154,9 +154,16 @@ public class Allocation {
         }
     }
 
+    /**
+     * Builds table rows to be displayed to the user
+     * given the specified matching and bipartite matching
+     * @param matching This is the matching from the allocation method
+     * @param biPartiteGraph So we can get the coressponding object from the name
+     * @return An array list of rows to be displayed on a JTable
+     */
     private ArrayList<Object[]> buildRows(Matching<String> matching, BiPartiteGraph biPartiteGraph){
         ArrayList<Object[]> tableRows = new ArrayList<>();
-        if(matching.hasMatch())
+        if(matching.hasMatch())//Check if there are matches first
         {
             HashMap<String,String> employeeToTaskMapping = matching.getMatching();
             for (String employeeName : employeeToTaskMapping.keySet())

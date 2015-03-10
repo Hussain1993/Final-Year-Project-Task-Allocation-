@@ -50,6 +50,13 @@ public class FileIO {
         return filePath;
     }
 
+    /**
+     * Shows a new open dialog for the user to choose a directory.
+     * This method is used when the user is exporting the database to a CSV file
+     * and showing them this view will allow them to select a folder to save all the files to
+     * @param component The parent component of this view
+     * @return The file path to the folder the user has chosen
+     */
     public static String chooseDirectory(Component component){
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Directory to save CSV Files");

@@ -15,6 +15,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
+ * This view is used to compare two different allocation methods
+ * Where there are two tables within the view and the user has the ability to see the different
+ * allocation methods side-by-side they are then able to assign the task allocation method that they choose fit
  * Created by Hussain on 24/02/2015.
  */
 public class CompareView extends JFrame {
@@ -117,6 +120,11 @@ public class CompareView extends JFrame {
         });
     }
 
+    /**
+     * Loads the file into the table
+     * @param filePath File path to the TA file, that the user would like to open
+     * @param table The table model to populate
+     */
     private void loadFileIntoTable(String filePath, int table){
         ArrayList<Object[]> dataRows = TaskAllocationFile.parseTaskAllocationFile(filePath);
         //Clear the correct table and add to the right table

@@ -16,7 +16,15 @@ import java.util.PriorityQueue;
  */
 public class EuclideanHeuristic {
 
-
+    /**
+     * This method will find the best matched employee and keep an
+     * order of the employees within a priority queue
+     * @param listOfApplicableEmployees This is the list of all the applicable
+     *                                  employees for the given task
+     * @param biPartiteGraph The graph so that we can get the object from the name
+     * @return A priority queue of all applicable employees, sorted by the best matched
+     * to worse matched
+     */
     public static PriorityQueue<Employee> findBestMatchedEmployee(List<String> listOfApplicableEmployees, BiPartiteGraph biPartiteGraph){
         PriorityQueue<Employee> employeePriorityQueue = new PriorityQueue<>();
         for (String employeeName : listOfApplicableEmployees)

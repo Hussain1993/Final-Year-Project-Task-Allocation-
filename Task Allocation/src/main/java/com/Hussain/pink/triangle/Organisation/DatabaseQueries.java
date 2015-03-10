@@ -166,6 +166,12 @@ public class DatabaseQueries {
         return false;
     }
 
+    /**
+     * This is the query that is first fired when the application starts,
+     * this checks if there are users within the application already
+     * @return True if there is at least one user in the database,
+     * false otherwise
+     */
     public static boolean areThereUsersInTheSystem(){
         String query = "select id from USERS";
         conn = DatabaseConnection.getDatabaseConnection();
@@ -189,6 +195,14 @@ public class DatabaseQueries {
         return false;
     }
 
+    /**
+     * This assigns the employees the user chosen to the tasks that they have
+     * been matched up with
+     * @param tableModel This is the table model that is displayed to the user,
+     *                   so we can get the emloyees and tasks that the user has chosen
+     *                   to assign to them
+     * @return The number of assigned employees that have been inserted into the database
+     */
     public static int assignTasksToEmployees(AllocationTableModel tableModel){
         ArrayList<int []> employeeTaskRows = new ArrayList<>();
         for (int row = 0; row < tableModel.getRowCount(); row++)

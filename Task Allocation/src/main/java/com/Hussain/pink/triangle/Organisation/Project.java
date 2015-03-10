@@ -1,12 +1,19 @@
 package com.Hussain.pink.triangle.Organisation;
 
 /**
+ * Class to hold the attributes of the project class
+ *
  * Created by Hussain on 17/02/2015.
  */
 public class Project {
     private int projectID;
     private String projectName;
 
+    /**
+     * Create a new project object
+     * @param projectID Project ID
+     * @param projectName Project Name
+     */
     public Project(int projectID, String projectName){
         this.projectID = projectID;
         this.projectName = projectName;
