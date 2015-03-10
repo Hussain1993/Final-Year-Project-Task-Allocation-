@@ -3,7 +3,6 @@ package com.Hussain.pink.triangle.Allocation;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.Task;
-import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -34,7 +33,7 @@ public class HopcroftKarpTest {
         expectedMap.put("E4","T3");
         expectedMap.put("E5","T4");
         expectedMap.put("E6","T6");
-        Assert.assertTrue(expectedMap.equals(matching.getMatching()));
+        assertTrue(expectedMap.equals(matching.getMatching()));
     }
 
     private BiPartiteGraph buildGraphForMatching1(){
