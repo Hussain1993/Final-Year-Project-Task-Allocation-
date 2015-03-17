@@ -139,6 +139,7 @@
             <groupId>com.mockrunner</groupId>
             <artifactId>mockrunner-jdbc</artifactId>
             <version>1.0.5</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>xerces</groupId>
