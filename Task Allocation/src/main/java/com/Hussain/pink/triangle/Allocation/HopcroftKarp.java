@@ -78,7 +78,7 @@ public class HopcroftKarp extends BiPartiteMatching{
             }
             else
             {
-                matching.removeMatching(startNode);
+                matching.removeMatching(endNode);
                 addTaskToProject(endNode,biPartiteGraph);
             }
             operation++;
@@ -105,7 +105,6 @@ public class HopcroftKarp extends BiPartiteMatching{
         Set<String> evenLayer = new HashSet<>(unmatchedEmployees);
         Set<String> oddLayer;
         Set<String> nodesWeHaveUsed = new HashSet<>(unmatchedEmployees);
-
         while(true)
         {
             oddLayer = new HashSet<>();
@@ -151,7 +150,6 @@ public class HopcroftKarp extends BiPartiteMatching{
             }
             nodesWeHaveUsed.addAll(evenLayer);
         }
-
         if(oddLayer.size() == 0)
         {
             return augmentingPaths;

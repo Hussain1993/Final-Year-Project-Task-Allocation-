@@ -416,28 +416,4 @@ public abstract class TaskAllocationMethod {
         }
         return skillSet;
     }
-
-    /**
-     * This method logs and shows all the
-     * unmatched employees and tasks after the
-     * allocation has finished
-     */
-    protected void logUnmatchedEmployeesAndTasks(){
-        if(unmatchedEmployees.size() == 0)
-        {
-            LOG.info("All employees within the database have been assigned to a task");
-        }
-        else
-        {
-            LOG.info("The set of unmatched employees {}",unmatchedEmployees);
-        }
-        if(unmatchedTasks.size() == 0)
-        {
-            LOG.info("All tasks have been assigned to a employee");
-        }
-        else
-        {
-            LOG.info("The set of unmatched tasks {}",unmatchedTasks);
-        }
-    }
 }
