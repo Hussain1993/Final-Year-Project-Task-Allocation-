@@ -8,7 +8,6 @@ import com.Hussain.pink.triangle.Organisation.Task;
 import java.util.*;
 
 /**
- *  TODO: Trace this algorithm
  * http://jgrapht.org/
  * https://github.com/jgrapht/jgrapht
  *
