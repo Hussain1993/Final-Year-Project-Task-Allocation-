@@ -18,7 +18,7 @@ public class DatabaseConnection {
 
     /**
      * Get a valid connection to the database
-     * @return A connection to the Task Allocation system database
+     * @return A connection to the Task MatchingAlgorithms system database
      */
     public static Connection getDatabaseConnection(){
         Connection conn;

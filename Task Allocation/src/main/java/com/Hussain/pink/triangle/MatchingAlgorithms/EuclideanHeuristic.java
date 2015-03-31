@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 
 /**
  * This heuristic should only be used for
- * the Greedy Task Allocation method
+ * the Greedy Task MatchingAlgorithms method
  *
  * Created by Hussain on 09/02/2015.
  */

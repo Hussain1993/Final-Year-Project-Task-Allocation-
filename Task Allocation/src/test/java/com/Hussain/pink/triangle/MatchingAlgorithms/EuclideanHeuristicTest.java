@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;

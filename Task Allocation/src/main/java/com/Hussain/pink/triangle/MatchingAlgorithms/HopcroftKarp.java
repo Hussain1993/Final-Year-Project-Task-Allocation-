@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
@@ -23,7 +23,6 @@ public class HopcroftKarp extends BiPartiteMatching{
         unmatchedEmployees = new LinkedHashSet<>(employeeNodes);
         unmatchedTasks = new LinkedHashSet<>(taskNodes);
         hopcroftKarp(employeeNodes,biPartiteGraph);
-        logUnmatchedEmployeesAndTasks();
         return matching;
     }
 

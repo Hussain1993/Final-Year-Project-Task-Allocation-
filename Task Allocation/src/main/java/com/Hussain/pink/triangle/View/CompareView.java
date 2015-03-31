@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class CompareView extends JFrame {
     private static final Logger LOG = LoggerFactory.getLogger(CompareView.class);
     private static final String extension = "ta";
-    private static final String description = "Task Allocation Files";
+    private static final String description = "Task MatchingAlgorithms Files";
     private static final int TABLE_ONE = 1;
     private static final int TABLE_TWO = 2;
 

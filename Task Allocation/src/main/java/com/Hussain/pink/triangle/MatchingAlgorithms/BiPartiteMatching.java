@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 /**
  *
@@ -7,6 +7,6 @@ package com.Hussain.pink.triangle.Allocation;
  *
  * Created by Hussain on 21/01/2015.
  */
-public  abstract class BiPartiteMatching extends TaskAllocationMethod {
+public  abstract class BiPartiteMatching extends MatchingAlgorithm {
 
 }

@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
@@ -37,7 +37,7 @@ public class GreedyTaskAllocationTest {
         expectedMatching.put("E1","T1");
         expectedMatching.put("E2","T2");
 
-        TaskAllocationMethod greedyTaskAllocation = new GreedyTaskAllocation();
+        MatchingAlgorithm greedyTaskAllocation = new GreedyTaskAllocation();
         AdvancedOptions.setUseHeuristic(false);//Just to make sure
         Matching<String> matching = greedyTaskAllocation.allocateTasks(biPartiteGraph);
         assertTrue(expectedMatching.equals(matching.getMatching()));
@@ -88,7 +88,7 @@ public class GreedyTaskAllocationTest {
 
         AdvancedOptions.setUseHeuristic(true);
 
-        TaskAllocationMethod greedy = new GreedyTaskAllocation();
+        MatchingAlgorithm greedy = new GreedyTaskAllocation();
 
         HashMap<String,String> expectedMatching = new HashMap<>();
         expectedMatching.put("E2","T1");

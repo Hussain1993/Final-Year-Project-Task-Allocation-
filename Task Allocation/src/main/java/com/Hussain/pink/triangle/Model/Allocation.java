@@ -1,6 +1,6 @@
 package com.Hussain.pink.triangle.Model;
 
-import com.Hussain.pink.triangle.Allocation.*;
+import com.Hussain.pink.triangle.MatchingAlgorithms.*;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
 import com.Hussain.pink.triangle.Organisation.GroupTask;
@@ -25,7 +25,7 @@ import java.util.concurrent.CyclicBarrier;
 public class Allocation {
     private static final Logger LOG = LoggerFactory.getLogger(Allocation.class);
 
-    private TaskAllocationMethod taskAllocationMethod;
+    private MatchingAlgorithm taskAllocationMethod;
     private ResultSet employeesResultSet;
     private ResultSet tasksResultSet;
 
@@ -69,7 +69,7 @@ public class Allocation {
                 catch (InterruptedException | BrokenBarrierException e) {
                     LOG.error("There was an error when trying to make the thread wait",e);
                 }
-                employeesResultSet = Allocation.this.taskAllocationMethod.executeQuery(TaskAllocationMethod.EMPLOYEE_QUERY);
+                employeesResultSet = Allocation.this.taskAllocationMethod.executeQuery(MatchingAlgorithm.EMPLOYEE_QUERY);
             }
         };
 
@@ -82,7 +82,7 @@ public class Allocation {
               catch (InterruptedException | BrokenBarrierException e) {
                   LOG.error("There was an error when trying to make the thread wait",e);
               }
-              tasksResultSet = Allocation.this.taskAllocationMethod.executeQuery(TaskAllocationMethod.TASK_QUERY);
+              tasksResultSet = Allocation.this.taskAllocationMethod.executeQuery(MatchingAlgorithm.TASK_QUERY);
           }
         };
 
@@ -125,16 +125,16 @@ public class Allocation {
         OrderType employeeOrder = AdvancedOptions.getEmployeeOrder();
         switch (employeeOrder)
         {
-            case NAME_ALPHABETICAL: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,
-                    TaskAllocationMethod.EMPLOYEE_QUERY);break;
-            case NAME_REVERSE_ALPHABETICAL: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,
-                    TaskAllocationMethod.EMPLOYEE_QUERY);break;
-            case COST_ASCENDING: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_COST_LOW_TO_HIGH,
-                    TaskAllocationMethod.EMPLOYEE_QUERY);break;
-            case COST_DESCENDING: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_COST_HIGH_TO_LOW,
-                    TaskAllocationMethod.EMPLOYEE_QUERY);break;
-            default: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,
-                    TaskAllocationMethod.EMPLOYEE_QUERY);break;
+            case NAME_ALPHABETICAL: taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_NAME_ALPHABETICAL,
+                    MatchingAlgorithm.EMPLOYEE_QUERY);break;
+            case NAME_REVERSE_ALPHABETICAL: taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_NAME_ALPHABETICAL,
+                    MatchingAlgorithm.EMPLOYEE_QUERY);break;
+            case COST_ASCENDING: taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_COST_LOW_TO_HIGH,
+                    MatchingAlgorithm.EMPLOYEE_QUERY);break;
+            case COST_DESCENDING: taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_COST_HIGH_TO_LOW,
+                    MatchingAlgorithm.EMPLOYEE_QUERY);break;
+            default: taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_NAME_ALPHABETICAL,
+                    MatchingAlgorithm.EMPLOYEE_QUERY);break;
         }
     }
 
@@ -146,10 +146,10 @@ public class Allocation {
         switch (tasksOrder)
         {
             case NONE:break;
-            case NAME_ALPHABETICAL: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,
-                    TaskAllocationMethod.TASK_QUERY);break;
-            case NAME_REVERSE_ALPHABETICAL: taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_REVERSE_ALPHABETICAL,
-                    TaskAllocationMethod.TASK_QUERY);break;
+            case NAME_ALPHABETICAL: taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_NAME_ALPHABETICAL,
+                    MatchingAlgorithm.TASK_QUERY);break;
+            case NAME_REVERSE_ALPHABETICAL: taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_NAME_REVERSE_ALPHABETICAL,
+                    MatchingAlgorithm.TASK_QUERY);break;
             default:break;
         }
     }

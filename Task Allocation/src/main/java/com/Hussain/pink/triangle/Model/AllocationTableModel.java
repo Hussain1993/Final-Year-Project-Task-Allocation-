@@ -3,7 +3,7 @@ package com.Hussain.pink.triangle.Model;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * This is the table model for the Allocation table that will be
+ * This is the table model for the MatchingAlgorithms table that will be
  * presented to the user, this class extends the DefaultTableModel
  *
  * Created by Hussain on 13/11/2014.

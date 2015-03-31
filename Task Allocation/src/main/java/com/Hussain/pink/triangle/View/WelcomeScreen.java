@@ -21,7 +21,7 @@ public class WelcomeScreen extends JFrame{
     private JButton compareButton;
 
     public WelcomeScreen(){
-        super("Task Allocation");
+        super("Task MatchingAlgorithms");
         setContentPane(rootPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         addActionListeners();

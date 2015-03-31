@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
 import com.Hussain.pink.triangle.Organisation.Employee;
@@ -14,7 +14,7 @@ public class HopcroftKarpTest {
     @Test
     public void maximumBiPartiteMatching1(){
         BiPartiteGraph graph = buildGraphForMatching1();
-        TaskAllocationMethod bipartiteMatching = new HopcroftKarp();
+        MatchingAlgorithm bipartiteMatching = new HopcroftKarp();
         Matching<String> matching = bipartiteMatching.allocateTasks(graph);
         HashMap<String, String> expectedMatching = new HashMap<>();
         expectedMatching.put("E1","T2");
@@ -25,7 +25,7 @@ public class HopcroftKarpTest {
     @Test
     public void maximumBiPartiteMatching2(){
         BiPartiteGraph graph = buildGraphForMatching2();
-        TaskAllocationMethod bipartiteMatching = new HopcroftKarp();
+        MatchingAlgorithm bipartiteMatching = new HopcroftKarp();
         Matching<String> matching = bipartiteMatching.allocateTasks(graph);
         HashMap<String, String> expectedMap = new HashMap<>();
         expectedMap.put("E1","T2");

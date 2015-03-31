@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
@@ -27,7 +27,7 @@ public class TaskAllocationMethodTest {
         MockResultSet taskResultSet = buildTaskResults();
         BiPartiteGraph biPartiteGraph = buildExpectedGraph();
 
-        TaskAllocationMethod greedy = new GreedyTaskAllocation();
+        MatchingAlgorithm greedy = new GreedyTaskAllocation();
         BiPartiteGraph actualBiPartiteGraph = greedy.buildGraph(employeeResultSet,taskResultSet);
 
         assertTrue(biPartiteGraph.equals(actualBiPartiteGraph));
@@ -36,7 +36,7 @@ public class TaskAllocationMethodTest {
     @Test
     public void testBuildGraphEmployeeHasTaskAssignedToThem(){
         MockResultSet employeeResultSet = buildEmployeeResultSetWithTaskAssignedToThem();
-        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+        MatchingAlgorithm taskAllocationMethod = new GreedyTaskAllocation();
 
         BiPartiteGraph biPartiteGraph = taskAllocationMethod.buildGraph(employeeResultSet,null);
         assertEquals(1,biPartiteGraph.getEmployeeNodes().size());//Check that there is 1 employee in the set
@@ -256,14 +256,14 @@ public class TaskAllocationMethodTest {
         Task taskAssignedToEmployee = new Task(100,"Test",null,1L,1L,true,null);
         Employee employee = new Employee(1,"Test",null,0,taskAssignedToEmployee);
 
-        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+        MatchingAlgorithm taskAllocationMethod = new GreedyTaskAllocation();
 
         assertTrue(taskAllocationMethod.checkEmployeeAvailableForTask(employee,null));
     }
 
     @Test
     public void testTaskGroupOrder(){
-        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+        MatchingAlgorithm taskAllocationMethod = new GreedyTaskAllocation();
 
         String expectedProjectGroupOrder = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, " +
                 "TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
@@ -290,12 +290,12 @@ public class TaskAllocationMethodTest {
 
     @Test
     public void testQueryOrder(){
-        TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+        MatchingAlgorithm taskAllocationMethod = new GreedyTaskAllocation();
 
         taskAllocationMethod.setEmployeeQuery(false);
 
-        taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,TaskAllocationMethod.EMPLOYEE_QUERY);
-        taskAllocationMethod.setQueryOrder(TaskAllocationMethod.ORDER_NAME_ALPHABETICAL,TaskAllocationMethod.TASK_QUERY);
+        taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_NAME_ALPHABETICAL, MatchingAlgorithm.EMPLOYEE_QUERY);
+        taskAllocationMethod.setQueryOrder(MatchingAlgorithm.ORDER_NAME_ALPHABETICAL, MatchingAlgorithm.TASK_QUERY);
 
         String expectedEmployeeQuery = "select employees.id,concat_ws(' ',employees.first_name,employees.last_name) " +
                 "as name,group_concat(skills.skill),\n" +
@@ -314,7 +314,7 @@ public class TaskAllocationMethodTest {
 
     @Test
     public void testSetEmployeeQuery(){
-       TaskAllocationMethod taskAllocationMethod = new GreedyTaskAllocation();
+       MatchingAlgorithm taskAllocationMethod = new GreedyTaskAllocation();
 
         taskAllocationMethod.setEmployeeQuery(true);
 
@@ -333,7 +333,7 @@ public class TaskAllocationMethodTest {
         MockResultSet employeeResultSet = buildEmployeeResults();
         MockResultSet taskResultSet = buildTaskResults();
 
-        TaskAllocationMethod greedy = new GreedyTaskAllocation();
+        MatchingAlgorithm greedy = new GreedyTaskAllocation();
         BiPartiteGraph biPartiteGraph = greedy.buildGraph(employeeResultSet,taskResultSet);
         Matching<String> matching = greedy.allocateTasks(biPartiteGraph);
         HashMap<String, String> expectedMatching = new HashMap<>();
@@ -346,7 +346,7 @@ public class TaskAllocationMethodTest {
         MockResultSet employeeResultSet = buildEmployeeResultSetForHeuristicFunction();
         MockResultSet taskResultSet = buildTaskResultSetForHeuristicFunction();
 
-        TaskAllocationMethod greedyHeuristic = new GreedyTaskAllocation();
+        MatchingAlgorithm greedyHeuristic = new GreedyTaskAllocation();
         BiPartiteGraph biPartiteGraph = greedyHeuristic.buildGraph(employeeResultSet,taskResultSet);
 
         HashMap<String,String> expectedMatching = new HashMap<>();
@@ -363,7 +363,7 @@ public class TaskAllocationMethodTest {
         MockResultSet employeeResultSet = buildEmployeeResults();
         MockResultSet taskResultSet = buildTaskResults();
 
-        TaskAllocationMethod bipartiteMatching = new HopcroftKarp();
+        MatchingAlgorithm bipartiteMatching = new HopcroftKarp();
         BiPartiteGraph biPartiteGraph = bipartiteMatching.buildGraph(employeeResultSet,taskResultSet);
         Matching<String> matching = bipartiteMatching.allocateTasks(biPartiteGraph);
         HashMap<String,String> expectedMatching = new HashMap<>();

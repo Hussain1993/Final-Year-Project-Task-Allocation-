@@ -16,7 +16,7 @@ public class FirstView  extends JFrame{
 
 
     public FirstView(){
-        super("Task Allocation");
+        super("Task MatchingAlgorithms");
         setContentPane(root);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         addActionListeners();

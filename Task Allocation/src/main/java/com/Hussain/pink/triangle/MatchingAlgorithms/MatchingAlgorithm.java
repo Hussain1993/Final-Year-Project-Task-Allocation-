@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
@@ -24,8 +24,8 @@ import java.util.Set;
  *
  * Created by Hussain on 14/11/2014.
  */
-public abstract class TaskAllocationMethod {
-    protected static final Logger LOG = LoggerFactory.getLogger(TaskAllocationMethod.class);
+public abstract class MatchingAlgorithm {
+    protected static final Logger LOG = LoggerFactory.getLogger(MatchingAlgorithm.class);
 
     protected Matching<String> matching = new Matching<>();
     protected Set<String> unmatchedEmployees;

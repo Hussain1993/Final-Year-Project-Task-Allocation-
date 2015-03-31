@@ -28,7 +28,7 @@ public class ImportCSV {
 
     /**
      * This method will take a CSV file and import it into
-     * the Task Allocation Database
+     * the Task MatchingAlgorithms Database
      * @param filePath The file path of the CSV file to be imported
      * @param table Integer representing the table that should be imported into</br>
      *              <ol>

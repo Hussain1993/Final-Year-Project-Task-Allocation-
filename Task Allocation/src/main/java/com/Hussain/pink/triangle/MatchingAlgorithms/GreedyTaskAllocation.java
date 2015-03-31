@@ -1,4 +1,4 @@
-package com.Hussain.pink.triangle.Allocation;
+package com.Hussain.pink.triangle.MatchingAlgorithms;
 
 import com.Hussain.pink.triangle.Model.AdvancedOptions;
 import com.Hussain.pink.triangle.Model.Graph.BiPartiteGraph;
@@ -18,7 +18,7 @@ import java.util.Set;
  *
  * Created by Hussain on 21/11/2014.
  */
-public class GreedyTaskAllocation  extends TaskAllocationMethod{
+public class GreedyTaskAllocation  extends MatchingAlgorithm {
 
     @Override
     public Matching<String> allocateTasks(BiPartiteGraph biPartiteGraph) {
@@ -34,7 +34,6 @@ public class GreedyTaskAllocation  extends TaskAllocationMethod{
         {
             matching = GreedyMatching.greedy(unmatchedEmployees,unmatchedTasks,employeeNodes,biPartiteGraph);
         }
-        logUnmatchedEmployeesAndTasks();
         return matching;
     }
 
