@@ -8,6 +8,8 @@ import com.Hussain.pink.triangle.Organisation.Task;
 import java.util.*;
 
 /**
+ * Influenced and a modified version
+ * of the JGraphT library located at:
  * http://jgrapht.org/
  * https://github.com/jgrapht/jgrapht
  *
