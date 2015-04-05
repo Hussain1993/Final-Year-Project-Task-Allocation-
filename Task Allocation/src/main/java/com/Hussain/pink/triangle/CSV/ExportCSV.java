@@ -1,15 +1,14 @@
 package com.Hussain.pink.triangle.CSV;
 
-import au.com.bytecode.opencsv.CSVWriter;
 import com.Hussain.pink.triangle.Utils.DatabaseConnection;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -291,23 +290,23 @@ public class ExportCSV {
         Connection conn = DatabaseConnection.getDatabaseConnection();
         PreparedStatement stmt = null;
         ResultSet resultSet = null;
-        CSVWriter csvWriter = null;
+        CSVPrinter printer = null;
         try{
             stmt = conn.prepareStatement(query);
             resultSet = stmt.executeQuery();
+            OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(new File(filePath)));
+            printer = CSVFormat.MYSQL.withDelimiter(',').withHeader(resultSet).print(fileWriter);
+            printer.printRecords(resultSet);
 
-            csvWriter = new CSVWriter(new FileWriter(filePath),',',CSVWriter.NO_QUOTE_CHARACTER);
-            csvWriter.writeAll(resultSet,true);//Include the header of the table in the CSV file
         }
         catch (SQLException e) {
-            LOG.error("There was an error when trying to export the ASSIGNED_TO table",e);
+            LOG.error("There was an error when trying to export the databases",e);
         }
         catch (IOException e) {
-            LOG.error("There was an error with the ASSIGNED_TO.csv file",e);
-        }
-        finally {
+            LOG.error("There was an error creating the file",filePath);
+        } finally {
             DbUtils.closeQuietly(conn,stmt,resultSet);
-            IOUtils.closeQuietly(csvWriter);
+            IOUtils.closeQuietly(printer);
         }
         return new File(filePath).exists();
     }
