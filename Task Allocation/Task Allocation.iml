@@ -21,6 +21,16 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.mockrunner:mockrunner-core:1.0.6" level="project" />
     <orderEntry type="library" name="Maven: net.sf.opencsv:opencsv:2.3" level="project" />
     <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.intellij:forms_rt:7.0.3" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm-commons:3.0" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm-tree:3.0" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm:3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.jgoodies:forms:1.1-preview" level="project" />
+    <orderEntry type="library" name="Maven: joda-time:joda-time:2.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.mockrunner:mockrunner-jdbc:1.0.6" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.mockrunner:mockrunner-core:1.0.6" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.opencsv:opencsv:2.3" level="project" />
+    <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.2" level="project" />
     <orderEntry type="module" module-name="DatabaseUtilities" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
