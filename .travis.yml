@@ -1,1 +1,2 @@
 language : java
+script : ./Task\ Allocation/build/run_build.sh
