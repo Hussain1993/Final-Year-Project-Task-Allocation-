@@ -126,7 +126,7 @@ public class HopcroftKarp extends BiPartiteMatching{
             }
             nodesWeHaveUsed.addAll(oddLayer);
 
-            if(oddLayer.size() == 0 || doSetsIntersect(oddLayer,unmatchedTasks))
+            if(oddLayer.size() == 0 || doesLayerContainUnMatchedTask(oddLayer))
             {
                 break;
             }
@@ -208,17 +208,18 @@ public class HopcroftKarp extends BiPartiteMatching{
     }
 
     /**
-     * Checks to see if two sets intersect.
-     * This is when two sets, share a common element
-     * @param set1 This is the first set to check
-     * @param set2 This is the second set to check
-     * @return Return true if second set contains at least
-     * one element that is contained within the first set, false otherwise
+     * This method is used to terminate the
+     * infinite loop, when creating the breadth first search tree.
+     * This method checks if the layer contains an unmatched task
+     * @param layer This should always be the odd layer of the
+     *              search
+     * @return True if the layer contains an unmatched task,
+     * false otherwise
      */
-    private boolean doSetsIntersect(Set<String> set1, Set<String> set2){
-        for(String element : set1)
+    private boolean doesLayerContainUnMatchedTask(Set<String> layer){
+        for(String element : layer)
         {
-            if(set2.contains(element))
+            if(unmatchedTasks.contains(element))
             {
                 return true;
             }
