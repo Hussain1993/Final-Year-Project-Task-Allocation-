@@ -14,6 +14,7 @@
     </properties>
 
     <build>
+        <finalName>TaskAllocation</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -80,6 +81,7 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
+                            <finalName>TaskAllocation</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <descriptor>${project.basedir}/assembly.xml</descriptor>
                         </configuration>
