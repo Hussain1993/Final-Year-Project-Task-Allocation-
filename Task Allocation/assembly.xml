@@ -26,6 +26,7 @@
             <outputDirectory>Scripts</outputDirectory>
             <excludes>
                 <exclude>StartMySQL.sh</exclude>
+                <exclude>truncateTables.sql</exclude>
             </excludes>
             <includes>
                 <include>**/**</include>
