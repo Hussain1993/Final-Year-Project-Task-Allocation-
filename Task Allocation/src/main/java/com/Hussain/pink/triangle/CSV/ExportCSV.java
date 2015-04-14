@@ -1,6 +1,7 @@
 package com.Hussain.pink.triangle.CSV;
 
 import com.Hussain.pink.triangle.Utils.DatabaseConnection;
+import com.Hussain.pink.triangle.utils.PropsGetter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.dbutils.DbUtils;
@@ -8,7 +9,10 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +30,7 @@ public class ExportCSV {
     private static final Logger LOG = LoggerFactory.getLogger(ExportCSV.class);
 
     private String folderToSaveCSVFiles;
+    private boolean exportEmptyTables;
 
     /**
      *
@@ -34,6 +39,8 @@ public class ExportCSV {
      */
     public ExportCSV(String folderToSaveCSVFiles){
         this.folderToSaveCSVFiles = folderToSaveCSVFiles;
+        PropsGetter properties = PropsGetter.getInstance();
+        this.exportEmptyTables = Boolean.parseBoolean(properties.getProperty("export.empty.table"));
     }
 
     /**
@@ -276,7 +283,7 @@ public class ExportCSV {
     private boolean exportUsers(){
         String query = "SELECT * FROM USERS";
         String filePath = folderToSaveCSVFiles + File.separator + "USERS.csv";
-        return executeQuery(query,filePath);
+        return executeQuery(query, filePath);
     }
 
     /**
@@ -294,9 +301,18 @@ public class ExportCSV {
         try{
             stmt = conn.prepareStatement(query);
             resultSet = stmt.executeQuery();
-            OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(new File(filePath)));
-            printer = CSVFormat.MYSQL.withDelimiter(',').withHeader(resultSet).print(fileWriter);
-            printer.printRecords(resultSet);
+            if(resultSetIsEmpty(resultSet) && exportEmptyTables)
+            {
+                exportDatabaseToFile(filePath,resultSet, printer);
+            }
+            else if(resultSetIsEmpty(resultSet))
+            {
+                return true;
+            }
+            else
+            {
+                exportDatabaseToFile(filePath,resultSet, printer);
+            }
 
         }
         catch (SQLException e) {
@@ -309,5 +325,29 @@ public class ExportCSV {
             IOUtils.closeQuietly(printer);
         }
         return new File(filePath).exists();
+    }
+
+    /**
+     * Utility method to check is the ResultSet object is empty
+     * @param resultSet The ResultSet object to check
+     * @return True if the result set is empty, false otherwise
+     * @throws SQLException
+     */
+    private boolean resultSetIsEmpty(ResultSet resultSet) throws SQLException{
+        return !resultSet.first();
+    }
+
+    /**
+     * This method writes the result set object to a CSV file
+     * @param filePath The path to save the CSV file
+     * @param resultSet The result set object to write
+     * @param printer The printer object to use when writing the file
+     * @throws SQLException
+     * @throws IOException
+     */
+    private void exportDatabaseToFile(String filePath, ResultSet resultSet, CSVPrinter printer) throws SQLException, IOException{
+        OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(new File(filePath)));
+        printer = CSVFormat.MYSQL.withDelimiter(',').withHeader(resultSet).print(fileWriter);
+        printer.printRecords(resultSet);
     }
 }
