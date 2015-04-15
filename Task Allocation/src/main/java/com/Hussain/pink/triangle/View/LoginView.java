@@ -37,7 +37,10 @@ public class LoginView extends JFrame{
         pack();
     }
 
-
+    /**
+     * Adds all the action listeners for the buttons
+     * on the window
+     */
     private void addActionListeners(){
         loginButton.addActionListener(new ActionListener() {
             @Override

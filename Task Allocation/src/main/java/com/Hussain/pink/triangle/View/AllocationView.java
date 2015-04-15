@@ -38,7 +38,7 @@ public class AllocationView extends JFrame{
     private AllocationTableModel tableModel;
 
     public AllocationView() {
-        super("MatchingAlgorithms");
+        super("Allocation View");
         setContentPane(rootPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getRootPane().setDefaultButton(doneButton);
@@ -59,6 +59,9 @@ public class AllocationView extends JFrame{
         tablePanel.add(scrollPane);
     }
 
+    /**
+     * Initialises the JMenu for the window
+     */
     private void initMenu(){
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -96,6 +99,10 @@ public class AllocationView extends JFrame{
         });
     }
 
+    /**
+     * Adds all the action listeners for all the buttons on the
+     * window
+     */
     private void addActionListeners() {
         doneButton.addActionListener(new ActionListener() {
             @Override
@@ -131,7 +138,7 @@ public class AllocationView extends JFrame{
         advancedOptionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new advancedOptionDialog().setVisible(true);
+                new AdvancedOptionDialog().setVisible(true);
             }
         });
     }

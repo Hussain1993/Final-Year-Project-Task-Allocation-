@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * This class will be used to count the number of tasks there are outstanding for the
+ * This class will be used to count the number of tasks that are outstanding for the
  * given project.
  * This class will hold a map containing the project as the key and this object will map
  * to the number of tasks that are remaining for the project

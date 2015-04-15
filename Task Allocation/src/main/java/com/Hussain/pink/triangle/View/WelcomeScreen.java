@@ -21,7 +21,7 @@ public class WelcomeScreen extends JFrame{
     private JButton compareButton;
 
     public WelcomeScreen(){
-        super("Task MatchingAlgorithms");
+        super("Task Allocation");
         setContentPane(rootPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         addActionListeners();
@@ -29,6 +29,10 @@ public class WelcomeScreen extends JFrame{
     }
 
 
+    /**
+     * Adds all the action listeners for the buttons
+     * on the window
+     */
     private void addActionListeners(){
         importCSVsButton.addActionListener(new ActionListener() {
             @Override

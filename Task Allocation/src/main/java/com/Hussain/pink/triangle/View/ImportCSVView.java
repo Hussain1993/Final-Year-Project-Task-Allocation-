@@ -61,6 +61,10 @@ public class ImportCSVView extends JFrame{
         pack();
     }
 
+    /**
+     * Adds all the action listeners for the buttons
+     * on the window
+     */
     private void addActionListeners(){
         browseButtonEmployee.addActionListener(new ActionListener() {
             @Override
@@ -167,7 +171,10 @@ public class ImportCSVView extends JFrame{
             }
         });
     }
-    
+
+    /**
+     * Import the CSV files the user has decided to import
+     */
     private void importCSVFiles(){
         int numberOfRowsInserted = 0;
         try {

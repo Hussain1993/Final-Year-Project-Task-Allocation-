@@ -176,7 +176,7 @@ public abstract class MatchingAlgorithm {
     }
 
     /**
-     * This build all the allocations within the graph
+     * This builds all the allocations within the graph
      * @param biPartiteGraph This is a bipartite graph with the employee nodes and task nodes with no allocations between them
      * @return A bipartite graph with all the allocations added in
      */

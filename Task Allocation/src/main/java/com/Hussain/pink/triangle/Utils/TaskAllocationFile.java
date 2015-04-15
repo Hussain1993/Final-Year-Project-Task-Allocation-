@@ -119,6 +119,15 @@ public class TaskAllocationFile {
         return null;
     }
 
+    /**
+     * This saves the Task Allocation Table model and saves it as a file
+     * on the users machine
+     * @param filePath This is the file path to save the task allocation file to
+     * @param allocationTableModel This is the table model that is displayed
+     *                             to the user
+     * @return True if the file has been saved, false otherwise or an expection
+     * is logged
+     */
     public static boolean saveTaskAllocationFile(String filePath, DefaultTableModel allocationTableModel){
         DocumentBuilderFactory documentBuilderFactory = new DocumentBuilderFactoryImpl();
         try {

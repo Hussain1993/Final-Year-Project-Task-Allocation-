@@ -11,7 +11,7 @@ import java.awt.event.*;
  * This is the view where the user will be able to specify the
  * advanced options they can use when querying for the employees and tasks
  */
-public class advancedOptionDialog extends JDialog {
+public class AdvancedOptionDialog extends JDialog {
     private JPanel rootPanel;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -21,7 +21,7 @@ public class advancedOptionDialog extends JDialog {
     private JComboBox groupTasksComboBox;
     private JCheckBox heuristicCheckBox;
 
-    public advancedOptionDialog() {
+    public AdvancedOptionDialog() {
         setContentPane(rootPanel);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);

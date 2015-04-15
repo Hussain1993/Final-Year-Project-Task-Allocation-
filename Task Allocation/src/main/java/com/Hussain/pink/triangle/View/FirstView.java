@@ -16,7 +16,7 @@ public class FirstView  extends JFrame{
 
 
     public FirstView(){
-        super("Task MatchingAlgorithms");
+        super("Task Allocation");
         setContentPane(root);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         addActionListeners();
@@ -24,6 +24,10 @@ public class FirstView  extends JFrame{
     }
 
 
+    /**
+     * Adds all the action listeners for the buttons
+     * on the window
+     */
     private void addActionListeners(){
         registerButton.addActionListener(new ActionListener() {
             @Override

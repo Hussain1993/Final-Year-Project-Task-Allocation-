@@ -50,6 +50,9 @@ public class CompareView extends JFrame {
         pack();
     }
 
+    /**
+     * Initialises the two table models for the compare view
+     */
     private void initTable(){
         tableModel1 = new AllocationTableModel();
         tableModel2 = new AllocationTableModel();
@@ -67,6 +70,10 @@ public class CompareView extends JFrame {
         tablePanel2.add(scrollPane2);
     }
 
+    /**
+     * Adds all the action listeners for the buttons on the
+     * window
+     */
     private void addActionListeners(){
         browseButton1.addActionListener(new ActionListener() {
             @Override

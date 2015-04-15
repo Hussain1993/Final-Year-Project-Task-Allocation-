@@ -36,6 +36,10 @@ public class RegisterView extends JFrame{
         pack();
     }
 
+    /**
+     * Adds all the action listeners for the buttons
+     * on the window
+     */
     private void addActionListeners(){
         registerButton.addActionListener(new ActionListener() {
             @Override
