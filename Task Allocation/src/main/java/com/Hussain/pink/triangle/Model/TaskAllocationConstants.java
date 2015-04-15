@@ -7,6 +7,9 @@ package com.Hussain.pink.triangle.Model;
  * Created by Hussain on 13/11/2014.
  */
 public class TaskAllocationConstants {
+    public static final String CONFIG_FILE_PATH_PROPERTY_KEY = "task.allocation.properties.file";
+    public static final String LOG4J_XML_FILE_PATH_PROPERTY_KEY = "log4j.xml";
+
     public static final String CLASSNAME_KEY = "classname";
     public static final String PASSWORD_KEY = "password";
     public static final String USERNAME_KEY = "username";
