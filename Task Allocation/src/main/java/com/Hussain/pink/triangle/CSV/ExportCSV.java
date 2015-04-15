@@ -301,11 +301,12 @@ public class ExportCSV {
         try{
             stmt = conn.prepareStatement(query);
             resultSet = stmt.executeQuery();
-            if(resultSetIsEmpty(resultSet) && exportEmptyTables)
+            boolean resultSetEmpty = resultSetIsEmpty(resultSet);
+            if(resultSetEmpty && exportEmptyTables)
             {
                 exportDatabaseToFile(filePath,resultSet, printer);
             }
-            else if(resultSetIsEmpty(resultSet))
+            else if(resultSetEmpty)
             {
                 return true;
             }
