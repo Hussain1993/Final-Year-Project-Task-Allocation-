@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class AllocationView extends JFrame{
     private static final Logger LOG = LoggerFactory.getLogger(AllocationView.class);
     private static final String extension = "ta";
-    private static final String description = "Task MatchingAlgorithms Files";
+    private static final String description = "Task Allocation Files";
 
     private static final int GREEDY = 0;
     private static final int MAXIMUM = 1;
@@ -90,10 +90,17 @@ public class AllocationView extends JFrame{
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String file = FileIO.openFileDialog(AllocationView.this, extension,description,FileIO.SAVE_MODE);
-                if(file != null && !TaskAllocationFile.saveTaskAllocationFile(file+"."+extension,tableModel))
+                if(tableModel.getRowCount() > 0)
                 {
-                    LOG.error("There was an error while saving the file {}", file);
+                    String file = FileIO.openFileDialog(AllocationView.this, extension,description,FileIO.SAVE_MODE);
+                    if(file != null && !TaskAllocationFile.saveTaskAllocationFile(file+"."+extension,tableModel))
+                    {
+                        LOG.error("There was an error while saving the file {}", file);
+                    }
+                }
+                else
+                {
+                    LOG.error("You cannot save an empty allocation table");
                 }
             }
         });
