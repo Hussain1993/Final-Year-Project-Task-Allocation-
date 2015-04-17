@@ -35,6 +35,7 @@ public class AllocationView extends JFrame{
     private JButton assignButton;
     private JButton backButton;
     private JButton advancedOptionsButton;
+    private JLabel numberOfAllocationsLabel;
     private AllocationTableModel tableModel;
 
     public AllocationView() {
@@ -79,9 +80,8 @@ public class AllocationView extends JFrame{
         open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String file = FileIO.openFileDialog(AllocationView.this, extension, description,FileIO.OPEN_MODE);
-                if (file != null)
-                {
+                String file = FileIO.openFileDialog(AllocationView.this, extension, description, FileIO.OPEN_MODE);
+                if (file != null) {
                     loadFileIntoTable(file);
                 }
             }
@@ -90,16 +90,12 @@ public class AllocationView extends JFrame{
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tableModel.getRowCount() > 0)
-                {
-                    String file = FileIO.openFileDialog(AllocationView.this, extension,description,FileIO.SAVE_MODE);
-                    if(file != null && !TaskAllocationFile.saveTaskAllocationFile(file+"."+extension,tableModel))
-                    {
+                if (tableModel.getRowCount() > 0) {
+                    String file = FileIO.openFileDialog(AllocationView.this, extension, description, FileIO.SAVE_MODE);
+                    if (file != null && !TaskAllocationFile.saveTaskAllocationFile(file + "." + extension, tableModel)) {
                         LOG.error("There was an error while saving the file {}", file);
                     }
-                }
-                else
-                {
+                } else {
                     LOG.error("You cannot save an empty allocation table");
                 }
             }
@@ -115,11 +111,16 @@ public class AllocationView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                switch (algorithmBox.getSelectedIndex())
-                {
-                    case GREEDY: populateTable(new Allocation(GREEDY).allocateEmployeesAndTasks()); break;
-                    case MAXIMUM: populateTable(new Allocation(MAXIMUM).allocateEmployeesAndTasks()); break;
-                    default: populateTable(new Allocation(GREEDY).allocateEmployeesAndTasks()); break;
+                switch (algorithmBox.getSelectedIndex()) {
+                    case GREEDY:
+                        populateTable(new Allocation(GREEDY).allocateEmployeesAndTasks());
+                        break;
+                    case MAXIMUM:
+                        populateTable(new Allocation(MAXIMUM).allocateEmployeesAndTasks());
+                        break;
+                    default:
+                        populateTable(new Allocation(GREEDY).allocateEmployeesAndTasks());
+                        break;
                 }
             }
         });
@@ -127,7 +128,7 @@ public class AllocationView extends JFrame{
         assignButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.info("The number of employees that have been assigned tasks is: {}",DatabaseQueries.assignTasksToEmployees(tableModel));
+                LOG.info("The number of employees that have been assigned tasks is: {}", DatabaseQueries.assignTasksToEmployees(tableModel));
             }
         });
 
@@ -162,6 +163,7 @@ public class AllocationView extends JFrame{
         {
             tableModel.addRow(row);
         }
+        printLabel();
     }
 
     /**
@@ -180,5 +182,10 @@ public class AllocationView extends JFrame{
         for (Object[] dataRow : dataRows) {
             tableModel.addRow(dataRow);
         }
+        printLabel();
+    }
+
+    private void printLabel(){
+        numberOfAllocationsLabel.setText("Number of Allocations: "+tableModel.getRowCount());
     }
 }

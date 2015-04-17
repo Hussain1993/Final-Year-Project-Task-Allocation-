@@ -47,23 +47,43 @@
         <border type="none"/>
         <children/>
       </grid>
-      <grid id="b3c8c" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+      <grid id="b3c8c" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="South"/>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="b6936" class="javax.swing.JButton" binding="backButton">
-            <constraints/>
-            <properties>
-              <text value="Back"/>
-            </properties>
-          </component>
-          <component id="2f40b" class="javax.swing.JButton" binding="assignButton" default-binding="true">
-            <constraints/>
-            <properties>
-              <text value="Assign"/>
-            </properties>
-          </component>
+          <grid id="5cf94" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="East"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="b6936" class="javax.swing.JButton" binding="backButton">
+                <constraints/>
+                <properties>
+                  <text value="Back"/>
+                </properties>
+              </component>
+              <component id="2f40b" class="javax.swing.JButton" binding="assignButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Assign"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="e4a41" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="West"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="54225" class="javax.swing.JLabel" binding="numberOfAllocationsLabel">
+                <constraints/>
+                <properties>
+                  <text value="Number of Allocations: 0"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>
