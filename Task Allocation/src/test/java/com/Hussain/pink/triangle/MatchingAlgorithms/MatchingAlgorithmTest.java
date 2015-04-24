@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Hussain on 18/11/2014.
  */
-public class TaskAllocationMethodTest {
+public class MatchingAlgorithmTest {
 
 
     @Test
@@ -269,13 +269,13 @@ public class TaskAllocationMethodTest {
                 "TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
                 "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED), PROJECTS.NAME FROM TASKS, SKILLS, TASK_SKILLS, " +
                 "PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID " +
-                "AND TASKS.PROJECT_ID = PROJECTS.ID group by projects.id, tasks.id";
+                "AND TASKS.PROJECT_ID = PROJECTS.ID AND TASKS.COMPLETED=FALSE group by projects.id, tasks.id";
 
         String expectedTaskGroupOrder = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, " +
                 "TASKS.DATE_TO, TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), " +
                 "GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED), PROJECTS.NAME FROM TASKS, SKILLS, TASK_SKILLS, " +
                 "PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND SKILLS.ID = TASK_SKILLS.SKILL_ID AND " +
-                "TASKS.PROJECT_ID = PROJECTS.ID group by tasks.id";
+                "TASKS.PROJECT_ID = PROJECTS.ID AND TASKS.COMPLETED=FALSE group by tasks.id";
 
         taskAllocationMethod.setTaskGroupOrder(true);
 
@@ -306,7 +306,7 @@ public class TaskAllocationMethodTest {
         String expectedTaskQuery = "SELECT TASKS.ID, TASKS.NAME, TASKS.PROJECT_ID, TASKS.DATE_FROM, TASKS.DATE_TO, " +
                 "TASKS.COMPLETED, GROUP_CONCAT(SKILLS.SKILL), GROUP_CONCAT(TASK_SKILLS.PROFICIENCY_REQUIRED), PROJECTS.NAME " +
                 "FROM TASKS, SKILLS, TASK_SKILLS, PROJECTS  WHERE TASKS.ID = TASK_SKILLS.TASK_ID AND " +
-                "SKILLS.ID = TASK_SKILLS.SKILL_ID AND TASKS.PROJECT_ID = PROJECTS.ID order by name asc";
+                "SKILLS.ID = TASK_SKILLS.SKILL_ID AND TASKS.PROJECT_ID = PROJECTS.ID AND TASKS.COMPLETED=FALSE order by name asc";
 
         assertEquals(expectedEmployeeQuery,taskAllocationMethod.getEmployeeQuery().toString());
         assertEquals(expectedTaskQuery, taskAllocationMethod.getTaskQuery().toString());
