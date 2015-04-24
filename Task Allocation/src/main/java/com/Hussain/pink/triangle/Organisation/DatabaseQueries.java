@@ -227,4 +227,26 @@ public class DatabaseQueries {
             return 0;
         }
     }
+
+    public static ResultSet getTasks(){
+        String query = "SELECT ID,NAME,PROJECT_ID,DATE_FROM,DATE_TO,COMPLETED FROM TASKS ORDER BY ID";
+        conn = DatabaseConnection.getDatabaseConnection();
+        ResultSet resultSet = null;
+        if(conn != null)
+        {
+            try{
+                stmt = conn.prepareStatement(query);
+                return resultSet = stmt.executeQuery();
+            }
+            catch (SQLException e) {
+                LOG.error("There was an error with the SQL statement");
+                closeConnectionToDatabase(null);
+            }
+        }
+        return null;
+    }
+
+    public static void closeConnectionToDatabase(ResultSet resultSet){
+        DbUtils.closeQuietly(conn,stmt,resultSet);
+    }
 }

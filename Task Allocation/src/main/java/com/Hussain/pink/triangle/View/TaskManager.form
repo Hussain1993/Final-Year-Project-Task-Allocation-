@@ -25,23 +25,43 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="2830e" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+          <grid id="2830e" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints border-constraint="South"/>
             <properties/>
             <border type="none"/>
             <children>
-              <component id="ab3a6" class="javax.swing.JButton" binding="backButton" default-binding="true">
-                <constraints/>
-                <properties>
-                  <text value="Back"/>
-                </properties>
-              </component>
-              <component id="53f16" class="javax.swing.JButton" binding="updateButton">
-                <constraints/>
-                <properties>
-                  <text value="Update"/>
-                </properties>
-              </component>
+              <grid id="167d1" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="East"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ab3a6" class="javax.swing.JButton" binding="backButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <text value="Back"/>
+                    </properties>
+                  </component>
+                  <component id="53f16" class="javax.swing.JButton" binding="updateButton">
+                    <constraints/>
+                    <properties>
+                      <text value="Update"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="de1be" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="West"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="5a93f" class="javax.swing.JLabel" binding="numberOfTasksLabel">
+                    <constraints/>
+                    <properties>
+                      <text value="Number of Tasks: 0"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
             </children>
           </grid>
         </children>
