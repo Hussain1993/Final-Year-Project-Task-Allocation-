@@ -46,6 +46,9 @@ public class MainApp {
                 throw new Exception("The name of the log4j file has not been specified. Re-run the application" +
                         " again with the command java -Dlog4j.xml=[PATH TO LOG4J.XML] -jar [JAR FILE]");
             }
+            //Once all the system properties have been check,
+            //we need to check if there a connection to the database is
+            //possible
             checkConnectionToDatabase();
             DOMConfigurator.configure(log4jFile);
         }
