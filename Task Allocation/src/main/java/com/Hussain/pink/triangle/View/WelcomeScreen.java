@@ -19,6 +19,7 @@ public class WelcomeScreen extends JFrame{
     private JButton allocationButton;
     private JButton exportDatabaseButton;
     private JButton compareButton;
+    private JButton taskManagerButton;
 
     public WelcomeScreen(){
         super("Task Allocation");
@@ -73,6 +74,17 @@ public class WelcomeScreen extends JFrame{
                 CompareView compareView = new CompareView();
                 compareView.setLocation(locationOnScreen);
                 compareView.setVisible(true);
+            }
+        });
+
+        taskManagerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Point locationOnScreen = WelcomeScreen.this.getLocationOnScreen();
+                WelcomeScreen.this.dispose();
+                TaskManager taskManager = new TaskManager();
+                taskManager.setLocation(locationOnScreen);
+                taskManager.setVisible(true);
             }
         });
     }

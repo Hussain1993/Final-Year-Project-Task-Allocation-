@@ -49,6 +49,12 @@
               <text value="Compare"/>
             </properties>
           </component>
+          <component id="fbd6d" class="javax.swing.JButton" binding="taskManagerButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Task Manager"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>
