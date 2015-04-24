@@ -17,6 +17,7 @@ import java.sql.*;
 import java.util.Set;
 
 /**
+ * This is the view for the task manager
  * Created by Hussain on 24/04/2015.
  */
 public class TaskManager extends JFrame {
@@ -46,6 +47,9 @@ public class TaskManager extends JFrame {
         pack();
     }
 
+    /**
+     * Make the table to be displayed to the user
+     */
     private void initTable(){
         tableModel = new TaskManagerTableModel();
         taskManagerTable = new TaskManagerTable(tableModel);
@@ -54,6 +58,9 @@ public class TaskManager extends JFrame {
         tablePanel.add(scrollPane);
     }
 
+    /**
+     * Add the action listeners for the buttons on screen
+     */
     private void addActionListeners(){
         updateButton.addActionListener(new ActionListener() {
             @Override
@@ -65,15 +72,20 @@ public class TaskManager extends JFrame {
                     if(conn != null)
                     {
                         stmt = conn.prepareStatement(query);
+                        //Loop over every changed row and get the values from these rows
+                        //to be updated in the database
                         for (int row : updatedTasks)
                         {
                             int taskId = Integer.parseInt(String.valueOf(tableModel.getValueAt(row, 0)));
                             boolean completed = Boolean.parseBoolean(String.valueOf(tableModel.getValueAt(row, 5)));
                             stmt.setBoolean(1,completed);
                             stmt.setInt(2,taskId);
+                            //Add these changes to the batch, to be executed later
                             stmt.addBatch();
                         }
+                        //Execute the batch and log the number of tasks that have been updated
                         LOG.info("Number of updated tasks: {}",stmt.executeBatch().length);
+                        //Clear the set that contains all the rows that have been updated
                         taskManagerTable.clearRowsEdited();
                     }
                 }
@@ -98,7 +110,10 @@ public class TaskManager extends JFrame {
         });
     }
 
-
+    /**
+     * Populate the table with the tasks information
+     * that is in the database
+     */
     private void populateTable(){
         ResultSet resultSet = null;
         try{
@@ -127,6 +142,7 @@ public class TaskManager extends JFrame {
         finally {
             DatabaseQueries.closeConnectionToDatabase(resultSet);
         }
+        //display the number of tasks within the database
         numberOfTasksLabel.setText("Number of Tasks: "+tableModel.getRowCount());
     }
 }

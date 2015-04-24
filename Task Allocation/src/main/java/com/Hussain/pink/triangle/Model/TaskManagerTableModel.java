@@ -4,6 +4,9 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.Date;
 
 /**
+ * This is the table model for the task manager
+ * table
+ *
  * Created by Hussain on 24/04/2015.
  */
 public class TaskManagerTableModel extends DefaultTableModel {

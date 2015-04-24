@@ -8,10 +8,15 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * This is the table for the task manager,
+ * this class extends JTable because we would
+ * like to record when the user
+ * has changed a value in the table
+ *
  * Created by Hussain on 24/04/2015.
  */
 public class TaskManagerTable extends JTable {
-    private LinkedHashSet<Integer> rowsEdited;
+    private LinkedHashSet<Integer> rowsEdited;//Set containing the rows that have been edited
 
     public TaskManagerTable(TableModel tableModel){
         super(tableModel);
@@ -36,10 +41,17 @@ public class TaskManagerTable extends JTable {
         }
     }
 
+    /**
+     *
+     * @return Returns the set of rows that have been changed
+     */
     public Set<Integer> getRowsEdited(){
         return this.rowsEdited;
     }
 
+    /**
+     * Clear this set once the batch has been executed
+     */
     public void clearRowsEdited(){
         this.rowsEdited.clear();
     }
