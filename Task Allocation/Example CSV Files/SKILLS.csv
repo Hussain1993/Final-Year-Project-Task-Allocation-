@@ -1,14 +1,51 @@
 ID,SKILL
 1,Java
 2,UML
-3,Apache Tomcat
-4,Hadoop
-5,C++
-6,iOS
-7,Android
-8,XML
-9,Graphs
-10,Windows Phone
-11,Blackberry
-12,Concurrency
-13,Testing
+3,C++
+4,Apache
+5,Android
+6,Elastic Search
+7,Hadoop
+8,JOVIAL
+9,Joy
+10,JScript
+11,JScript .NET
+12,JavaFX Script
+13,Julia
+14,Jython
+15,Logo
+16,Logtalk
+17,LPC
+18,B
+19,Babbage
+20,Bash
+21,BASIC
+22,bc
+23,BCPL
+24,BeanShell
+25,Batch
+26,Bertrand
+27,BETA
+28,Bigwig
+29,Bistro
+30,BitC
+31,BLISS
+32,Blue
+33,Bon
+34,Boo
+35,Boomerang
+36,Bourne shell
+37,BREW
+38,BPEL
+39,LSE
+40,LSL
+41,LiveCode
+42,LiveScript
+43,Lua
+44,Lucid
+45,Lustre
+46,LYaPAS
+47,Lynx
+48,HAL/S
+49,Hamilton C shell
+50,Harbour
